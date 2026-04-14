@@ -1,9 +1,14 @@
-import { Navigate, type RouteObject } from "react-router-dom";
+import type { RouteObject } from "react-router-dom";
+import SignUp from "../pages/SignUp";
 
 const AuthRoute: RouteObject[] = [
 	{
 		path: "/sign-in",
-		element: <Navigate to="/sign-in" />,
+		element: <a href="/sign-up">Sign Up page</a>,
+	},
+	{
+		path: "/sign-up",
+		element: <SignUp />,
 	},
 ];
 

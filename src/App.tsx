@@ -3,6 +3,8 @@ import { queryClient } from "./core/api/queryClient";
 import "./core/assets/styles/index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "./components/ui/sonner";
+import { SidebarProvider } from "./components/ui/sidebar";
+import { TooltipProvider } from "./components/ui/tooltip";
 import AppRoute from "./routes/AppRoute";
 
 function App() {
@@ -12,6 +14,13 @@ function App() {
 			<BrowserRouter>
 				<AppRoute />
 			</BrowserRouter>
+			<SidebarProvider>
+				<TooltipProvider>
+					<BrowserRouter>
+						<AppRoute />
+					</BrowserRouter>
+				</TooltipProvider>
+			</SidebarProvider>
 		</QueryClientProvider>
 	);
 }

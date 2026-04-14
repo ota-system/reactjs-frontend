@@ -8,5 +8,8 @@
 		--btn-color: #000000;
 		--btn-color-hover: #bababa;
 		--text-color-btn: #ffffff;
+		--danger-text-color: #ff0000;
+		--danger-bg-color: rgba(255, 0, 0, 0.1);
+		--danger-border-color: #ff6868;
 	}
 }

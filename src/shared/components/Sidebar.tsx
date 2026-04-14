@@ -17,6 +17,7 @@ import {
 	teacherMenuItems,
 } from "@/shared/constants/sidebarMenuItems";
 
+// TODO: Fetch user data from API
 const user = {
 	name: "Vo Duc Tai",
 	email: "voductaitxqt123@gmail.com",
@@ -73,8 +74,16 @@ const AppSidebar = () => {
 
 							return (
 								<SidebarMenuItem
-									key={item.title}
-									onClick={() => setSearchParams({ tab: item.tab })}
+									key={item.tab}
+									onClick={() =>
+										setSearchParams((prevSearchParams) => {
+											const nextSearchParams = new URLSearchParams(
+												prevSearchParams,
+											);
+											nextSearchParams.set("tab", item.tab);
+											return nextSearchParams;
+										})
+									}
 								>
 									<SidebarMenuButton
 										isActive={isActive}
@@ -97,12 +106,15 @@ const AppSidebar = () => {
 				<SidebarGroup className="flex-1" />
 			</SidebarContent>
 			<SidebarFooter className="border-t p-3">
-				<SidebarMenuItem onClick={() => {}}>
-					<SidebarMenuButton className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)]">
-						<LuLogOut className="size-4" />
-						<span className="font-medium">Đăng xuất</span>
-					</SidebarMenuButton>
-				</SidebarMenuItem>
+				<SidebarMenu>
+					{/* TODO: Implement logout functionality */}
+					<SidebarMenuItem onClick={() => {}}>
+						<SidebarMenuButton className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)]">
+							<LuLogOut className="size-4" />
+							<span className="font-medium">Đăng xuất</span>
+						</SidebarMenuButton>
+					</SidebarMenuItem>
+				</SidebarMenu>
 			</SidebarFooter>
 		</Sidebar>
 	);

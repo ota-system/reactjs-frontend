@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import type { Difficulty, QuestionType } from "../constants/questionOption";
+import {
+	DIFFICULTY_OPTIONS,
+	QUESTION_TYPE_OPTIONS,
+	QuestionTypeEnum,
+} from "../constants/questionOption";
 import SelectionInput from "./SelectionInput";
-
-type Difficulty = "Dễ" | "Trung bình" | "Khó";
-type QuestionType = "Trắc nghiệm" | "Điền từ";
-
-const DIFFICULTY_OPTIONS: Difficulty[] = ["Dễ", "Trung bình", "Khó"];
-const QUESTION_TYPE_OPTIONS: QuestionType[] = ["Trắc nghiệm", "Điền từ"];
 
 interface QuestionCardProps {
 	index: number;
@@ -35,7 +35,7 @@ export default function QuestionCard({
 	question,
 	subject,
 	difficulty,
-	questionType = "Trắc nghiệm",
+	questionType = QuestionTypeEnum.MULTIPLE_CHOICE,
 	onQuestionChange,
 	onSubjectChange,
 	onDifficultyChange,

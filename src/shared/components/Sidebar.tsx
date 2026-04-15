@@ -18,11 +18,7 @@ import {
 } from "@/shared/constants/sidebarMenuItems";
 
 // TODO: Fetch user data from API
-const user = {
-	name: "Vo Duc Tai",
-	email: "voductaitxqt123@gmail.com",
-	role: "TEACHER",
-};
+import { user } from "@/shared/data/mook";
 
 const AppSidebar = () => {
 	const [searchParams, setSearchParams] = useSearchParams();

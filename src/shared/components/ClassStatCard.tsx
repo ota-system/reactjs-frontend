@@ -2,7 +2,7 @@ import type { IconType } from "react-icons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-type ClassStatCardProps = {
+interface ClassStatCardProps {
 	title: string;
 	value: number | string;
 	description: string;
@@ -12,7 +12,7 @@ type ClassStatCardProps = {
 	valueClassName?: string;
 	descriptionClassName?: string;
 	cardClassName?: string;
-};
+}
 
 const ClassStatCard = ({
 	title,

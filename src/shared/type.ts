@@ -17,3 +17,5 @@ export type ErrorResponse = {
 	details: ErrorDetail[];
 	timestamp: string;
 };
+
+export type HttpError = ErrorResponse & { status: number };

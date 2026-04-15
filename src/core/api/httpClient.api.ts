@@ -1,3 +1,5 @@
+import type { ErrorResponse, HttpError } from "@/shared/type";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 async function request<T>(
@@ -23,7 +25,23 @@ async function request<T>(
 	}
 
 	if (!response.ok) {
-		throw response;
+		let errorData: Partial<ErrorResponse> = {};
+
+		try {
+			errorData = await response.json();
+		} catch {}
+
+		const apiError: HttpError = {
+			message: errorData.message || "Something went wrong",
+			code: errorData.code || "UNKNOWN",
+			path: errorData.path || "",
+			details: errorData.details || [],
+			timestamp: errorData.timestamp || new Date().toISOString(),
+
+			status: response.status,
+		};
+
+		throw apiError;
 	}
 
 	return response.json();

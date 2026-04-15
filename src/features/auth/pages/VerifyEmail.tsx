@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/lib/toast";
+import type { HttpError } from "@/shared/type";
 import useVerify from "../hooks/useVerify";
 
 const VerifyEmail = () => {
@@ -11,7 +12,7 @@ const VerifyEmail = () => {
 	const { onVerify } = useVerify();
 	const navigate = useNavigate();
 
-	const hasRun = useRef(false); // ✅ prevent double call
+	const hasRun = useRef(false);
 
 	useEffect(() => {
 		if (hasRun.current) {
@@ -27,17 +28,16 @@ const VerifyEmail = () => {
 
 			try {
 				await onVerify(token);
+
 				toast.success("Xác thực email thành công!");
 
 				setTimeout(() => {
 					navigate("/");
 				}, 500);
-			} catch (err: any) {
-				const message =
-					(await err?.json()?.message) ||
-					err.message ||
-					"Xác thực email thất bại";
-				//TODO: CHANGE THE ERROR HANDLING LATER BASED ON TANSTACK QUERY
+			} catch (error) {
+				const err = error as HttpError;
+
+				const message = err.message || "Xác thực email thất bại";
 
 				toast.error(message);
 				setError(message);

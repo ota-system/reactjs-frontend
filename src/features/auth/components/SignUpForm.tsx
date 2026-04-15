@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { signUpSchema } from "../schema/signUpSchema";
-import useAuthStore from "../stores/authStore";
 import type { SignUpFormValue, SignUpPayload } from "../type";
 
 type Props = {
@@ -14,10 +13,10 @@ type Props = {
 		payload: SignUpPayload,
 		form: ReturnType<typeof useForm<SignUpFormValue>>,
 	) => void;
+	isPending: boolean;
 };
 
-const SignUpForm = ({ handleSubmit }: Props) => {
-	const { loading } = useAuthStore();
+const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 	const form = useForm<SignUpFormValue>({
 		resolver: zodResolver(signUpSchema),
 		mode: "onChange",
@@ -31,7 +30,7 @@ const SignUpForm = ({ handleSubmit }: Props) => {
 	});
 
 	return (
-		<fieldset disabled={loading} className="w-full">
+		<fieldset disabled={isPending} className="w-full">
 			<form
 				onSubmit={form.handleSubmit((data) => {
 					const { confirmPassword, ...payload } = data;
@@ -156,9 +155,9 @@ const SignUpForm = ({ handleSubmit }: Props) => {
 				{/* Submit */}
 				<Button
 					type="submit"
-					className={`mt-4 w-full rounded-xl py-6 text-white font-medium shadow-md hover:opacity-90 transition ${loading ? "cursor-not-allowed opacity-70 disabled bg-gray-500" : "bg-black cursor-pointer"}`}
+					className={`mt-4 w-full rounded-xl py-6 text-white font-medium shadow-md hover:opacity-90 transition ${isPending ? "cursor-not-allowed opacity-70 disabled bg-gray-500" : "bg-black cursor-pointer"}`}
 				>
-					{loading ? "Đang xử lý..." : "Đăng Ký"}
+					{isPending ? "Đang xử lý..." : "Đăng Ký"}
 				</Button>
 			</form>
 		</fieldset>

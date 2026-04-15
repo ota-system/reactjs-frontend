@@ -11,7 +11,7 @@ export const toast = {
 	error: (message: string) => {
 		sonnerToast.error("Lỗi", {
 			description: message,
-			duration: 5000,
+			duration: 3000,
 		});
 	},
 

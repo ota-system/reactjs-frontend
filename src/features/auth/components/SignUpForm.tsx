@@ -7,15 +7,18 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { signUpSchema } from "../schema/signUpSchema";
 import useAuthStore from "../stores/authStore";
-import type { SignUpPayload } from "../type";
+import type { SignUpFormValue, SignUpPayload } from "../type";
 
 type Props = {
-	onSubmit: (payload: SignUpPayload) => void;
+	handleSubmit: (
+		payload: SignUpPayload,
+		form: ReturnType<typeof useForm<SignUpFormValue>>,
+	) => void;
 };
 
-const SignUpForm = ({ onSubmit }: Props) => {
+const SignUpForm = ({ handleSubmit }: Props) => {
 	const { loading } = useAuthStore();
-	const form = useForm<SignUpPayload>({
+	const form = useForm<SignUpFormValue>({
 		resolver: zodResolver(signUpSchema),
 		mode: "onChange",
 		defaultValues: {
@@ -30,7 +33,10 @@ const SignUpForm = ({ onSubmit }: Props) => {
 	return (
 		<fieldset disabled={loading} className="w-full">
 			<form
-				onSubmit={form.handleSubmit(onSubmit)}
+				onSubmit={form.handleSubmit((data) => {
+					const { confirmPassword, ...payload } = data;
+					handleSubmit(payload, form);
+				})}
 				className="space-y-5 w-full max-w-md"
 			>
 				{/* Full Name */}
@@ -42,7 +48,7 @@ const SignUpForm = ({ onSubmit }: Props) => {
 							<FieldLabel>Họ và tên</FieldLabel>
 							<Input
 								{...field}
-								placeholder="Họ và tên"
+								placeholder="Nguyễn Văn A"
 								className={inputClass(fieldState.error !== undefined)}
 							/>
 							{fieldState.error && <FieldError errors={[fieldState.error]} />}
@@ -78,6 +84,7 @@ const SignUpForm = ({ onSubmit }: Props) => {
 							<Input
 								{...field}
 								type="password"
+								placeholder="••••••••"
 								className={inputClass(fieldState.error !== undefined)}
 							/>
 							{fieldState.error && <FieldError errors={[fieldState.error]} />}
@@ -95,6 +102,7 @@ const SignUpForm = ({ onSubmit }: Props) => {
 							<Input
 								{...field}
 								type="password"
+								placeholder="••••••••"
 								className={inputClass(fieldState.error !== undefined)}
 							/>
 							{fieldState.error && <FieldError errors={[fieldState.error]} />}
@@ -113,11 +121,11 @@ const SignUpForm = ({ onSubmit }: Props) => {
 								type="button"
 								onClick={() => field.onChange("STUDENT")}
 								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-3 transition
-                ${
-									field.value === "STUDENT"
-										? "border-black bg-gray-100"
-										: "border-gray-300"
-								}`}
+                                ${
+																	field.value === "STUDENT"
+																		? "border-black bg-gray-100"
+																		: "border-gray-300"
+																}`}
 							>
 								<span className="text-lg">
 									<FaRegUserCircle />

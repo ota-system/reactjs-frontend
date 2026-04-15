@@ -1,11 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 type Props = {
 	active: "login" | "signup";
-	onChange: (value: "login" | "signup") => void;
 };
 
-const AuthToggle = ({ active, onChange }: Props) => {
+const AuthToggle = ({ active }: Props) => {
+	const navigate = useNavigate();
+	const onChange = (value: "login" | "signup") => {
+		navigate(value === "login" ? "/sign-in" : "/sign-up");
+	};
+
 	return (
 		<div className="flex w-full max-w-sm rounded-full bg-gray-200 p-1">
 			<Button

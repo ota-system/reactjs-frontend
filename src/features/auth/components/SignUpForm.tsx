@@ -36,7 +36,10 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 					const { confirmPassword, ...payload } = data;
 					handleSubmit(payload, form);
 				})}
-				className="space-y-5 w-full max-w-md"
+				className="
+				w-full max-w-md
+				flex flex-col gap-4
+			"
 			>
 				{/* Full Name */}
 				<Controller
@@ -109,43 +112,37 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 					)}
 				/>
 
-				{/* Role Selection */}
+				{/* Role */}
 				<Controller
 					name="role"
 					control={form.control}
 					render={({ field }) => (
-						<div className="flex gap-4">
-							{/* Student */}
+						<div className="flex gap-3">
 							<button
 								type="button"
 								onClick={() => field.onChange("STUDENT")}
-								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-3 transition
-                                ${
-																	field.value === "STUDENT"
-																		? "border-black bg-gray-100"
-																		: "border-gray-300"
-																}`}
+								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-2 transition cursor-pointer
+								${
+									field.value === "STUDENT"
+										? "border-black bg-gray-100"
+										: "border-gray-300"
+								}`}
 							>
-								<span className="text-lg">
-									<FaRegUserCircle />
-								</span>
+								<FaRegUserCircle />
 								<span>Học sinh</span>
 							</button>
 
-							{/* Teacher */}
 							<button
 								type="button"
 								onClick={() => field.onChange("TEACHER")}
-								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-3 transition
-                ${
+								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-2 transition cursor-pointer
+								${
 									field.value === "TEACHER"
 										? "border-black bg-gray-100"
 										: "border-gray-300"
 								}`}
 							>
-								<span className="text-lg">
-									<LuBookOpen />
-								</span>
+								<LuBookOpen />
 								<span>Giáo viên</span>
 							</button>
 						</div>
@@ -155,7 +152,16 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 				{/* Submit */}
 				<Button
 					type="submit"
-					className={`mt-4 w-full rounded-xl py-6 text-white font-medium shadow-md hover:opacity-90 transition ${isPending ? "cursor-not-allowed opacity-70 disabled bg-gray-500" : "bg-black cursor-pointer"}`}
+					className={`
+					mt-2 w-full rounded-xl py-5
+					text-white font-medium shadow-md
+					transition
+					${
+						isPending
+							? "cursor-not-allowed opacity-70 bg-gray-500"
+							: "bg-black hover:opacity-90"
+					}
+				`}
 				>
 					{isPending ? "Đang xử lý..." : "Đăng Ký"}
 				</Button>

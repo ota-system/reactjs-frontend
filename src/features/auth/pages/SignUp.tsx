@@ -35,7 +35,7 @@ const SignUp = () => {
 	};
 
 	return (
-		<div className="flex justify-center items-center flex-col gap-4 py-6 pt-0">
+		<div className="flex justify-center items-center flex-col gap-4">
 			<Header />
 			<AuthToggle active={"signup"} />
 			<SignUpForm isPending={mutation.isPending} handleSubmit={handleSubmit} />

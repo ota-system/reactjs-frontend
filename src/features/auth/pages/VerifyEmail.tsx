@@ -26,7 +26,7 @@ const VerifyEmail = () => {
 				toast.error(err.message || "Xác thực email thất bại");
 			},
 		});
-	}, [token, mutation, navigate]);
+	}, [token, navigate]);
 
 	return (
 		<div className="flex items-center justify-center h-full">

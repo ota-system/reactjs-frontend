@@ -162,6 +162,7 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 					mt-2 w-full rounded-xl py-5
 					text-white font-medium shadow-md
 					transition
+					cursor-pointer
 					${
 						isPending
 							? "cursor-not-allowed opacity-70 bg-gray-500"

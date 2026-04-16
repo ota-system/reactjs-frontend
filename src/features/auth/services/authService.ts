@@ -7,7 +7,7 @@ export const signUp = async (payload: SignUpPayload) => {
 		"/api/v1/auth/sign-up",
 		payload,
 	);
-	return response.data;
+	return response;
 };
 
 export const verifyToken = async (token: string) => {
@@ -15,5 +15,5 @@ export const verifyToken = async (token: string) => {
 		"/api/v1/auth/verify-token",
 		{ token },
 	);
-	return response.data;
+	return response;
 };

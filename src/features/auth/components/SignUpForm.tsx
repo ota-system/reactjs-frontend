@@ -51,7 +51,8 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 							<Input
 								{...field}
 								placeholder="Nguyễn Văn A"
-								className={inputClass(fieldState.error !== undefined)}
+								className={inputClass}
+								aria-invalid={!!fieldState.error}
 							/>
 							{fieldState.error && <FieldError errors={[fieldState.error]} />}
 						</Field>
@@ -69,7 +70,8 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 								{...field}
 								type="email"
 								placeholder="example@email.com"
-								className={inputClass(fieldState.error !== undefined)}
+								className={inputClass}
+								aria-invalid={!!fieldState.error}
 							/>
 							{fieldState.error && <FieldError errors={[fieldState.error]} />}
 						</Field>
@@ -87,7 +89,8 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 								{...field}
 								type="password"
 								placeholder="••••••••"
-								className={inputClass(fieldState.error !== undefined)}
+								className={inputClass}
+								aria-invalid={!!fieldState.error}
 							/>
 							{fieldState.error && <FieldError errors={[fieldState.error]} />}
 						</Field>
@@ -105,7 +108,8 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 								{...field}
 								type="password"
 								placeholder="••••••••"
-								className={inputClass(fieldState.error !== undefined)}
+								className={inputClass}
+								aria-invalid={!!fieldState.error}
 							/>
 							{fieldState.error && <FieldError errors={[fieldState.error]} />}
 						</Field>
@@ -118,10 +122,11 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 					control={form.control}
 					render={({ field }) => (
 						<div className="flex gap-3">
-							<button
+							<Button
+								variant="ghost"
 								type="button"
 								onClick={() => field.onChange("STUDENT")}
-								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-2 transition cursor-pointer
+								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-5 transition cursor-pointer
 								${
 									field.value === "STUDENT"
 										? "border-black bg-gray-100"
@@ -130,12 +135,13 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 							>
 								<FaRegUserCircle />
 								<span>Học sinh</span>
-							</button>
+							</Button>
 
-							<button
+							<Button
+								variant="ghost"
 								type="button"
 								onClick={() => field.onChange("TEACHER")}
-								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-2 transition cursor-pointer
+								className={`flex-1 flex items-center gap-2 rounded-xl border px-4 py-5 transition cursor-pointer
 								${
 									field.value === "TEACHER"
 										? "border-black bg-gray-100"
@@ -144,7 +150,7 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 							>
 								<LuBookOpen />
 								<span>Giáo viên</span>
-							</button>
+							</Button>
 						</div>
 					)}
 				/>
@@ -170,7 +176,6 @@ const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 	);
 };
 
-const inputClass = (error: boolean) =>
-	`rounded-lg ${error ? "border-red-500 focus-visible:ring-red-500" : ""}`;
+const inputClass = `rounded-lg py-4`;
 
 export default SignUpForm;

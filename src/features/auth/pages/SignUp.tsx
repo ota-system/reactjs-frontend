@@ -14,9 +14,9 @@ const SignUp = () => {
 
 	const handleSubmit = async (payload: SignUpPayload, form: any) => {
 		try {
-			await mutation.mutateAsync(payload);
+			const data = await mutation.mutateAsync(payload);
 
-			toast.success("Đăng ký thành công!");
+			toast.success(data.message || "Đăng ký thành công!");
 			navigate("/sign-up-success");
 		} catch (error: any) {
 			const err = error as HttpError;

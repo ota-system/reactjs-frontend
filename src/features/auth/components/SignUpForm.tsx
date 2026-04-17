@@ -5,7 +5,7 @@ import { LuBookOpen } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { signUpSchema } from "../schema/signUpSchema";
+import { SignUpSchema } from "../schema/SignUpSchema";
 import type { SignUpFormValue, SignUpPayload } from "../type";
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 
 const SignUpForm = ({ handleSubmit, isPending }: Props) => {
 	const form = useForm<SignUpFormValue>({
-		resolver: zodResolver(signUpSchema),
+		resolver: zodResolver(SignUpSchema),
 		mode: "onChange",
 		defaultValues: {
 			fullName: "",

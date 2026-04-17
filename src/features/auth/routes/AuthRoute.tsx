@@ -1,12 +1,18 @@
 import type { RouteObject } from "react-router-dom";
+import SelectRole from "../pages/SelectRole";
+import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import SignUpSuccess from "../pages/SignUpSuccess";
 import VerifyEmail from "../pages/VerifyEmail";
 
 const AuthRoute: RouteObject[] = [
 	{
+		path: "/select-role",
+		element: <SelectRole />,
+	},
+	{
 		path: "/sign-in",
-		element: <a href="/sign-up">Sign Up page</a>,
+		element: <SignIn />,
 	},
 	{
 		path: "/sign-up",

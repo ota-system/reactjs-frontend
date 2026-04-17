@@ -1,5 +1,5 @@
 import { LuLogOut } from "react-icons/lu";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
 	Sidebar,
 	SidebarContent,
@@ -11,17 +11,19 @@ import {
 	SidebarMenuItem,
 	SidebarSeparator,
 } from "@/components/ui/sidebar";
+import { useSignOutMutation } from "@/features/auth/hooks/useSignOutMutation";
 import { cn } from "@/lib/utils";
 import {
 	studentMenuItems,
 	teacherMenuItems,
 } from "@/shared/constants/sidebarMenuItems";
-
 // TODO: Fetch user data from API
 import { user } from "@/shared/data/mook";
 
 const AppSidebar = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
+	const signOutMutation = useSignOutMutation();
+	const navigate = useNavigate();
 
 	const menuItems =
 		user.role === "STUDENT" ? studentMenuItems : teacherMenuItems;
@@ -103,8 +105,13 @@ const AppSidebar = () => {
 			</SidebarContent>
 			<SidebarFooter className="border-t p-3">
 				<SidebarMenu>
-					{/* TODO: Implement logout functionality */}
-					<SidebarMenuItem onClick={() => {}}>
+					<SidebarMenuItem
+						onClick={() =>
+							signOutMutation.mutate(undefined, {
+								onSuccess: () => navigate("/sign-in"),
+							})
+						}
+					>
 						<SidebarMenuButton className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)]">
 							<LuLogOut className="size-4" />
 							<span className="font-medium">Đăng xuất</span>

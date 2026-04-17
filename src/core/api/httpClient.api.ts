@@ -1,3 +1,4 @@
+import { tokenService } from "@/lib/tokens";
 import type { ErrorResponse, HttpError } from "@/shared/type";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -7,6 +8,11 @@ async function request<T>(
 	options: RequestInit = {},
 ): Promise<T> {
 	const headers = new Headers(options.headers);
+
+	const token = tokenService.getAccessToken();
+	if (token) {
+		headers.set("Authorization", `Bearer ${token}`);
+	}
 
 	if (options.body && !headers.has("Content-Type")) {
 		headers.set("Content-Type", "application/json");

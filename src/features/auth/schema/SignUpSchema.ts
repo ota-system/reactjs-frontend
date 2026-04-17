@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const signUpSchema = z
+export const SignUpSchema = z
 	.object({
 		fullName: z
 			.string("Vui lòng nhập giá trị chữ")

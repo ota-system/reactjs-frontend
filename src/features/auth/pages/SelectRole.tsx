@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/lib/toast";
-import { RoleSelectionDialog } from "../components/RoleSelectionDialog";
+import { RoleSelectionForm } from "../components/RoleSelectionForm";
 import { useSelectRoleMutation } from "../hooks/useSelectRoleMutation";
 
 export default function SelectRole() {
@@ -18,8 +18,11 @@ export default function SelectRole() {
 	};
 
 	return (
-		<div className="flex justify-center items-center h-screen w-full">
-			<RoleSelectionDialog isOpen={true} onSelect={handleSelectRole} />
+		<div className="flex justify-center items-center flex-col gap-4">
+			<RoleSelectionForm
+				isPending={mutation.isPending}
+				onSelect={handleSelectRole}
+			/>
 		</div>
 	);
 }

@@ -1,11 +1,15 @@
 @layer theme {
-    :root {
-        --primary-color: #000000;
-        --secondary-color: #ffffff;
-        --background-color: #ffffff;
-        --text-color: #000000;
-        --btn-color: #000000;
-        --btn-color-hover: #bababa;
-        --text-color-btn: #ffffff;
-    }
+	:root {
+		--primary-color: #000000;
+		--secondary-color: #ffffff;
+		--background-color: #ffffff;
+		--secondary-background-color: rgba(0, 0, 0, 0.1);
+		--text-color: #000000;
+		--btn-color: #000000;
+		--btn-color-hover: #bababa;
+		--text-color-btn: #ffffff;
+		--danger-text-color: #ff0000;
+		--danger-bg-color: rgba(255, 0, 0, 0.1);
+		--danger-border-color: #ff6868;
+	}
 }

@@ -12,6 +12,7 @@ import {
 	SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { useSignOutMutation } from "@/features/auth/hooks/useSignOutMutation";
+import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 import {
 	studentMenuItems,
@@ -27,6 +28,20 @@ const AppSidebar = () => {
 
 	const menuItems =
 		user.role === "STUDENT" ? studentMenuItems : teacherMenuItems;
+
+	const handleSignOut = () => {
+		signOutMutation.mutate(undefined, {
+			onSuccess: (res) => {
+				toast.success(res.message || "Đăng xuất thành công!");
+				navigate("/sign-in");
+			},
+			onError: (error: unknown) => {
+				const message =
+					error instanceof Error ? error.message : "Đăng xuất thất bại";
+				toast.error(message);
+			},
+		});
+	};
 
 	return (
 		<Sidebar>
@@ -105,16 +120,16 @@ const AppSidebar = () => {
 			</SidebarContent>
 			<SidebarFooter className="border-t p-3">
 				<SidebarMenu>
-					<SidebarMenuItem
-						onClick={() =>
-							signOutMutation.mutate(undefined, {
-								onSuccess: () => navigate("/sign-in"),
-							})
-						}
-					>
-						<SidebarMenuButton className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)]">
+					<SidebarMenuItem>
+						<SidebarMenuButton
+							onClick={handleSignOut}
+							disabled={signOutMutation.isPending}
+							className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)]"
+						>
 							<LuLogOut className="size-4" />
-							<span className="font-medium">Đăng xuất</span>
+							<span className="font-medium">
+								{signOutMutation.isPending ? "Đang đăng xuất..." : "Đăng xuất"}
+							</span>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 				</SidebarMenu>

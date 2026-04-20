@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/lib/toast";
 import { RoleSelectionForm } from "../components/RoleSelectionForm";
-import { useSelectRoleMutation } from "../hooks/useSelectRoleMutation";
+import { useUpdateRoleMutation } from "../hooks/useUpdateRoleMutation";
 
 export default function SelectRole() {
 	const navigate = useNavigate();
-	const mutation = useSelectRoleMutation();
+	const mutation = useUpdateRoleMutation();
 
 	const handleSelectRole = async (role: string) => {
 		try {

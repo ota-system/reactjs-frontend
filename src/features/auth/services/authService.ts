@@ -21,15 +21,23 @@ export const verifyToken = async (token: string) => {
 
 export const signOut = async () => {
 	const refreshToken = tokenService.getRefreshToken();
-	if (!refreshToken) {
-		throw new Error("No refresh token found"); // For development purposes
+
+	try {
+		if (!refreshToken) {
+			return {
+				message: "Đã đăng xuất thành công",
+				data: null,
+			};
+		}
+
+		const response: ApiResponse<null> = await httpClient.post(
+			"/api/v1/auth/sign-out",
+			{ refreshToken },
+		);
+		return response;
+	} finally {
+		tokenService.clearTokens();
 	}
-	tokenService.clearTokens();
-	const response: ApiResponse<null> = await httpClient.post(
-		"/api/v1/auth/sign-out",
-		{ refreshToken },
-	);
-	return response;
 };
 
 export const signIn = async (payload: SignInPayload) => {
@@ -51,7 +59,7 @@ export const signInWithGoogle = async (payload: {
 	return response;
 };
 
-export const selectRole = async (role: string) => {
+export const updateRole = async (role: string) => {
 	const response: ApiResponse<any> = await httpClient.patch(
 		"/api/v1/users/setup-role",
 		{ role },

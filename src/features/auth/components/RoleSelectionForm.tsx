@@ -32,7 +32,7 @@ export function RoleSelectionForm({ isPending, onSelect }: RoleSelectionProps) {
 					>
 						<RadioGroupItem value="teacher" id="teacher" />
 						<div className="flex-1">
-							<div className="font-bold">Giáo Viên (Teacher)</div>
+							<div className="font-bold">Giáo Viên</div>
 						</div>
 					</Label>
 
@@ -42,7 +42,7 @@ export function RoleSelectionForm({ isPending, onSelect }: RoleSelectionProps) {
 					>
 						<RadioGroupItem value="student" id="student" />
 						<div className="flex-1">
-							<div className="font-bold">Học Sinh (Student)</div>
+							<div className="font-bold">Học Sinh</div>
 						</div>
 					</Label>
 				</RadioGroup>

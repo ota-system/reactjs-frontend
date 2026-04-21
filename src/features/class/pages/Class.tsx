@@ -6,14 +6,17 @@ import { useAppStore } from "@/shared/stores/useAppStore";
 import ClassItem from "../components/ClassItem";
 import CreateClassDialog from "../components/CreateClassDialog";
 import StatCard from "../components/StatCard";
+import { useTeacherClassQuery } from "../hooks/useTeacherClassQuery";
+import type { ClassResponse } from "../type";
 
 const Class = () => {
 	const [open, setOpen] = useState(false);
 	const { setTab } = useAppStore();
+	const { data, isLoading } = useTeacherClassQuery();
 
 	useEffect(() => {
 		setTab("classes");
-	}, []);
+	}, [setTab]);
 
 	return (
 		<div className="p-4 md:p-8 space-y-6 w-full mx-auto">
@@ -27,19 +30,19 @@ const Class = () => {
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 				<StatCard
 					title="Lớp học"
-					value="2"
+					value={isLoading ? 0 : data?.data.length || 0}
 					desc="Lớp bạn quản lý"
 					icon={<Users size={18} />}
 				/>
 				<StatCard
 					title="Bài thi"
-					value="4"
+					value={4}
 					desc="Bài thi đã tạo"
 					icon={<FileText size={18} />}
 				/>
 				<StatCard
 					title="Học sinh"
-					value="5"
+					value={5}
 					desc="Tổng số học sinh"
 					icon={<BookOpen size={18} />}
 				/>
@@ -64,21 +67,17 @@ const Class = () => {
 				</CardHeader>
 
 				<CardContent className="space-y-4">
-					<ClassItem
-						title="English Advanced Level"
-						teacher="Ms. Johnson"
-						students="3 học sinh"
-						exams="4 bài thi"
-						code="ENG2026"
-					/>
-
-					<ClassItem
-						title="English Intermediate"
-						teacher="Ms. Johnson"
-						students="2 học sinh"
-						exams="0 bài thi"
-						code="ENGINT26"
-					/>
+					{data?.data.map((cls: ClassResponse) => (
+						<ClassItem
+							key={cls.id}
+							title={cls.name}
+							teacher={"Lớp của bạn"}
+							studentsCount={cls.studentCount}
+							examsCount={cls.examCount}
+							code={cls.code}
+							id={cls.id}
+						/>
+					))}
 				</CardContent>
 			</Card>
 

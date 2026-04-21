@@ -61,7 +61,7 @@ const CreateClassDialog = ({ open, onOpenChange }: Props) => {
 		onOpenChange(false);
 	};
 
-	// sync subject
+	// biome-ignore lint: correctness/useExhaustiveDependencies
 	useEffect(() => {
 		if (state.pendingSubject) {
 			setValue("subject", state.pendingSubject);
@@ -69,7 +69,7 @@ const CreateClassDialog = ({ open, onOpenChange }: Props) => {
 		}
 	}, [state.pendingSubject, setValue]);
 
-	// reset khi đóng dialog
+	// biome-ignore lint: correctness/useExhaustiveDependencies
 	useEffect(() => {
 		if (!open) {
 			reset();
@@ -77,7 +77,10 @@ const CreateClassDialog = ({ open, onOpenChange }: Props) => {
 		}
 	}, [open, reset]);
 
-	const handleSelectChange = (value: string, onChange: any) => {
+	const handleSelectChange = (
+		value: string,
+		onChange: (value: string) => void,
+	) => {
 		if (value === "add_new") {
 			dispatch({ type: "TOGGLE_ADDING", payload: true });
 			return;
@@ -127,18 +130,25 @@ const CreateClassDialog = ({ open, onOpenChange }: Props) => {
 											handleSelectChange(value, field.onChange)
 										}
 									>
-										<SelectTrigger>
+										<SelectTrigger className="hover:bg-gray-100 cursor-pointer">
 											<SelectValue placeholder="Chọn môn học" />
 										</SelectTrigger>
 
 										<SelectContent>
 											{state.subjects.map((subj) => (
-												<SelectItem key={subj} value={subj}>
+												<SelectItem
+													key={subj}
+													value={subj}
+													className="hover:bg-gray-100 cursor-pointer"
+												>
 													{subj}
 												</SelectItem>
 											))}
 
-											<SelectItem value="add_new">
+											<SelectItem
+												value="add_new"
+												className="hover:bg-gray-100 cursor-pointer"
+											>
 												<div className="flex items-center gap-2">
 													<FaPlus size={14} />
 													Thêm môn mới
@@ -178,13 +188,16 @@ const CreateClassDialog = ({ open, onOpenChange }: Props) => {
 
 					<DialogFooter>
 						<Button
+							className="cursor-pointer hover:bg-gray-100"
 							type="button"
 							variant="outline"
 							onClick={() => onOpenChange(false)}
 						>
 							Hủy
 						</Button>
-						<Button type="submit">Tạo lớp</Button>
+						<Button className="cursor-pointer hover:bg-gray-500" type="submit">
+							Tạo lớp
+						</Button>
 					</DialogFooter>
 				</form>
 			</DialogContent>

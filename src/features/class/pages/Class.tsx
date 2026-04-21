@@ -10,15 +10,6 @@ import StatCard from "../components/StatCard";
 const Class = () => {
 	const [open, setOpen] = useState(false);
 	const { setTab } = useAppStore();
-	const [_form, setForm] = useState({
-		name: "",
-		subject: "",
-	});
-
-	const handleSubmit = () => {
-		setOpen(false);
-		setForm({ name: "", subject: "" });
-	};
 
 	useEffect(() => {
 		setTab("classes");
@@ -92,11 +83,7 @@ const Class = () => {
 			</Card>
 
 			{/* Popup (Dialog) */}
-			<CreateClassDialog
-				open={open}
-				onOpenChange={setOpen}
-				onSubmit={handleSubmit}
-			/>
+			<CreateClassDialog open={open} onOpenChange={setOpen} />
 		</div>
 	);
 };

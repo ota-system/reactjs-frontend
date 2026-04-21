@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa6";
@@ -17,6 +18,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { toast } from "@/lib/toast";
+import { useCreateClassMutation } from "../hooks/useCreateClassMutation";
+import { CreateClassSchema } from "../schema/CreateClassSchema";
 
 type FormValues = {
 	name: string;
@@ -26,19 +30,34 @@ type FormValues = {
 interface Props {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-	onSubmit: (data: FormValues) => void;
 }
 
 const defaultSubjects = ["Toán", "Văn", "Anh"];
 
-const CreateClassDialog = ({ open, onOpenChange, onSubmit }: Props) => {
-	const { register, handleSubmit, control, reset, setValue } =
-		useForm<FormValues>({
-			defaultValues: {
-				name: "",
-				subject: "",
-			},
-		});
+const CreateClassDialog = ({ open, onOpenChange }: Props) => {
+	const mutation = useCreateClassMutation();
+
+	const onSubmit = async (data: FormValues) => {
+		const response = await mutation.mutateAsync(data);
+
+		toast.success(response.message || "Tạo lớp học thành công!");
+		onOpenChange(false);
+	};
+
+	const {
+		register,
+		handleSubmit,
+		control,
+		reset,
+		setValue,
+		formState: { errors },
+	} = useForm<FormValues>({
+		resolver: zodResolver(CreateClassSchema),
+		defaultValues: {
+			name: "",
+			subject: "",
+		},
+	});
 
 	const [subjects, setSubjects] = useState(defaultSubjects);
 	const [addingNew, setAddingNew] = useState(false);
@@ -68,13 +87,7 @@ const CreateClassDialog = ({ open, onOpenChange, onSubmit }: Props) => {
 					<DialogTitle>Tạo lớp học</DialogTitle>
 				</DialogHeader>
 
-				<form
-					onSubmit={handleSubmit((data) => {
-						onSubmit(data);
-						onOpenChange(false);
-					})}
-					className="space-y-4"
-				>
+				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 					{/* Tên lớp */}
 					<div>
 						<p className="text-sm font-medium">Tên lớp</p>
@@ -85,6 +98,9 @@ const CreateClassDialog = ({ open, onOpenChange, onSubmit }: Props) => {
 								required: "Vui lòng nhập tên lớp",
 							})}
 						/>
+						{errors.name && (
+							<p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+						)}
 					</div>
 
 					{/* Môn học */}

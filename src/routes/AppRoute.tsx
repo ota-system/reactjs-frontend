@@ -4,6 +4,7 @@ import AuthLayout from "@/features/auth/layout/AuthLayout";
 import NotFound from "@/features/auth/pages/NotFound";
 import Unauthorized from "@/features/auth/pages/Unauthorized";
 import AuthRoutes from "@/features/auth/routes/AuthRoute";
+import ClassRoute from "@/features/class/routes/ClassRoute";
 import HomeRoute from "@/features/home/routes/HomeRoute";
 
 const AppRoute = () => {
@@ -18,7 +19,7 @@ const AppRoute = () => {
 		},
 		{
 			element: <PrivateLayout />,
-			children: [...HomeRoute],
+			children: [...HomeRoute, ...ClassRoute],
 		},
 		{
 			path: "/unauthorized",

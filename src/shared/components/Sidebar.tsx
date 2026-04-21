@@ -1,5 +1,5 @@
 import { LuLogOut } from "react-icons/lu";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
 	Sidebar,
 	SidebarContent,
@@ -20,9 +20,10 @@ import {
 } from "@/shared/constants/sidebarMenuItems";
 // TODO: Fetch user data from API
 import { user } from "@/shared/data/mook";
+import { useAppStore } from "../stores/useAppStore";
 
 const AppSidebar = () => {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const { tab, setTab } = useAppStore();
 	const signOutMutation = useSignOutMutation();
 	const navigate = useNavigate();
 
@@ -82,21 +83,15 @@ const AppSidebar = () => {
 				<SidebarGroup className="px-0">
 					<SidebarMenu className="gap-1">
 						{menuItems.map((item) => {
-							const tab = searchParams.get("tab");
 							const isActive = tab === item.tab;
 
 							return (
 								<SidebarMenuItem
 									key={item.tab}
-									onClick={() =>
-										setSearchParams((prevSearchParams) => {
-											const nextSearchParams = new URLSearchParams(
-												prevSearchParams,
-											);
-											nextSearchParams.set("tab", item.tab);
-											return nextSearchParams;
-										})
-									}
+									onClick={() => {
+										navigate(`/${item.tab}`);
+										setTab(item.tab);
+									}}
 								>
 									<SidebarMenuButton
 										isActive={isActive}

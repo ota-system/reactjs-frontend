@@ -1,16 +1,28 @@
 import type { RouteObject } from "react-router-dom";
-import ViewExamList from "../pages/ViewExamList";
-import ViewStudentList from "../pages/ViewStudentList";
+import { Navigate } from "react-router-dom";
+import ClassDetailLayout from "../layouts/ClassDetailLayout";
+import ClassExamList from "../pages/ClassExamList";
+import ClassStudentList from "../pages/ClassStudentList";
 
-const AuthRoute: RouteObject[] = [
+const TeacherRoute: RouteObject[] = [
 	{
-		path: "/teacher/student-list",
-		element: <ViewStudentList />,
-	},
-	{
-		path: "/teacher/exam-list",
-		element: <ViewExamList />,
+		path: "/classes/:classId",
+		element: <ClassDetailLayout />,
+		children: [
+			{
+				index: true,
+				element: <Navigate to="students" replace />,
+			},
+			{
+				path: "students",
+				element: <ClassStudentList />,
+			},
+			{
+				path: "exams",
+				element: <ClassExamList />,
+			},
+		],
 	},
 ];
 
-export default AuthRoute;
+export default TeacherRoute;

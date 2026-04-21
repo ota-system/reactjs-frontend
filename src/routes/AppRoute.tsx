@@ -1,6 +1,5 @@
 import { Navigate, type RouteObject, useRoutes } from "react-router-dom";
 import PrivateLayout from "@/core/layouts/PrivateLayout";
-import TeacherLayout from "@/core/layouts/TeacherLayout";
 import AuthLayout from "@/features/auth/layout/AuthLayout";
 import NotFound from "@/features/auth/pages/NotFound";
 import Unauthorized from "@/features/auth/pages/Unauthorized";
@@ -23,7 +22,7 @@ const AppRoute = () => {
 			children: [...HomeRoute],
 		},
 		{
-			element: <TeacherLayout />,
+			element: <PrivateLayout />,
 			children: [...TeacherRoute],
 		},
 		{

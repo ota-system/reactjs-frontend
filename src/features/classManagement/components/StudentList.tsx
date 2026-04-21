@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import {
 	Table,
 	TableBody,
@@ -7,185 +6,19 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import type { UserSummary } from "../services/class.api";
 
-const students = [
-	{
-		name: "Nguyễn Văn A",
-		email: "nva@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["grammar", "vocabulary"],
-	},
-	{
-		name: "Trần Thị B",
-		email: "ttb@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["listening", "pronunciation"],
-	},
-	{
-		name: "Lê Văn C",
-		email: "lvc@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["writing"],
-	},
-	{
-		name: "Nguyễn Văn A",
-		email: "nva@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["grammar", "vocabulary"],
-	},
-	{
-		name: "Trần Thị B",
-		email: "ttb@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["listening", "pronunciation"],
-	},
-	{
-		name: "Lê Văn C",
-		email: "lvc@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["writing"],
-	},
-	{
-		name: "Nguyễn Văn A",
-		email: "nva@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["grammar", "vocabulary"],
-	},
-	{
-		name: "Trần Thị B",
-		email: "ttb@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["listening", "pronunciation"],
-	},
-	{
-		name: "Lê Văn C",
-		email: "lvc@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["writing"],
-	},
-	{
-		name: "Nguyễn Văn A",
-		email: "nva@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["grammar", "vocabulary"],
-	},
-	{
-		name: "Trần Thị B",
-		email: "ttb@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["listening", "pronunciation"],
-	},
-	{
-		name: "Lê Văn C",
-		email: "lvc@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["writing"],
-	},
-	{
-		name: "Nguyễn Văn A",
-		email: "nva@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["grammar", "vocabulary"],
-	},
-	{
-		name: "Trần Thị B",
-		email: "ttb@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["listening", "pronunciation"],
-	},
-	{
-		name: "Lê Văn C",
-		email: "lvc@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["writing"],
-	},
-	{
-		name: "Nguyễn Văn A",
-		email: "nva@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["grammar", "vocabulary"],
-	},
-	{
-		name: "Trần Thị B",
-		email: "ttb@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["listening", "pronunciation"],
-	},
-	{
-		name: "Lê Văn C",
-		email: "lvc@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["writing"],
-	},
-	{
-		name: "Nguyễn Văn A",
-		email: "nva@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["grammar", "vocabulary"],
-	},
-	{
-		name: "Trần Thị B",
-		email: "ttb@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["listening", "pronunciation"],
-	},
-	{
-		name: "Lê Văn C",
-		email: "lvc@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["writing"],
-	},
-	{
-		name: "Nguyễn Văn A",
-		email: "nva@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["grammar", "vocabulary"],
-	},
-	{
-		name: "Trần Thị B",
-		email: "ttb@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["listening", "pronunciation"],
-	},
-	{
-		name: "Lê Văn C",
-		email: "lvc@student.com",
-		exams: 0,
-		avg: "-",
-		weakPoints: ["writing"],
-	},
-];
+interface StudentListProps {
+	students: UserSummary[];
+}
 
-export function StudentList() {
+export function StudentList({ students }: StudentListProps) {
 	return (
-		<div className="rounded-xl border w-full bg-card p-6 shadow-sm flex flex-col h-[600px]">
+		<div className="rounded-xl w-full p-6 flex flex-col h-full border-0">
 			<div className="mb-6 flex-none">
 				<h3 className="text-lg font-bold">Danh sách học sinh</h3>
 				<p className="text-sm text-muted-foreground">
-					Tổng số {students.length} học sinh trong lớp
+					Tổng số {students?.length || 0} học sinh trong lớp
 				</p>
 			</div>
 
@@ -193,7 +26,7 @@ export function StudentList() {
 				<Table>
 					<TableHeader className="relative z-10">
 						<TableRow className="hover:bg-transparent">
-							<TableHead className="sticky top-0 bg-white w-[200px] shadow-[0_1px_0_0_rgba(0,0,0,0.1)]">
+							<TableHead className="sticky top-0 bg-white w-[250px] shadow-[0_1px_0_0_rgba(0,0,0,0.1)]">
 								Họ tên
 							</TableHead>
 							<TableHead className="sticky top-0 bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.1)]">
@@ -210,31 +43,35 @@ export function StudentList() {
 							</TableHead>
 						</TableRow>
 					</TableHeader>
-					2
 					<TableBody>
-						{students.map((s) => (
-							<TableRow key={`${s.email}-${s.id}`}>
-								<TableCell className="font-medium">{s.name}</TableCell>
-								<TableCell className="text-muted-foreground">
-									{s.email}
-								</TableCell>
-								<TableCell className="text-center">{s.exams}</TableCell>
-								<TableCell className="text-center">{s.avg}</TableCell>
-								<TableCell>
-									<div className="flex flex-wrap gap-2">
-										{s.weakPoints.map((point) => (
-											<Badge
-												key={point}
-												variant="outline"
-												className="font-normal rounded-md"
-											>
-												{point}
-											</Badge>
-										))}
-									</div>
+						{!students || students.length === 0 ? (
+							<TableRow>
+								<TableCell
+									colSpan={5}
+									className="h-24 text-center text-muted-foreground"
+								>
+									Chưa có học sinh nào trong lớp.
 								</TableCell>
 							</TableRow>
-						))}
+						) : (
+							students.map((s) => (
+								<TableRow key={s.id} className="hover:bg-muted/50">
+									<TableCell className="font-medium">{s.fullName}</TableCell>
+									<TableCell className="text-muted-foreground">
+										{s.email}
+									</TableCell>
+									<TableCell className="text-center">-</TableCell>
+									<TableCell className="text-center">-</TableCell>
+									<TableCell>
+										<div className="flex flex-wrap gap-2">
+											<span className="text-xs text-muted-foreground italic">
+												Chưa có dữ liệu
+											</span>
+										</div>
+									</TableCell>
+								</TableRow>
+							))
+						)}
 					</TableBody>
 				</Table>
 			</div>

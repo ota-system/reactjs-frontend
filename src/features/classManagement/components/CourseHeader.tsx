@@ -3,7 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ClassCode } from "./ClassCode";
 
-export default function CourseHeader() {
+export default function CourseHeader({ classData }: { classData: any }) {
+	if (!classData) {
+		return null;
+	}
+
 	return (
 		<div className="flex items-center justify-between w-full p-4">
 			<div className="flex items-center gap-4">
@@ -11,22 +15,23 @@ export default function CourseHeader() {
 					variant="outline"
 					size="icon"
 					className="rounded-md cursor-pointer"
+					onClick={() => window.history.back()}
 				>
 					<ArrowLeft className="h-4 w-4" />
 				</Button>
 
 				<div className="flex flex-col gap-1">
 					<h2 className="text-2xl font-bold tracking-tight">
-						English Advanced Level
+						{classData.name}
 					</h2>
 
 					<div className="flex items-center gap-2 text-sm text-muted-foreground">
 						<Badge variant="secondary" className="font-normal">
-							English
+							{classData.subject}
 						</Badge>
-						<span>Giáo viên: Ms. Johnson</span>
+						<span>Giáo viên: {classData.teacher?.fullName}</span>
 						<span className="text-muted-foreground/50">•</span>
-						<ClassCode code="ENG2026" />
+						<ClassCode code={classData.code} />
 					</div>
 				</div>
 			</div>

@@ -4,6 +4,7 @@ import AnalyticRoute from "@/features/analysis/routes/AnalyticRoute";
 import AuthLayout from "@/features/auth/layout/AuthLayout";
 import NotFound from "@/features/auth/pages/NotFound";
 import Unauthorized from "@/features/auth/pages/Unauthorized";
+import VerifyEmail from "@/features/auth/pages/VerifyEmail";
 import AuthRoutes from "@/features/auth/routes/AuthRoute";
 import ClassRoute from "@/features/class/routes/ClassRoute";
 import ExamRoute from "@/features/exam/routes/ExamRoute";
@@ -13,6 +14,10 @@ const AppRoute = () => {
 		{
 			path: "/",
 			element: <Navigate to="/classes" />,
+		},
+		{
+			path: "/auth/verify",
+			element: <VerifyEmail />,
 		},
 		{
 			element: <AuthLayout />,

@@ -11,7 +11,9 @@ export const signUp = async (payload: SignUpPayload) => {
 	return response;
 };
 
-export const verifyToken = async (token: string) => {
+export const verifyToken = async (
+	token: string,
+): Promise<ApiResponse<LoginResponse>> => {
 	const response: ApiResponse<LoginResponse> = await httpClient.post(
 		"/api/v1/auth/verify-token",
 		{ token },

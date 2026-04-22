@@ -7,9 +7,6 @@ const PrivateLayout = () => {
 		<SidebarProvider>
 			<AppSidebar />
 			<SidebarInset>
-				{/* <div className="flex items-center gap-2 p-4 border-b">
-					<SidebarTrigger />
-				</div> */}
 				<main className="flex-1">
 					<Outlet />
 				</main>

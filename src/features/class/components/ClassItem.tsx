@@ -21,7 +21,7 @@ const ClassItem = ({
 }: ClassItemProps) => {
 	const navigate = useNavigate();
 
-	const handleClick = () => {
+	const navigateToExamsPage = () => {
 		navigate(`/classes/${id}/exams`);
 	};
 	return (
@@ -29,7 +29,7 @@ const ClassItem = ({
 		<div
 			role="button"
 			tabIndex={0}
-			onClick={handleClick}
+			onClick={navigateToExamsPage}
 			className="border rounded-2xl px-5 py-4 flex flex-col gap-3 hover:bg-muted/30 transition cursor-pointer"
 		>
 			<div className="space-y-1">

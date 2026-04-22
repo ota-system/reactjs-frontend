@@ -50,7 +50,7 @@ const AppSidebar = () => {
 					<img
 						src="/big-logo.png"
 						alt="OTA-Hub logo"
-						className="h-10 w-10 object-contain"
+						className="size-10 object-contain"
 					/>
 					<div>
 						<h1 className="text-xl font-bold">OTA-Hub</h1>

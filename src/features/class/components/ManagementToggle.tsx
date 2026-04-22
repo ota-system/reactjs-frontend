@@ -46,7 +46,7 @@ const ManagementToggle = ({ classId }: Props) => {
 							: "text-muted-foreground"
 					} flex items-center justify-center gap-2`}
 				>
-					<FileText className="h-4 w-4" />
+					<FileText className="size-4" />
 					<span>Bài thi</span>
 				</Button>
 			</Link>
@@ -64,7 +64,7 @@ const ManagementToggle = ({ classId }: Props) => {
 							: "text-muted-foreground"
 					} flex items-center justify-center gap-2`}
 				>
-					<Users className="h-4 w-4" />
+					<Users className="size-4" />
 					<span>Học sinh</span>
 				</Button>
 			</Link>

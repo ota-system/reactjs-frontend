@@ -2,6 +2,7 @@ import { Clock, FileText, ShieldAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import type { ExamCardProps } from "../type";
 
 export function ExamCard({
 	title,
@@ -21,12 +22,12 @@ export function ExamCard({
 
 					<div className="flex flex-wrap items-center gap-x-2 text-[14px] text-[#6B7280]">
 						<span className="flex items-center gap-1.5">
-							<Clock className="w-4 h-4 text-[#9CA3AF]" /> {duration} phút
+							<Clock className="size-4 text-[#9CA3AF]" /> {duration} phút
 						</span>
 						<span className="text-[#D1D5DB] text-[10px]">●</span>
 						<span className="flex items-center gap-1.5">
-							<FileText className="w-4 h-4 text-[#9CA3AF]" /> {questionCount}{" "}
-							câu hỏi
+							<FileText className="size-4 text-[#9CA3AF]" /> {questionCount} câu
+							hỏi
 						</span>
 						<span className="text-[#D1D5DB] text-[10px]">●</span>
 						<span className="flex items-center gap-1.5">
@@ -38,8 +39,7 @@ export function ExamCard({
 							variant="outline"
 							className="font-normal text-[#4B5563] border-[#E5E7EB] bg-white px-2 py-0.5 rounded-lg gap-1.5 shadow-sm"
 						>
-							<ShieldAlert className="w-3.5 h-3.5 text-[#6B7280]" /> Chống gian
-							lận
+							<ShieldAlert className="size-3.5 text-[#6B7280]" /> Chống gian lận
 						</Badge>
 					</div>
 

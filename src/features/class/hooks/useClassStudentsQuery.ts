@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import { FIVE_MINUTES } from "@/shared/constants/time";
 import { fetchClassStudents } from "../services/classService";
 
 export const useClassStudentsQuery = (classId: string | undefined) => {
 	return useQuery({
 		queryKey: ["class-students", classId],
 		queryFn: () => fetchClassStudents(classId as string),
-		staleTime: 1000 * 60 * 5, // 5 minutes
+		staleTime: FIVE_MINUTES,
 		enabled: !!classId,
 	});
 };

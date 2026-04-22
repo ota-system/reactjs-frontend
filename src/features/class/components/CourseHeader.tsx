@@ -2,10 +2,19 @@ import { ArrowLeft, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import type { ClassDetail } from "../type";
 import { ClassCode } from "./ClassCode";
 
-export default function CourseHeader({ classData }: { classData: any }) {
+export default function CourseHeader({
+	classData,
+}: {
+	classData: ClassDetail | undefined;
+}) {
 	const navigate = useNavigate();
+	const navigateToClassesPage = () => {
+		navigate("/classes");
+	};
+
 	if (!classData) {
 		return null;
 	}
@@ -17,9 +26,9 @@ export default function CourseHeader({ classData }: { classData: any }) {
 					variant="outline"
 					size="icon"
 					className="rounded-md cursor-pointer"
-					onClick={() => navigate("/classes")}
+					onClick={navigateToClassesPage}
 				>
-					<ArrowLeft className="h-4 w-4" />
+					<ArrowLeft className="size-4" />
 				</Button>
 
 				<div className="flex flex-col gap-1">
@@ -39,7 +48,7 @@ export default function CourseHeader({ classData }: { classData: any }) {
 			</div>
 
 			<Button className="bg-black rounded-xl py-5 shadow-md mt-2 text-white font-medium hover:bg-black/90 cursor-pointer">
-				<Plus className="mr-2 h-4 w-4" /> Tạo bài thi
+				<Plus className="mr-2 size-4" /> Tạo bài thi
 			</Button>
 		</div>
 	);

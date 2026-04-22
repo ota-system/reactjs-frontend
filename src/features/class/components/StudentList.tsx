@@ -6,8 +6,9 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { UserSummary } from "../services/class.api";
+import type { UserSummary } from "../services/classService";
 
+//Because the student list now is not contain weekness,... so keep it simple.
 interface StudentListProps {
 	students: UserSummary[];
 }

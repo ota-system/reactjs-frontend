@@ -1,9 +1,11 @@
 import { ArrowLeft, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ClassCode } from "./ClassCode";
 
 export default function CourseHeader({ classData }: { classData: any }) {
+	const navigate = useNavigate();
 	if (!classData) {
 		return null;
 	}
@@ -15,7 +17,7 @@ export default function CourseHeader({ classData }: { classData: any }) {
 					variant="outline"
 					size="icon"
 					className="rounded-md cursor-pointer"
-					onClick={() => window.history.back()}
+					onClick={() => navigate("/classes")}
 				>
 					<ArrowLeft className="h-4 w-4" />
 				</Button>

@@ -22,7 +22,7 @@ const ClassItem = ({
 	const navigate = useNavigate();
 
 	const handleClick = () => {
-		navigate(`/classes/${id}/exams-list`);
+		navigate(`/classes/${id}/exams`);
 	};
 	return (
 		// biome-ignore lint: a11y/useKeyWithClickEvents

@@ -1,6 +1,6 @@
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 
 export function ClassCode({ code }: { code: string }) {
 	const [copied, setCopied] = useState(false);
@@ -9,7 +9,6 @@ export function ClassCode({ code }: { code: string }) {
 		navigator.clipboard.writeText(code);
 		setCopied(true);
 		toast.success("Sao chép thành công");
-
 		setTimeout(() => setCopied(false), 2000);
 	};
 

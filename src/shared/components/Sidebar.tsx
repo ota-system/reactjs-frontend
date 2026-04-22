@@ -1,5 +1,5 @@
 import { LuLogOut } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
 	Sidebar,
 	SidebarContent,
@@ -20,10 +20,9 @@ import {
 } from "@/shared/constants/sidebarMenuItems";
 // TODO: Fetch user data from API
 import { user } from "@/shared/data/mook";
-import { useAppStore } from "../stores/useAppStore";
 
 const AppSidebar = () => {
-	const { tab, setTab } = useAppStore();
+	const location = useLocation();
 	const signOutMutation = useSignOutMutation();
 	const navigate = useNavigate();
 
@@ -83,14 +82,13 @@ const AppSidebar = () => {
 				<SidebarGroup className="px-0">
 					<SidebarMenu className="gap-1">
 						{menuItems.map((item) => {
-							const isActive = tab === item.tab;
+							const isActive = location.pathname.startsWith(`/${item.tab}`);
 
 							return (
 								<SidebarMenuItem
 									key={item.tab}
 									onClick={() => {
 										navigate(`/${item.tab}`);
-										setTab(item.tab);
 									}}
 								>
 									<SidebarMenuButton

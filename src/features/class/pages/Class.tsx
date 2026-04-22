@@ -1,8 +1,7 @@
 import { BookOpen, FileText, Plus, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAppStore } from "@/shared/stores/useAppStore";
 import ClassItem from "../components/ClassItem";
 import CreateClassDialog from "../components/CreateClassDialog";
 import StatCard from "../components/StatCard";
@@ -11,12 +10,7 @@ import type { ClassResponse } from "../type";
 
 const Class = () => {
 	const [open, setOpen] = useState(false);
-	const { setTab } = useAppStore();
 	const { data, isLoading } = useTeacherClassQuery();
-
-	useEffect(() => {
-		setTab("classes");
-	}, [setTab]);
 
 	return (
 		<div className="p-4 md:p-8 space-y-6 w-full mx-auto">

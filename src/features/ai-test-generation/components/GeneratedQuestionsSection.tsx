@@ -108,10 +108,6 @@ export default function GeneratedQuestionsSection({
 				<div
 					key={question.id}
 					ref={(element) => onQuestionRef(question.id, element)}
-					style={{
-						animation: "gammaSlideIn 440ms cubic-bezier(0.16, 1, 0.3, 1) both",
-						animationDelay: `${Math.min(index * 70, 560)}ms`,
-					}}
 				>
 					{renderQuestionCard(
 						question,

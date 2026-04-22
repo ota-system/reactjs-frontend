@@ -1,5 +1,6 @@
 import { Navigate, type RouteObject, useRoutes } from "react-router-dom";
 import PrivateLayout from "@/core/layouts/PrivateLayout";
+import AiTestGenerationRoute from "@/features/ai-test-generation/routes/AiTestGenerationRoute";
 import AuthLayout from "@/features/auth/layout/AuthLayout";
 import NotFound from "@/features/auth/pages/NotFound";
 import Unauthorized from "@/features/auth/pages/Unauthorized";
@@ -19,7 +20,7 @@ const AppRoute = () => {
 		},
 		{
 			element: <PrivateLayout />,
-			children: [...HomeRoute, ...ClassRoute],
+			children: [...HomeRoute, ...ClassRoute, ...AiTestGenerationRoute],
 		},
 		{
 			path: "/unauthorized",

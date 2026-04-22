@@ -1,19 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
 import { Outlet, useParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import CourseHeader from "../components/CourseHeader";
 import ManagementToggle from "../components/ManagementToggle";
-import { fetchClassDetail } from "../services/class.api";
+import { useClassDetailQuery } from "../hooks/useClassDetailQuery";
 
 export default function ClassDetailLayout() {
 	const { classId } = useParams();
 
-	const { data: classroom, isLoading } = useQuery({
-		queryKey: ["class-detail", classId],
-		queryFn: () => fetchClassDetail(classId as string),
-		staleTime: 1000 * 60 * 30, // 30 minutes
-		enabled: !!classId,
-	});
+	const { data: classroom, isLoading } = useClassDetailQuery(classId);
 
 	return (
 		<div className="flex justify-center items-center flex-col gap-4">

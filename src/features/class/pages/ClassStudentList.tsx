@@ -1,18 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 import { useOutletContext } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StudentList } from "../components/StudentList";
-import { fetchClassStudents } from "../services/class.api";
+import { useClassStudentsQuery } from "../hooks/useClassStudentsQuery";
 
 export default function ClassStudentList() {
 	const { classId } = useOutletContext<{ classId: string }>();
 
-	const { data: students, isLoading } = useQuery({
-		queryKey: ["class-students", classId],
-		queryFn: () => fetchClassStudents(classId),
-		staleTime: 1000 * 60 * 5, // 5 minutes
-		enabled: !!classId,
-	});
+	const { data: students, isLoading } = useClassStudentsQuery(classId);
 
 	if (isLoading) {
 		return (

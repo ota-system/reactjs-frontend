@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { FileText, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { fetchClassStudents } from "../services/class.api";
+import { fetchClassStudents } from "../services/classService";
 
 // import { fetchClassExams } from "../services/class.api"; // For when exams API is ready
 

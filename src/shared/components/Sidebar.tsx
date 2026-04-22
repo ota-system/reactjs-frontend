@@ -1,6 +1,17 @@
 import { LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
@@ -49,13 +60,17 @@ const AppSidebar = () => {
 			<SidebarHeader className="border-b p-4">
 				<div className="flex items-center gap-2.5">
 					<img
-						src="/big-logo.png"
+						src="/ota-hub-logo.svg"
 						alt="OTA-Hub logo"
-						className="h-10 w-10 object-contain"
+						className="h-11 w-11 object-contain"
 					/>
 					<div>
 						<h1 className="text-xl font-bold">OTA-Hub</h1>
-						<span className="text-xs">
+						<span
+							className={`text-xs text-white px-2 py-1 rounded ${
+								user.role === "STUDENT" ? "bg-[#C2A56D]" : "bg-[#547A95]"
+							}`}
+						>
 							{user.role === "STUDENT" ? "Học sinh" : "Giáo viên"}
 						</span>
 					</div>
@@ -65,7 +80,7 @@ const AppSidebar = () => {
 				<SidebarGroup className="px-0 pt-0 pb-3">
 					<div className="flex w-full items-center gap-2.5 p-2 text-left">
 						<img
-							src="/user-avatar.png"
+							src={user.avatarUrl || "/default-avatar.avif"}
 							alt="User avatar"
 							className="flex size-8 items-center justify-center rounded-full text-sm font-medium uppercase"
 						/>
@@ -116,16 +131,45 @@ const AppSidebar = () => {
 			<SidebarFooter className="border-t p-3">
 				<SidebarMenu>
 					<SidebarMenuItem>
-						<SidebarMenuButton
-							onClick={handleSignOut}
-							disabled={signOutMutation.isPending}
-							className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)]"
-						>
-							<LuLogOut className="size-4" />
-							<span className="font-medium">
-								{signOutMutation.isPending ? "Đang đăng xuất..." : "Đăng xuất"}
-							</span>
-						</SidebarMenuButton>
+						<AlertDialog>
+							<AlertDialogTrigger asChild>
+								<SidebarMenuButton
+									disabled={signOutMutation.isPending}
+									className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)]"
+								>
+									<LuLogOut className="size-4" />
+									<span className="font-medium">
+										{signOutMutation.isPending
+											? "Đang đăng xuất..."
+											: "Đăng xuất"}
+									</span>
+								</SidebarMenuButton>
+							</AlertDialogTrigger>
+
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>
+										Bạn chắc chắn muốn đăng xuất?
+									</AlertDialogTitle>
+									<AlertDialogDescription>
+										Bạn sẽ cần đăng nhập lại để tiếp tục sử dụng hệ thống.
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+
+								<AlertDialogFooter>
+									<AlertDialogCancel className="cursor-pointer">
+										Huỷ
+									</AlertDialogCancel>
+									<AlertDialogAction
+										className="cursor-pointer hover:bg-gray-500"
+										onClick={handleSignOut}
+										disabled={signOutMutation.isPending}
+									>
+										{signOutMutation.isPending ? "Đang xử lý..." : "Đăng xuất"}
+									</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarFooter>

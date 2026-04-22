@@ -28,14 +28,14 @@ const ComingSoon = () => {
 				<Button
 					variant="outline"
 					className="mt-4 cursor-pointer"
-					onClick={() => window.history.back()}
+					onClick={() => navigate(-1)}
 				>
 					Quay lại trang trước
 				</Button>
 				<Button
 					variant="outline"
 					className="mt-4 cursor-pointer"
-					onClick={() => (window.location.href = "/")}
+					onClick={() => navigate("/", { replace: true })}
 				>
 					Về trang chủ
 				</Button>

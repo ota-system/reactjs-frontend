@@ -21,6 +21,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarSeparator,
+	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useSignOutMutation } from "@/features/auth/hooks/useSignOutMutation";
 import { toast } from "@/lib/toast";
@@ -29,7 +30,6 @@ import {
 	studentMenuItems,
 	teacherMenuItems,
 } from "@/shared/constants/sidebarMenuItems";
-// TODO: Fetch user data from API
 import { user } from "@/shared/data/mook";
 import { useAppStore } from "../stores/useAppStore";
 
@@ -56,33 +56,41 @@ const AppSidebar = () => {
 	};
 
 	return (
-		<Sidebar>
+		<Sidebar collapsible="icon">
 			<SidebarHeader className="border-b p-4">
-				<div className="flex items-center gap-2.5">
-					<img
-						src="/ota-hub-logo.svg"
-						alt="OTA-Hub logo"
-						className="h-11 w-11 object-contain"
-					/>
-					<div>
-						<h1 className="text-xl font-bold">OTA-Hub</h1>
-						<span
-							className={`text-xs text-white px-2 py-1 rounded ${
-								user.role === "STUDENT" ? "bg-[#C2A56D]" : "bg-[#547A95]"
-							}`}
-						>
-							{user.role === "STUDENT" ? "Học sinh" : "Giáo viên"}
-						</span>
+				<div className="flex items-center justify-between group-data-[collapsible=icon]:hidden">
+					<div className="flex items-center gap-2.5">
+						<img
+							src="/ota-hub-logo.svg"
+							className="h-11 w-11 object-contain"
+							alt="OTA-Hub logo"
+						/>
+						<div>
+							<h1 className="text-xl font-bold">OTA-Hub</h1>
+							<span
+								className={`text-xs text-white px-2 py-1 rounded ${
+									user.role === "STUDENT" ? "bg-[#C2A56D]" : "bg-[#547A95]"
+								}`}
+							>
+								{user.role === "STUDENT" ? "Học sinh" : "Giáo viên"}
+							</span>
+						</div>
 					</div>
+					<SidebarTrigger className="shrink-0 cursor-pointer" />
+				</div>
+
+				<div className="hidden group-data-[collapsible=icon]:flex items-center justify-center">
+					<SidebarTrigger className="cursor-pointer" />
 				</div>
 			</SidebarHeader>
-			<SidebarContent className="p-3">
+
+			<SidebarContent className="py-3 px-3 group-data-[collapsible=icon]:px-2">
 				<SidebarGroup className="px-0 pt-0 pb-3">
-					<div className="flex w-full items-center gap-2.5 p-2 text-left">
+					<div className="flex items-center gap-2.5 p-2 group-data-[collapsible=icon]:hidden">
 						<img
 							src={user.avatarUrl || "/default-avatar.avif"}
+							className="size-8 rounded-full shrink-0"
 							alt="User avatar"
-							className="flex size-8 items-center justify-center rounded-full text-sm font-medium uppercase"
 						/>
 						<div className="min-w-0 flex-1">
 							<p className="truncate text-sm font-semibold">{user.name}</p>
@@ -93,7 +101,7 @@ const AppSidebar = () => {
 					</div>
 				</SidebarGroup>
 
-				<SidebarSeparator className="mb-2 mx-0" />
+				<SidebarSeparator className="mb-2 mx-0 group-data-[collapsible=icon]:hidden" />
 
 				<SidebarGroup className="px-0">
 					<SidebarMenu className="gap-1">
@@ -110,15 +118,18 @@ const AppSidebar = () => {
 								>
 									<SidebarMenuButton
 										isActive={isActive}
+										tooltip={item.title}
 										className={cn(
-											"cursor-pointer",
+											"cursor-pointer justify-start group-data-[collapsible=icon]:justify-center",
 											isActive
 												? "!bg-[var(--primary-color)] !text-[var(--secondary-color)]"
 												: "hover:bg-[var(--btn-color-hover)]",
 										)}
 									>
-										<item.icon className="size-4" />
-										<span>{item.title}</span>
+										<item.icon className="size-4 shrink-0" />
+										<span className="group-data-[collapsible=icon]:hidden">
+											{item.title}
+										</span>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 							);
@@ -128,17 +139,19 @@ const AppSidebar = () => {
 
 				<SidebarGroup className="flex-1" />
 			</SidebarContent>
-			<SidebarFooter className="border-t p-3">
+
+			<SidebarFooter className="border-t flex items-center justify-center">
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<AlertDialog>
 							<AlertDialogTrigger asChild>
 								<SidebarMenuButton
 									disabled={signOutMutation.isPending}
-									className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)]"
+									tooltip="Đăng xuất"
+									className="h-10 border cursor-pointer hover:bg-[var(--btn-color-hover)] justify-start group-data-[collapsible=icon]:justify-center"
 								>
-									<LuLogOut className="size-4" />
-									<span className="font-medium">
+									<LuLogOut className="size-4 shrink-0" />
+									<span className="group-data-[collapsible=icon]:hidden">
 										{signOutMutation.isPending
 											? "Đang đăng xuất..."
 											: "Đăng xuất"}
@@ -155,7 +168,6 @@ const AppSidebar = () => {
 										Bạn sẽ cần đăng nhập lại để tiếp tục sử dụng hệ thống.
 									</AlertDialogDescription>
 								</AlertDialogHeader>
-
 								<AlertDialogFooter>
 									<AlertDialogCancel className="cursor-pointer">
 										Huỷ

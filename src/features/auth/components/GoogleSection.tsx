@@ -21,7 +21,7 @@ const GoogleSection = ({ onGoogleLogin }: { onGoogleLogin: () => void }) => {
 				className="w-full cursor-pointer"
 				onClick={onGoogleLogin}
 			>
-				<FcGoogle className="mr-2 h-4 w-4" /> Tiếp tục với Google
+				<FcGoogle className="mr-2 size-4" /> Tiếp tục với Google
 			</Button>
 		</div>
 	);

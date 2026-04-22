@@ -1,6 +1,13 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { tokenService } from "@/lib/tokens";
 
 const AuthLayout = () => {
+	const isAuthenticated = tokenService.getAccessToken() !== null;
+
+	if (isAuthenticated) {
+		return <Navigate to="/home" replace />;
+	}
+
 	return (
 		<main
 			className="

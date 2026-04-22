@@ -1,12 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import {
 	SidebarInset,
 	SidebarProvider,
 	SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { tokenService } from "@/lib/tokens";
 import AppSidebar from "@/shared/components/Sidebar";
 
 const PrivateLayout = () => {
+	const isAuthenticated = tokenService.getAccessToken() !== null;
+
+	if (!isAuthenticated) {
+		return <Navigate to="/sign-in" replace />;
+	}
+
 	return (
 		<SidebarProvider>
 			<AppSidebar />

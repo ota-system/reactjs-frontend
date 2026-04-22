@@ -45,7 +45,7 @@ const AppSidebar = () => {
 		signOutMutation.mutate(undefined, {
 			onSuccess: (res) => {
 				toast.success(res.message || "Đăng xuất thành công!");
-				navigate("/sign-in");
+				navigate("/sign-in", { replace: true });
 			},
 			onError: (error: unknown) => {
 				const message =

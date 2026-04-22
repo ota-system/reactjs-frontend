@@ -7,13 +7,12 @@ import Unauthorized from "@/features/auth/pages/Unauthorized";
 import AuthRoutes from "@/features/auth/routes/AuthRoute";
 import ClassRoute from "@/features/class/routes/ClassRoute";
 import ExamRoute from "@/features/exam/routes/ExamRoute";
-import HomeRoute from "@/features/home/routes/HomeRoute";
 
 const AppRoute = () => {
 	const routes: RouteObject[] = [
 		{
 			path: "/",
-			element: <Navigate to="/sign-in" />,
+			element: <Navigate to="/classes" />,
 		},
 		{
 			element: <AuthLayout />,
@@ -21,7 +20,7 @@ const AppRoute = () => {
 		},
 		{
 			element: <PrivateLayout />,
-			children: [...HomeRoute, ...ClassRoute, ...ExamRoute, ...AnalyticRoute],
+			children: [...ClassRoute, ...ExamRoute, ...AnalyticRoute],
 		},
 		{
 			path: "/unauthorized",

@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 type ClassItemProps = {
 	title: string;
-	value: string;
+	value: number;
 	desc: string;
 	icon: React.ReactNode;
 };

@@ -1,5 +1,5 @@
 import { LuLogOut } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -31,10 +31,9 @@ import {
 	teacherMenuItems,
 } from "@/shared/constants/sidebarMenuItems";
 import { user } from "@/shared/data/mook";
-import { useAppStore } from "../stores/useAppStore";
 
 const AppSidebar = () => {
-	const { tab, setTab } = useAppStore();
+	const location = useLocation();
 	const signOutMutation = useSignOutMutation();
 	const navigate = useNavigate();
 
@@ -62,7 +61,7 @@ const AppSidebar = () => {
 					<div className="flex items-center gap-2.5">
 						<img
 							src="/ota-hub-logo.svg"
-							className="h-11 w-11 object-contain"
+							className="size-11 object-contain"
 							alt="OTA-Hub logo"
 						/>
 						<div>
@@ -106,14 +105,13 @@ const AppSidebar = () => {
 				<SidebarGroup className="px-0">
 					<SidebarMenu className="gap-1">
 						{menuItems.map((item) => {
-							const isActive = tab === item.tab;
+							const isActive = location.pathname.startsWith(`/${item.tab}`);
 
 							return (
 								<SidebarMenuItem
 									key={item.tab}
 									onClick={() => {
 										navigate(`/${item.tab}`);
-										setTab(item.tab);
 									}}
 								>
 									<SidebarMenuButton

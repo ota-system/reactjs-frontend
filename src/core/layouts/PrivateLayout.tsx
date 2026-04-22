@@ -1,9 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import {
-	SidebarInset,
-	SidebarProvider,
-	SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { tokenService } from "@/lib/tokens";
 import AppSidebar from "@/shared/components/Sidebar";
 
@@ -18,9 +14,6 @@ const PrivateLayout = () => {
 		<SidebarProvider>
 			<AppSidebar />
 			<SidebarInset>
-				<div className="flex items-center gap-2 p-4 border-b">
-					<SidebarTrigger />
-				</div>
 				<main className="flex-1">
 					<Outlet />
 				</main>

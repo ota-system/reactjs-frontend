@@ -74,6 +74,11 @@ export default function QuestionCard({
 							title={`Bạn có chắc muốn xóa câu ${index}?`}
 							description={"Nội dung câu hỏi: " + question}
 							action={onDelete!}
+							secondaryAction={{
+								label: "Xóa ngay",
+								action: () => {},
+								variant: "destructive",
+							}}
 						/>
 					</Dialog>
 				</div>

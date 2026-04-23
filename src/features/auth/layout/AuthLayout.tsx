@@ -1,6 +1,22 @@
-import { Outlet } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { Navigate, Outlet } from "react-router-dom";
+import { tokenService } from "@/lib/tokens";
 
 const AuthLayout = () => {
+	const token = tokenService.getAccessToken();
+	const isAuthenticated = token !== null;
+
+	let hasRole = false;
+
+	if (token) {
+		const decoded: any = jwtDecode(token);
+		hasRole = !!decoded.role && decoded.role !== "GUEST";
+	}
+
+	if (isAuthenticated && hasRole) {
+		return <Navigate to="/" replace />;
+	}
+
 	return (
 		<main
 			className="

@@ -47,7 +47,12 @@ export default function CourseHeader({
 				</div>
 			</div>
 
-			<Button className="bg-black rounded-xl py-5 shadow-md mt-2 text-white font-medium hover:bg-black/90 cursor-pointer">
+			<Button
+				onClick={() => {
+					navigate("/ai-test-generation");
+				}}
+				className="bg-black rounded-xl py-5 shadow-md mt-2 text-white font-medium hover:bg-black/90 cursor-pointer"
+			>
 				<Plus className="mr-2 size-4" /> Tạo bài thi
 			</Button>
 		</div>

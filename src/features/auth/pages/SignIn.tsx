@@ -45,7 +45,7 @@ const SignIn = () => {
 					navigate("/select-role");
 				} else {
 					toast.success(data.message || "Đăng nhập Google thành công!");
-					navigate("/home");
+					navigate("/", { replace: true });
 				}
 			} catch (error: any) {
 				toast.error(error.message || "Đăng nhập Google thất bại");
@@ -59,7 +59,7 @@ const SignIn = () => {
 			const data = await mutation.mutateAsync(payload);
 			tokenService.setTokens(data.data.accessToken, data.data.refreshToken);
 			toast.success(data.message || "Đăng nhập thành công!");
-			navigate("/home");
+			navigate("/", { replace: true });
 		} catch (error: any) {
 			const err = error as HttpError;
 

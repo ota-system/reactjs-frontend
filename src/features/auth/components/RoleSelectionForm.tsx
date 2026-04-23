@@ -14,9 +14,12 @@ export function RoleSelectionForm({ isPending, onSelect }: RoleSelectionProps) {
 	return (
 		<div className="w-full max-w-[425px] p-6 bg-white rounded-xl shadow-sm border border-gray-100 dark:bg-card dark:border-border">
 			<div className="mb-6">
-				<h2 className="text-2xl font-bold text-center">Bạn là ai?</h2>
+				<h2 className="text-2xl font-bold text-center">
+					Vui lòng chọn vai trò của bạn?
+				</h2>
 				<p className="text-sm text-muted-foreground text-center mt-2">
-					Vui lòng chọn vai trò của bạn để chúng tôi tối ưu hóa trải nghiệm.
+					Vai trò của bạn sẽ xác định quyền truy cập và tính năng trong ứng
+					dụng.
 				</p>
 			</div>
 

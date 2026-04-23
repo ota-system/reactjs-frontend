@@ -3,7 +3,6 @@ import SelectRole from "../pages/SelectRole";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import SignUpSuccess from "../pages/SignUpSuccess";
-import VerifyEmail from "../pages/VerifyEmail";
 
 const AuthRoute: RouteObject[] = [
 	{
@@ -21,10 +20,6 @@ const AuthRoute: RouteObject[] = [
 	{
 		path: "/sign-up-success",
 		element: <SignUpSuccess />,
-	},
-	{
-		path: "/auth/verify",
-		element: <VerifyEmail />,
 	},
 ];
 

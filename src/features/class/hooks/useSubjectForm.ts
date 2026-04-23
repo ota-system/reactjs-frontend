@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 
-const defaultSubjects = ["Toán", "Văn", "Anh"];
+const defaultSubjects = ["Tiếng Anh"];
 
 type State = {
 	subjects: string[];

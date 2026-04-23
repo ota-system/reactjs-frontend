@@ -1,14 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const useWaitForEmailVerification = (enabled: boolean) => {
+export const useWaitForEmailVerification = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (!enabled) {
-			return;
-		}
-
 		const channel = new BroadcastChannel("auth_channel");
 
 		channel.onmessage = (event) => {
@@ -19,5 +15,5 @@ export const useWaitForEmailVerification = (enabled: boolean) => {
 		};
 
 		return () => channel.close();
-	}, [enabled, navigate]);
+	}, [navigate]);
 };

@@ -44,6 +44,7 @@ const VerifyEmail = () => {
 		if (countdown === null) {
 			return;
 		}
+
 		if (countdown === 0) {
 			handleClose();
 			return;
@@ -68,10 +69,23 @@ const VerifyEmail = () => {
 						Email đã được xác thực thành công
 					</p>
 
-					<p className="text-muted-foreground">
-						Cửa sổ sẽ tự đóng sau{" "}
-						<span className="font-bold text-foreground">{countdown}s</span>
-					</p>
+					{countdown !== null && countdown > 0 && (
+						<p className="text-muted-foreground">
+							Cửa sổ sẽ tự đóng sau{" "}
+							<span className="font-bold text-foreground">{countdown}s</span>
+						</p>
+					)}
+
+					{countdown === 0 && (
+						<div className="flex flex-col items-center gap-3 text-xs text-muted-foreground/80">
+							<p className="text-muted-foreground">
+								Trình duyệt của bạn không cho phép đóng cửa sổ?
+							</p>
+							<p className="text-muted-foreground">
+								Vui lòng đóng cửa sổ này một cách thủ công!
+							</p>
+						</div>
+					)}
 				</>
 			)}
 

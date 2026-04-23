@@ -46,9 +46,9 @@ export default function AiTestGenerationCard({
 						rows={3}
 						className="text-xl"
 					/>
-					<div className="flex items-start gap-2 text-sm text-muted-foreground text-red-500">
+					<div className="flex items-start gap-2 text-sm text-red-500">
 						<CircleAlert className="mt-1 size-3" />
-						<p className="">
+						<p>
 							Càng mô tả chi tiết (chủ đề, độ khó, dạng bài), AI sẽ tạo câu hỏi
 							phù hợp hơn
 						</p>

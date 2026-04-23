@@ -24,14 +24,16 @@ const ConfirmedDialog = (props: ConfirmedDialogProps) => {
 				</DialogDescription>
 			</DialogHeader>
 			<DialogFooter>
-				<Button
-					type="button"
-					variant="outline"
-					onClick={props.action}
-					className="cursor-pointer"
-				>
-					Xác nhận
-				</Button>
+				<DialogClose>
+					<Button
+						type="button"
+						variant="outline"
+						onClick={props.action}
+						className="cursor-pointer"
+					>
+						Xác nhận
+					</Button>
+				</DialogClose>
 				<DialogClose asChild>
 					<Button type="button" className="cursor-pointer">
 						Hủy

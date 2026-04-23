@@ -5,7 +5,7 @@ const AuthLayout = () => {
 	const isAuthenticated = tokenService.getAccessToken() !== null;
 
 	if (isAuthenticated) {
-		return <Navigate to="/home" replace />;
+		return <Navigate to="/" replace />;
 	}
 
 	return (

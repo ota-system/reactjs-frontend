@@ -25,6 +25,11 @@ export default function AiTestGenerationCard({
 	haveGeneratedResult = false,
 }: AiTestGenerationCardProps) {
 	const isSubmitDisabled = !prompt.trim() || isGenerating;
+	const generateButtonLabel = isGenerating
+		? "Đang tạo bài thi..."
+		: haveGeneratedResult
+			? "Tạo lại bài thi bằng AI"
+			: "Tạo bài thi bằng AI";
 
 	return (
 		<Card className="rounded-2xl border">
@@ -68,11 +73,11 @@ export default function AiTestGenerationCard({
 				<Button
 					type="button"
 					onClick={onGenerate}
-					disabled={haveGeneratedResult || isSubmitDisabled}
+					disabled={isSubmitDisabled}
 					className="h-12 w-full text-lg cursor-pointer"
 				>
 					<Sparkles className="size-4" />
-					{isGenerating ? "Đang tạo bài thi..." : "Tạo bài thi bằng AI"}
+					{generateButtonLabel}
 				</Button>
 			</CardContent>
 		</Card>

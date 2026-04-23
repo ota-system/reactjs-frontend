@@ -10,12 +10,10 @@ interface FillInBlankQuestionCardProps extends QuestionCardProps {
 export default function FillInBlankQuestionCard({
 	index,
 	question,
-	subject,
 	difficulty,
 	questionType = "Điền từ",
 	correctAnswer,
 	onQuestionChange,
-	onSubjectChange,
 	onDifficultyChange,
 	onQuestionTypeChange,
 	onCorrectAnswerChange,
@@ -27,11 +25,9 @@ export default function FillInBlankQuestionCard({
 		<QuestionCard
 			index={index}
 			question={question}
-			subject={subject}
 			difficulty={difficulty}
 			questionType={questionType}
 			onQuestionChange={onQuestionChange}
-			onSubjectChange={onSubjectChange}
 			onDifficultyChange={onDifficultyChange}
 			onQuestionTypeChange={onQuestionTypeChange}
 			onDelete={onDelete}

@@ -18,12 +18,10 @@ interface MultipleChoiceQuestionCardProps extends QuestionCardProps {
 export default function MultipleChoiceQuestionCard({
 	index,
 	question,
-	subject,
 	difficulty,
 	questionType = "Trắc nghiệm",
 	options,
 	onQuestionChange,
-	onSubjectChange,
 	onDifficultyChange,
 	onQuestionTypeChange,
 	onOptionChange,
@@ -37,11 +35,9 @@ export default function MultipleChoiceQuestionCard({
 		<QuestionCard
 			index={index}
 			question={question}
-			subject={subject}
 			difficulty={difficulty}
 			questionType={questionType}
 			onQuestionChange={onQuestionChange}
-			onSubjectChange={onSubjectChange}
 			onDifficultyChange={onDifficultyChange}
 			onQuestionTypeChange={onQuestionTypeChange}
 			onDelete={onDelete}

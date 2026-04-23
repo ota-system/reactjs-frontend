@@ -67,9 +67,10 @@ const AppSidebar = () => {
 						<div>
 							<h1 className="text-xl font-bold">OTA-Hub</h1>
 							<span
-								className={`text-xs text-white px-2 py-1 rounded ${
-									user.role === "STUDENT" ? "bg-[#C2A56D]" : "bg-[#547A95]"
-								}`}
+								className={cn(
+									"text-xs text-white px-2 py-1 rounded",
+									user.role === "STUDENT" ? "bg-[#C2A56D]" : "bg-[#547A95]",
+								)}
 							>
 								{user.role === "STUDENT" ? "Học sinh" : "Giáo viên"}
 							</span>
@@ -87,7 +88,7 @@ const AppSidebar = () => {
 				<SidebarGroup className="px-0 pt-0 pb-3">
 					<div className="flex items-center gap-2.5 p-2 group-data-[collapsible=icon]:hidden">
 						<img
-							src={user.avatarUrl || "/default-avatar.avif"}
+							src={user.avatarUrl || "/default-avatar.png"}
 							className="size-8 rounded-full shrink-0"
 							alt="User avatar"
 						/>

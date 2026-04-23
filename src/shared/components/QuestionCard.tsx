@@ -2,7 +2,7 @@ import { Trash2 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -12,16 +12,15 @@ import {
 	QUESTION_TYPE_OPTIONS,
 	QuestionTypeEnum,
 } from "../constants/questionOption";
+import ConfirmedDialog from "./ConfirmedDialog";
 import SelectionInput from "./SelectionInput";
 
 interface QuestionCardProps {
 	index: number;
 	question: string;
-	subject: string;
 	difficulty: Difficulty;
 	questionType?: QuestionType;
 	onQuestionChange: (value: string) => void;
-	onSubjectChange: (value: string) => void;
 	onDifficultyChange: (value: Difficulty) => void;
 	onQuestionTypeChange?: (value: QuestionType) => void;
 	onDelete?: () => void;
@@ -33,11 +32,9 @@ interface QuestionCardProps {
 export default function QuestionCard({
 	index,
 	question,
-	subject,
 	difficulty,
 	questionType = QuestionTypeEnum.MULTIPLE_CHOICE,
 	onQuestionChange,
-	onSubjectChange,
 	onDifficultyChange,
 	onQuestionTypeChange,
 	onDelete,
@@ -60,16 +57,25 @@ export default function QuestionCard({
 							{difficulty}
 						</span>
 					</div>
-					<Button
-						type="button"
-						variant="ghost"
-						size="icon-sm"
-						onClick={onDelete}
-						disabled={!onDelete || disabled}
-						aria-label={`Xóa câu ${index}`}
-					>
-						<Trash2 className="size-4" />
-					</Button>
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button
+								type="button"
+								variant="ghost"
+								size="icon-sm"
+								disabled={!onDelete || disabled}
+								aria-label={`Xóa câu ${index}`}
+								className="text-red-500 hover:bg-red-50 focus-visible:bg-red-50 cursor-pointer"
+							>
+								<Trash2 className="size-4" />
+							</Button>
+						</DialogTrigger>
+						<ConfirmedDialog
+							title={`Bạn có chắc muốn xóa câu ${index}?`}
+							description={"Nội dung câu hỏi: " + question}
+							action={onDelete!}
+						/>
+					</Dialog>
 				</div>
 
 				<div className="space-y-2">
@@ -85,15 +91,6 @@ export default function QuestionCard({
 				</div>
 
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-					<div className="space-y-2">
-						<Label className="text-base font-semibold">Chủ đề</Label>
-						<Input
-							value={subject}
-							onChange={(event) => onSubjectChange(event.target.value)}
-							placeholder="VD: Grammar"
-							disabled={disabled}
-						/>
-					</div>
 					<SelectionInput
 						value={difficulty}
 						options={DIFFICULTY_OPTIONS}

@@ -264,6 +264,7 @@ const EnglishTestGeneration = () => {
 					description="Bạn có muốn lưu tạm bộ câu hỏi hiện tại làm bản nháp trước khi tạo bộ câu hỏi mới không?"
 					action={() => void runGenerate(true)}
 					actionLabel="Lưu nháp và tạo lại"
+					actionVariant="default"
 					secondaryAction={{
 						label: "Không lưu, tạo lại",
 						action: () => void runGenerate(false),

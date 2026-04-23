@@ -24,7 +24,7 @@ interface ConfirmedDialogProps {
 }
 
 const ConfirmedDialog = (props: ConfirmedDialogProps) => {
-	const actionLabel = props.actionLabel ?? "Xác nhận";
+	const actionLabel = props.actionLabel ?? null;
 	const cancelLabel = props.cancelLabel ?? "Hủy";
 	const actionVariant = props.actionVariant ?? "outline";
 
@@ -37,11 +37,13 @@ const ConfirmedDialog = (props: ConfirmedDialogProps) => {
 				</DialogDescription>
 			</DialogHeader>
 			<DialogFooter>
-				<DialogClose asChild>
-					<Button type="button" className="cursor-pointer">
-						{cancelLabel}
-					</Button>
-				</DialogClose>
+				{!actionLabel && (
+					<DialogClose asChild>
+						<Button type="button" className="cursor-pointer">
+							{cancelLabel}
+						</Button>
+					</DialogClose>
+				)}
 				{props.secondaryAction && (
 					<DialogClose asChild>
 						<Button
@@ -54,16 +56,18 @@ const ConfirmedDialog = (props: ConfirmedDialogProps) => {
 						</Button>
 					</DialogClose>
 				)}
-				<DialogClose asChild>
-					<Button
-						type="button"
-						variant={actionVariant || "outline"}
-						onClick={props.action}
-						className="cursor-pointer"
-					>
-						{actionLabel}
-					</Button>
-				</DialogClose>
+				{actionLabel && (
+					<DialogClose asChild>
+						<Button
+							type="button"
+							variant={actionVariant || "outline"}
+							onClick={props.action}
+							className="cursor-pointer"
+						>
+							{actionLabel}
+						</Button>
+					</DialogClose>
+				)}
 			</DialogFooter>
 		</DialogContent>
 	);

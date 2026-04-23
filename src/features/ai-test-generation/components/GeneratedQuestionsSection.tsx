@@ -137,6 +137,12 @@ export default function GeneratedQuestionsSection({
 								description="Bạn có chắc muốn khôi phục bản nháp trước đó? Bộ câu hỏi hiện tại sẽ bị thay thế."
 								action={handleRollbackToDraft}
 								actionLabel="Khôi phục"
+								actionVariant="default"
+								secondaryAction={{
+									label: "Hủy",
+									action: () => {},
+									variant: "outline",
+								}}
 							/>
 						</Dialog>
 					</div>

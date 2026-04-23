@@ -12,6 +12,7 @@ export type ClassResponse = {
 	code: string;
 	createdAt: string;
 	updatedAt: string;
+	teacherName?: string;
 };
 
 export type UserSummary = {

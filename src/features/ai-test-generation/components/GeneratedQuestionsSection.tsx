@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import FillInBlankQuestionCard from "@/shared/components/FillInBlankQuestionCard";
 import MultipleChoiceQuestionCard from "@/shared/components/MultipleChoiceQuestionCard";
 import type { QuestionType } from "@/shared/constants/questionOption";
@@ -5,6 +8,7 @@ import type {
 	GeneratedQuestionUI,
 	OptionItem,
 } from "../utils/mapGeneratedQuestionToUI";
+import type { TestInformationValues } from "./TestInformationPanel";
 
 interface GeneratedQuestionsSectionProps {
 	questions: GeneratedQuestionUI[];
@@ -14,6 +18,14 @@ interface GeneratedQuestionsSectionProps {
 	) => void;
 	onDeleteQuestion: (id: string) => void;
 	onQuestionRef: (id: string, element: HTMLDivElement | null) => void;
+	draftSnapshot: {
+		prompt: string;
+		subject: string;
+		questions: GeneratedQuestionUI[];
+		testInformation: TestInformationValues;
+	} | null;
+	isPending: boolean;
+	handleRollbackToDraft: () => void;
 }
 
 const updateQuestionOptions = (
@@ -96,6 +108,9 @@ export default function GeneratedQuestionsSection({
 	onUpdateQuestion,
 	onDeleteQuestion,
 	onQuestionRef,
+	draftSnapshot,
+	isPending,
+	handleRollbackToDraft,
 }: GeneratedQuestionsSectionProps) {
 	if (questions.length === 0) {
 		return null;
@@ -103,7 +118,30 @@ export default function GeneratedQuestionsSection({
 
 	return (
 		<div className="space-y-4">
-			<h2 className="text-2xl font-bold text-foreground">Kết quả tạo đề</h2>
+			<div className="flex items-center justify-between">
+				<h2 className="text-2xl font-bold text-foreground">Kết quả tạo đề</h2>
+				{draftSnapshot && !isPending && (
+					<div className="flex items-center justify-end">
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button
+									type="button"
+									variant="outline"
+									className="cursor-pointer"
+								>
+									Khôi phục bản nháp cũ
+								</Button>
+							</DialogTrigger>
+							<ConfirmedDialog
+								title="Khôi phục bản nháp cũ"
+								description="Bạn có chắc muốn khôi phục bản nháp trước đó? Bộ câu hỏi hiện tại sẽ bị thay thế."
+								action={handleRollbackToDraft}
+								actionLabel="Khôi phục"
+							/>
+						</Dialog>
+					</div>
+				)}
+			</div>
 			{questions.map((question, index) => (
 				<div
 					key={question.id}

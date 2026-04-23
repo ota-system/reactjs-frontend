@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import type { VariantProps } from "class-variance-authority";
+import { Button, type buttonVariants } from "@/components/ui/button";
 import {
 	DialogClose,
 	DialogContent,
@@ -12,9 +13,21 @@ interface ConfirmedDialogProps {
 	title: string;
 	action: () => void;
 	description: string;
+	actionLabel?: string;
+	actionVariant?: VariantProps<typeof buttonVariants>["variant"];
+	cancelLabel?: string;
+	secondaryAction?: {
+		label: string;
+		action: () => void;
+		variant?: VariantProps<typeof buttonVariants>["variant"];
+	};
 }
 
 const ConfirmedDialog = (props: ConfirmedDialogProps) => {
+	const actionLabel = props.actionLabel ?? "Xác nhận";
+	const cancelLabel = props.cancelLabel ?? "Hủy";
+	const actionVariant = props.actionVariant ?? "outline";
+
 	return (
 		<DialogContent>
 			<DialogHeader>
@@ -24,19 +37,31 @@ const ConfirmedDialog = (props: ConfirmedDialogProps) => {
 				</DialogDescription>
 			</DialogHeader>
 			<DialogFooter>
-				<DialogClose>
+				<DialogClose asChild>
+					<Button type="button" className="cursor-pointer">
+						{cancelLabel}
+					</Button>
+				</DialogClose>
+				{props.secondaryAction && (
+					<DialogClose asChild>
+						<Button
+							type="button"
+							variant={props.secondaryAction.variant ?? "outline"}
+							onClick={props.secondaryAction.action}
+							className="cursor-pointer"
+						>
+							{props.secondaryAction.label}
+						</Button>
+					</DialogClose>
+				)}
+				<DialogClose asChild>
 					<Button
 						type="button"
-						variant="outline"
+						variant={actionVariant || "outline"}
 						onClick={props.action}
 						className="cursor-pointer"
 					>
-						Xác nhận
-					</Button>
-				</DialogClose>
-				<DialogClose asChild>
-					<Button type="button" className="cursor-pointer">
-						Hủy
+						{actionLabel}
 					</Button>
 				</DialogClose>
 			</DialogFooter>

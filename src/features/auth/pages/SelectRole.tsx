@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { queryClient } from "@/core/api/queryClient";
 import { toast } from "@/lib/toast";
+import { getCurrentUserInformation } from "@/shared/services/userDetailService";
+import { useAuthStore } from "@/shared/stores/useAuthStore";
 import { RoleSelectionForm } from "../components/RoleSelectionForm";
 import { useUpdateRoleMutation } from "../hooks/useUpdateRoleMutation";
 
@@ -12,7 +13,8 @@ export default function SelectRole() {
 		try {
 			await mutation.mutateAsync(role.toUpperCase());
 			toast.success("Cập nhật vai trò thành công!");
-			await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+			const res = await getCurrentUserInformation();
+			useAuthStore.getState().setUserInfo(res.data);
 			navigate("/");
 		} catch (error: any) {
 			toast.error(error.message || "Cập nhật vai trò thất bại");

@@ -4,7 +4,7 @@ import AppSidebar from "@/shared/components/Sidebar";
 import { useAuth } from "@/shared/hooks/useAuth";
 
 const PrivateLayout = () => {
-	useAuth(); // Chạy ngầm để đồng bộ dữ liệu vào Zustand mỗi 10 phút
+	useAuth();
 
 	return (
 		<SidebarProvider>

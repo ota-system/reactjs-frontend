@@ -3,6 +3,7 @@ export type Role = "TEACHER" | "STUDENT" | "NULL";
 export type UserInfo = {
 	username: string;
 	email: string;
+	fullName: string;
 	role: Role;
 };
 

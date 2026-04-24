@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { tokenService } from "@/lib/tokens";
+import { TEN_MINUTES } from "@/shared/constants/time";
 import { getCurrentUserInformation } from "../services/userDetailService";
 import { useAuthStore } from "../stores/useAuthStore";
 
@@ -21,7 +22,7 @@ export const useAuth = () => {
 				throw error;
 			}
 		},
-		staleTime: 10 * 60 * 1000, // 10 minutes
+		staleTime: TEN_MINUTES,
 		retry: false,
 		enabled: !!tokenService.getAccessToken(),
 	});

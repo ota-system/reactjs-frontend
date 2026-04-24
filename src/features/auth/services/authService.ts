@@ -63,7 +63,7 @@ export const signInWithGoogle = async (payload: {
 
 export const updateRole = async (role: string) => {
 	const response: ApiResponse<any> = await httpClient.patch(
-		"/api/v1/users/setup-role",
+		"/api/v1/users/role",
 		{ role },
 	);
 	return response;

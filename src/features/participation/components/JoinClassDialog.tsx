@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,11 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import {
+	InputOTP,
+	InputOTPGroup,
+	InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { toast } from "@/lib/toast";
 import useClassPreviewQuery from "../hooks/useClassPreviewQuery";
 import { useJoinClassMutation } from "../hooks/useJoinClassMutation";
@@ -36,7 +41,7 @@ const JoinClassDialog = ({ open, onOpenChange }: Props) => {
 	const navigate = useNavigate();
 
 	const {
-		register,
+		control,
 		handleSubmit,
 		reset,
 		formState: { errors },
@@ -97,11 +102,31 @@ const JoinClassDialog = ({ open, onOpenChange }: Props) => {
 						onSubmit={handleSubmit(onSubmitPreview)}
 						className="flex flex-col items-center gap-3 mt-2"
 					>
-						<Input
-							className="text-center tracking-widest text-lg h-10"
-							placeholder="Nhập mã 6 số"
-							maxLength={6}
-							{...register("code")}
+						<Controller
+							name="code"
+							control={control}
+							render={({ field }) => (
+								<InputOTP
+									maxLength={6}
+									value={field.value}
+									onChange={(value) => {
+										field.onChange(value);
+										if (value.length === 6) {
+											handleSubmit(onSubmitPreview)();
+										}
+									}}
+									pattern={REGEXP_ONLY_DIGITS}
+								>
+									<InputOTPGroup>
+										<InputOTPSlot index={0} />
+										<InputOTPSlot index={1} />
+										<InputOTPSlot index={2} />
+										<InputOTPSlot index={3} />
+										<InputOTPSlot index={4} />
+										<InputOTPSlot index={5} />
+									</InputOTPGroup>
+								</InputOTP>
+							)}
 						/>
 
 						{errors.code && (
@@ -114,7 +139,7 @@ const JoinClassDialog = ({ open, onOpenChange }: Props) => {
 							<Button
 								type="button"
 								variant="outline"
-								className="flex-1 hover:bg-primary/90 cursor-pointer"
+								className="flex-1 hover:bg-primary/20 cursor-pointer"
 								onClick={() => onOpenChange(false)}
 							>
 								Hủy

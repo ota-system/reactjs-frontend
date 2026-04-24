@@ -85,7 +85,7 @@ const StudentClass = () => {
 								<ClassItem
 									key={cls.id}
 									title={cls.name}
-									teacher={cls.teacherName ?? "Không rõ"}
+									teacher={cls.teacherName ?? "N/A"}
 									studentsCount={cls.studentCount}
 									examsCount={cls.examCount}
 									code={cls.code}

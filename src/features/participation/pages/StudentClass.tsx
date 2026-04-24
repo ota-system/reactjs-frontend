@@ -6,11 +6,11 @@ import ClassItem from "@/features/class/components/ClassItem";
 import type { ClassResponse } from "@/features/class/type";
 import ClassStatCard from "@/shared/components/ClassStatCard";
 import JoinClassDialog from "../components/JoinClassDialog";
+import { useStudentClassQuery } from "../hooks/useStudentClassQuery";
 
 const StudentClass = () => {
 	const [open, setOpen] = useState(false);
-	// const { data, isLoading } = useStudentClassQuery();
-	const { data, isLoading } = { data: { data: null }, isLoading: true }; // TODO: Replace with real query
+	const { data, isLoading } = useStudentClassQuery();
 
 	const classes = data?.data || [];
 

@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { toast } from "@/lib/toast";
+import { useJoinClassMutation } from "../hooks/useJoinClassMutation";
 
 const JoinClassSchema = z.object({
 	code: z
@@ -29,6 +30,7 @@ interface Props {
 }
 
 const JoinClassDialog = ({ open, onOpenChange }: Props) => {
+	const mutation = useJoinClassMutation();
 	const {
 		register,
 		handleSubmit,
@@ -43,9 +45,7 @@ const JoinClassDialog = ({ open, onOpenChange }: Props) => {
 
 	const onSubmit = async (data: FormValues) => {
 		try {
-			// TODO: gọi API join class ở đây
-			console.log("Join class với mã:", data.code);
-
+			await mutation.mutateAsync(data);
 			toast.success("Tham gia lớp thành công!");
 			onOpenChange(false);
 		} catch (error) {
@@ -53,7 +53,6 @@ const JoinClassDialog = ({ open, onOpenChange }: Props) => {
 		}
 	};
 
-	// reset form khi đóng dialog
 	useEffect(() => {
 		if (!open) {
 			reset();

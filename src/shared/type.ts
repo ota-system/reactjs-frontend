@@ -1,4 +1,10 @@
-export type Role = "TEACHER" | "STUDENT";
+export type Role = "TEACHER" | "STUDENT" | "NULL";
+
+export type UserInfo = {
+	username: string;
+	email: string;
+	role: Role;
+};
 
 export type ApiResponse<T> = {
 	message: string;

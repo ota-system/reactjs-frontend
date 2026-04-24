@@ -1,5 +1,4 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/lib/toast";
 import { tokenService } from "@/lib/tokens";
@@ -31,22 +30,8 @@ const SignIn = () => {
 					uri: "postmessage",
 				});
 				tokenService.setTokens(data.data.accessToken, data.data.refreshToken);
-
-				let hasRole = false;
-				try {
-					const decoded: any = jwtDecode(data.data.accessToken);
-					hasRole = !!decoded.role && decoded.role !== "GUEST";
-				} catch (e) {
-					console.error("Failed to decode token", e);
-				}
-
-				if (!hasRole) {
-					toast.info("Vui lòng chọn vai trò để tiếp tục!");
-					navigate("/select-role");
-				} else {
-					toast.success(data.message || "Đăng nhập Google thành công!");
-					navigate("/", { replace: true });
-				}
+				toast.success(data.message || "Đăng nhập Google thành công!");
+				navigate("/", { replace: true });
 			} catch (error: any) {
 				toast.error(error.message || "Đăng nhập Google thất bại");
 			}

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { queryClient } from "@/core/api/queryClient";
 import { toast } from "@/lib/toast";
 import { RoleSelectionForm } from "../components/RoleSelectionForm";
 import { useUpdateRoleMutation } from "../hooks/useUpdateRoleMutation";
@@ -11,6 +12,7 @@ export default function SelectRole() {
 		try {
 			await mutation.mutateAsync(role.toUpperCase());
 			toast.success("Cập nhật vai trò thành công!");
+			await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
 			navigate("/");
 		} catch (error: any) {
 			toast.error(error.message || "Cập nhật vai trò thất bại");

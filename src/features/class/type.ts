@@ -13,6 +13,7 @@ export type ClassResponse = {
 	createdAt: string;
 	updatedAt: string;
 	teacherName?: string;
+	teacher?: UserSummary;
 };
 
 export type UserSummary = {

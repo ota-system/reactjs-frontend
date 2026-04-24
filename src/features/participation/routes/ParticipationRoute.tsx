@@ -8,7 +8,7 @@ const ParticipationRoute: RouteObject[] = [
 		element: <StudentClass />,
 	},
 	{
-		path: "/classes/:classId",
+		path: "/classes/:classId/exams",
 		element: <ComingSoon />,
 	},
 	{

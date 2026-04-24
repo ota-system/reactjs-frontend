@@ -13,7 +13,14 @@ export const getStudentClasses = async (): Promise<
 	return response;
 };
 
-export const joinClass = async (data: { code: string }) => {
-	const response = await httpClient.post(`${classApi}/join`, data);
+export const joinClass = async (classId: string) => {
+	const response = await httpClient.post(`${classApi}/${classId}/join`, {});
+	return response;
+};
+
+export const previewClass = async (code: string) => {
+	const response: ApiResponse<ClassResponse> = await httpClient.get(
+		`${classApi}/code/${code}`,
+	);
 	return response;
 };

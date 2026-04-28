@@ -9,17 +9,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import type { TestInformationValues } from "../types/TestInformation";
 import ToggleRow from "./ToggleRow";
-
-export interface TestInformationValues {
-	title: string;
-	startDate: string;
-	startTime: string;
-	durationMinutes: string;
-	totalScore: string;
-	antiCheatEnabled: boolean;
-	publishNow: boolean;
-}
 
 interface TestInformationPanelProps {
 	values: TestInformationValues;
@@ -69,28 +60,27 @@ const TestInformationPanel = ({
 								<p className="text-base text-muted-foreground">Ngày</p>
 								<Input
 									type="date"
-									value={values.startDate}
+									value={values.publishNow ? "" : values.startDate}
 									onChange={(event) =>
 										onFieldChange("startDate", event.target.value)
 									}
 									className="h-11"
+									disabled={values.publishNow}
 								/>
 							</div>
 							<div className="space-y-2">
 								<p className="text-base text-muted-foreground">Giờ</p>
 								<Input
 									type="time"
-									value={values.startTime}
+									value={values.publishNow ? "" : values.startTime}
 									onChange={(event) =>
 										onFieldChange("startTime", event.target.value)
 									}
 									className="h-11"
+									disabled={values.publishNow}
 								/>
 							</div>
 						</div>
-						<p className="text-base text-muted-foreground">
-							Để trống nếu muốn học sinh có thể làm bài ngay lập tức
-						</p>
 					</div>
 
 					<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -109,15 +99,15 @@ const TestInformationPanel = ({
 							/>
 						</div>
 						<div className="space-y-2">
-							<p className="text-base font-medium">Tổng điểm</p>
+							<p className="text-base font-medium">
+								Tổng điểm (Giá trị điểm của từng câu hỏi là như nhau)
+							</p>
 							<Input
 								type="number"
 								min={1}
 								value={values.totalScore}
-								onChange={(event) =>
-									onFieldChange("totalScore", event.target.value)
-								}
-								className="h-11"
+								disabled={true}
+								className="h-11 font-bold"
 							/>
 						</div>
 					</div>

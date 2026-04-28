@@ -17,6 +17,7 @@ export interface GeneratedQuestionUI {
 	options: [OptionItem, OptionItem, OptionItem, OptionItem];
 	correctOptionIndex: number;
 	correctAnswer: string;
+	explanation?: string;
 }
 
 const defaultOptions = (): [OptionItem, OptionItem, OptionItem, OptionItem] => [
@@ -34,6 +35,7 @@ const mapGeneratedQuestionToUI = (raw: {
 	options?: Array<string>;
 	questionType?: string;
 	answer?: string;
+	explanation?: string;
 }): GeneratedQuestionUI => {
 	const options = Array.isArray(raw.options) ? raw.options : [];
 
@@ -56,6 +58,7 @@ const mapGeneratedQuestionToUI = (raw: {
 		options: normalizedOptions,
 		correctOptionIndex: translateCorrectOptionIndex(raw.answer ?? ""),
 		correctAnswer: raw.answer ?? "",
+		explanation: raw.explanation ?? "",
 	};
 };
 

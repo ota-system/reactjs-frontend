@@ -35,7 +35,7 @@ const createStreamEndpoint = (prompt: string) => {
 		"",
 	);
 
-	return `${apiBaseUrl}/api/v1/test-generation/generate-stream?prompt=${encodedPrompt}`;
+	return `${apiBaseUrl}/api/v1/english-tests/generate-stream?prompt=${encodedPrompt}`;
 };
 
 const cleanEventData = (line: string) => {

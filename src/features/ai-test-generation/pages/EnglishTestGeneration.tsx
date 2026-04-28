@@ -1,50 +1,43 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Dialog } from "@/components/ui/dialog";
 import { toast } from "@/lib/toast";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import AiTestGenerationCard from "../components/AiTestGenerationCard";
 import GeneratedQuestionsSection from "../components/GeneratedQuestionsSection";
 import TestCreationHeader from "../components/TestCreationHeader";
-import TestInformationPanel, {
-	type TestInformationValues,
-} from "../components/TestInformationPanel";
+import TestInformationPanel from "../components/TestInformationPanel";
+import useEnglishTest from "../hooks/useEnglishTest";
 import useGeneratePrompt from "../hooks/useGeneratePrompt";
+import useEnglishTestInformationStore from "../stores/englishTestInformation.store";
+import type {
+	DraftSnapshot,
+	GeneratedInputSnapshot,
+} from "../types/EnglishTestGenerationState";
+import buildEnglishTestPayload from "../utils/buildEnglishTestPayload";
 import buildGeneratePrompt from "../utils/buildGeneratePrompt";
 import cloneQuestions from "../utils/cloneQuestions";
 import mapGeneratedQuestionToUI, {
 	type GeneratedQuestionUI,
 } from "../utils/mapGeneratedQuestionToUI";
 
-const INITIAL_TEST_INFORMATION: TestInformationValues = {
-	title: "",
-	startDate: "",
-	startTime: "",
-	durationMinutes: "45",
-	totalScore: "10",
-	antiCheatEnabled: true,
-	publishNow: false,
-};
-
-interface DraftSnapshot {
-	prompt: string;
-	subject: string;
-	questions: GeneratedQuestionUI[];
-	testInformation: TestInformationValues;
-}
-
-interface GeneratedInputSnapshot {
-	prompt: string;
-	subject: string;
-}
-
 const EnglishTestGeneration = () => {
+	const { classId } = useParams();
 	const navigate = useNavigate();
 	const [prompt, setPrompt] = useState("");
 	const [subject, setSubject] = useState("");
 	const [questions, setQuestions] = useState<GeneratedQuestionUI[]>([]);
-	const [testInformation, setTestInformation] = useState<TestInformationValues>(
-		INITIAL_TEST_INFORMATION,
+	const testInformation = useEnglishTestInformationStore(
+		(state) => state.testInformation,
+	);
+	const setTestInformation = useEnglishTestInformationStore(
+		(state) => state.setTestInformation,
+	);
+	const setTestInformationField = useEnglishTestInformationStore(
+		(state) => state.setTestInformationField,
+	);
+	const resetTestInformation = useEnglishTestInformationStore(
+		(state) => state.resetTestInformation,
 	);
 	const [draftSnapshot, setDraftSnapshot] = useState<DraftSnapshot | null>(
 		null,
@@ -55,6 +48,8 @@ const EnglishTestGeneration = () => {
 	const questionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 	const previousQuestionsLengthRef = useRef(0);
 	const { mutateAsync: generatePrompt, isPending } = useGeneratePrompt();
+	const { mutateAsync: saveEnglishTest, isPending: isSavingTest } =
+		useEnglishTest();
 
 	useEffect(() => {
 		const hasNewQuestion =
@@ -140,6 +135,7 @@ const EnglishTestGeneration = () => {
 			if (allQuestions.length > 0 && !subject.trim()) {
 				setSubject(effectiveSubject);
 			}
+			handleTestInformationChange("title", effectiveSubject);
 
 			toast.success(`Đã tạo ${allQuestions.length} câu hỏi từ AI.`);
 		} catch (error) {
@@ -171,18 +167,47 @@ const EnglishTestGeneration = () => {
 	};
 
 	const handleTestInformationChange = (
-		field: keyof TestInformationValues,
-		value: string | boolean,
+		field: Parameters<typeof setTestInformationField>[0],
+		value: Parameters<typeof setTestInformationField>[1],
 	) => {
-		setTestInformation((prev) => ({ ...prev, [field]: value }));
+		setTestInformationField(field, value);
 	};
 
 	const handleCancelTestInformation = () => {
-		setTestInformation(INITIAL_TEST_INFORMATION);
+		resetTestInformation();
 	};
 
 	const handleSaveTest = () => {
-		toast.info("Chức năng lưu bài thi sẽ được nối API sau.");
+		const result = buildEnglishTestPayload({
+			classId,
+			testInformation,
+			questions,
+		});
+
+		if ("error" in result) {
+			toast.error(result.error);
+			return;
+		}
+
+		void (async () => {
+			try {
+				const response = await saveEnglishTest(result.payload);
+				toast.success(response.message || "Lưu bài thi thành công.");
+
+				setPrompt("");
+				setSubject("");
+				setQuestions([]);
+				resetTestInformation();
+				setDraftSnapshot(null);
+				setLastGeneratedInput(null);
+			} catch (error) {
+				const message =
+					error instanceof Error
+						? error.message
+						: "Lưu bài thi thất bại. Vui lòng thử lại.";
+				toast.error(message);
+			}
+		})();
 	};
 
 	const handleQuestionRef = (id: string, element: HTMLDivElement | null) => {
@@ -252,6 +277,7 @@ const EnglishTestGeneration = () => {
 					values={testInformation}
 					onFieldChange={handleTestInformationChange}
 					onCancel={handleCancelTestInformation}
+					isSaving={isSavingTest}
 					onSave={handleSaveTest}
 				/>
 			)}

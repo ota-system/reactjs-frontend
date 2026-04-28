@@ -71,7 +71,7 @@ const JoinClassDialog = ({ open, onOpenChange }: Props) => {
 			await mutation.mutateAsync(classPreview!.id);
 			toast.success("Tham gia lớp thành công!");
 			onOpenChange(false);
-			navigate(`/classes/${classPreview!.id}/exams`);
+			navigate(`/my-classes/${classPreview!.id}/exams`);
 		} catch (error: any) {
 			toast.error(error.message || "Tham gia lớp thất bại");
 		}

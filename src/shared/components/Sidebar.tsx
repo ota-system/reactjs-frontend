@@ -30,15 +30,16 @@ import {
 	studentMenuItems,
 	teacherMenuItems,
 } from "@/shared/constants/sidebarMenuItems";
-import { user } from "@/shared/data/mook";
+import { useAuthStore } from "@/shared/stores/useAuthStore";
 
 const AppSidebar = () => {
 	const location = useLocation();
 	const signOutMutation = useSignOutMutation();
 	const navigate = useNavigate();
+	const userInfo = useAuthStore((state) => state.userInfo);
 
 	const menuItems =
-		user.role === "STUDENT" ? studentMenuItems : teacherMenuItems;
+		userInfo?.role === "STUDENT" ? studentMenuItems : teacherMenuItems;
 
 	const handleSignOut = () => {
 		signOutMutation.mutate(undefined, {
@@ -69,10 +70,12 @@ const AppSidebar = () => {
 							<span
 								className={cn(
 									"text-xs text-white px-2 py-1 rounded",
-									user.role === "STUDENT" ? "bg-[#C2A56D]" : "bg-[#547A95]",
+									userInfo?.role === "STUDENT"
+										? "bg-[#C2A56D]"
+										: "bg-[#547A95]",
 								)}
 							>
-								{user.role === "STUDENT" ? "Học sinh" : "Giáo viên"}
+								{userInfo?.role === "STUDENT" ? "Học sinh" : "Giáo viên"}
 							</span>
 						</div>
 					</div>
@@ -88,14 +91,16 @@ const AppSidebar = () => {
 				<SidebarGroup className="px-0 pt-0 pb-3">
 					<div className="flex items-center gap-2.5 p-2 group-data-[collapsible=icon]:hidden">
 						<img
-							src={user.avatarUrl || "/default-avatar.png"}
+							src={userInfo?.avatarUrl || "/default-avatar.png"}
 							className="size-8 rounded-full shrink-0"
 							alt="User avatar"
 						/>
 						<div className="min-w-0 flex-1">
-							<p className="truncate text-sm font-semibold">{user.name}</p>
+							<p className="truncate text-sm font-semibold">
+								{userInfo?.fullName}
+							</p>
 							<p className="truncate text-xs text-muted-foreground">
-								{user.email}
+								{userInfo?.email}
 							</p>
 						</div>
 					</div>

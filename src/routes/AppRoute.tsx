@@ -1,4 +1,4 @@
-import { Navigate, type RouteObject, useRoutes } from "react-router-dom";
+import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import PrivateLayout from "@/core/layouts/PrivateLayout";
 import AiTestGenerationRoute from "@/features/ai-test-generation/routes/AiTestGenerationRoute";
 import AnalyticRoute from "@/features/analysis/routes/AnalyticRoute";
@@ -10,47 +10,61 @@ import AuthRoutes from "@/features/auth/routes/AuthRoute";
 import ClassRoute from "@/features/class/routes/ClassRoute";
 import ExamRoute from "@/features/exam/routes/ExamRoute";
 import ParticipationRoute from "@/features/participation/routes/ParticipationRoute";
-import { user } from "@/shared/data/mook";
+import {
+	authLoader,
+	selectRoleLoader,
+	studentLoader,
+	teacherLoader,
+} from "@/shared/loaders/auth.loader";
+import RootRedirect from "./RootRedirect";
 
-const AppRoute = () => {
-	const role = user.role; //TODO: Replace with real auth context
+const routes: RouteObject[] = [
+	{
+		path: "/",
+		element: <RootRedirect />,
+	},
+	{
+		path: "/auth/verify",
+		element: <VerifyEmail />,
+	},
+	{
+		element: <AuthLayout />,
+		loader: authLoader,
+		children: AuthRoutes.filter((r) => r.path !== "/select-role"),
+	},
+	{
+		element: <AuthLayout />,
+		loader: selectRoleLoader,
+		children: AuthRoutes.filter((r) => r.path === "/select-role"),
+	},
 
-	const teacherRoutes = [
-		...ClassRoute,
-		...ExamRoute,
-		...AnalyticRoute,
-		...AiTestGenerationRoute,
-	];
-	const studentRoutes = [...ParticipationRoute];
+	{
+		element: <PrivateLayout />,
+		children: [
+			{
+				loader: teacherLoader,
+				children: [
+					...ClassRoute,
+					...AiTestGenerationRoute,
+					...ExamRoute,
+					...AnalyticRoute,
+				],
+			},
+			{
+				loader: studentLoader,
+				children: [...ParticipationRoute],
+			},
+		],
+	},
 
-	const routes: RouteObject[] = [
-		{
-			path: "/",
-			element: <Navigate to="/classes" />,
-		},
-		{
-			path: "/auth/verify",
-			element: <VerifyEmail />,
-		},
-		{
-			element: <AuthLayout />,
-			children: [...AuthRoutes],
-		},
-		{
-			element: <PrivateLayout />,
-			children: role !== "STUDENT" ? teacherRoutes : studentRoutes,
-		},
-		{
-			path: "/unauthorized",
-			element: <Unauthorized />,
-		},
-		{
-			path: "/*",
-			element: <NotFound />,
-		},
-	];
+	{
+		path: "/unauthorized",
+		element: <Unauthorized />,
+	},
+	{
+		path: "/*",
+		element: <NotFound />,
+	},
+];
 
-	return useRoutes(routes);
-};
-
-export default AppRoute;
+export const router = createBrowserRouter(routes);

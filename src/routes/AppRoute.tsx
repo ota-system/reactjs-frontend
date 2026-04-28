@@ -9,8 +9,20 @@ import VerifyEmail from "@/features/auth/pages/VerifyEmail";
 import AuthRoutes from "@/features/auth/routes/AuthRoute";
 import ClassRoute from "@/features/class/routes/ClassRoute";
 import ExamRoute from "@/features/exam/routes/ExamRoute";
+import ParticipationRoute from "@/features/participation/routes/ParticipationRoute";
+import { user } from "@/shared/data/mook";
 
 const AppRoute = () => {
+	const role = user.role; //TODO: Replace with real auth context
+
+	const teacherRoutes = [
+		...ClassRoute,
+		...ExamRoute,
+		...AnalyticRoute,
+		...AiTestGenerationRoute,
+	];
+	const studentRoutes = [...ParticipationRoute];
+
 	const routes: RouteObject[] = [
 		{
 			path: "/",
@@ -26,12 +38,7 @@ const AppRoute = () => {
 		},
 		{
 			element: <PrivateLayout />,
-			children: [
-				...ClassRoute,
-				...ExamRoute,
-				...AnalyticRoute,
-				...AiTestGenerationRoute,
-			],
+			children: role !== "STUDENT" ? teacherRoutes : studentRoutes,
 		},
 		{
 			path: "/unauthorized",

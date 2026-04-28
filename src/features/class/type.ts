@@ -12,6 +12,8 @@ export type ClassResponse = {
 	code: string;
 	createdAt: string;
 	updatedAt: string;
+	teacherName?: string;
+	teacher?: UserSummary;
 };
 
 export type UserSummary = {

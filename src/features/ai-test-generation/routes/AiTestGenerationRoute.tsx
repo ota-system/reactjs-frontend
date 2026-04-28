@@ -3,7 +3,7 @@ import EnglishTestGeneration from "../pages/EnglishTestGeneration";
 
 const AiTestGenerationRoute: RouteObject[] = [
 	{
-		path: "/ai-test-generation",
+		path: "classes/:classId/ai-test-generation",
 		element: <EnglishTestGeneration />,
 	},
 ];

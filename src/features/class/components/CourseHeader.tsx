@@ -49,7 +49,7 @@ export default function CourseHeader({
 
 			<Button
 				onClick={() => {
-					navigate("/ai-test-generation");
+					navigate(`/classes/${classData.id}/ai-test-generation`);
 				}}
 				className="bg-black rounded-xl py-5 shadow-md mt-2 text-white font-medium hover:bg-black/90 cursor-pointer"
 			>

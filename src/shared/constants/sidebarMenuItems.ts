@@ -5,22 +5,22 @@ const studentMenuItems = [
 	{
 		title: "Lớp học của tôi",
 		icon: LuUsers,
-		tab: "classes",
+		tab: "my-classes",
 	},
 	{
 		title: "Bài thi",
 		icon: LuFileText,
-		tab: "exams",
+		tab: "my-exams",
 	},
 	{
 		title: "Kết quả",
 		icon: LuAward,
-		tab: "results",
+		tab: "my-results",
 	},
 	{
 		title: "Điểm yếu",
 		icon: LuTrendingDown,
-		tab: "weaknesses",
+		tab: "my-weaknesses",
 	},
 ];
 

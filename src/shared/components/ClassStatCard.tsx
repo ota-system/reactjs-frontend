@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface ClassStatCardProps {
@@ -25,28 +25,31 @@ const ClassStatCard = ({
 	cardClassName,
 }: ClassStatCardProps) => {
 	return (
-		<Card className={cn("max-h-70 rounded-2xl border py-0", cardClassName)}>
-			<CardHeader className="flex items-center justify-between gap-4 px-6 pt-7 pb-0">
-				<CardTitle className="text-3xl font-semibold">{title}</CardTitle>
-				<div
-					className={cn(
-						"flex size-14 items-center justify-center rounded-xl bg-[var(--secondary-background-color)]",
-						iconClassName,
-					)}
-				>
-					<Icon className="size-7" />
+		<Card className={cn("rounded-2xl", cardClassName)}>
+			<CardContent className="p-4 flex flex-col justify-between h-full">
+				{/* Header */}
+				<div className="flex items-center justify-between">
+					<span className="text-lg font-bold">{title}</span>
+
+					<div className={cn("p-2 rounded-lg bg-muted", iconClassName)}>
+						<Icon className="size-4" />
+					</div>
 				</div>
-			</CardHeader>
-			<CardContent className="px-6 pt-14 pb-7">
-				<p className={cn("text-4xl font-bold", valueClassName)}>{value}</p>
-				<p
-					className={cn(
-						"mt-3 text-2xl text-muted-foreground",
-						descriptionClassName,
-					)}
-				>
-					{description}
-				</p>
+
+				{/* Content */}
+				<div className="mt-4">
+					<p className={cn("text-2xl font-semibold", valueClassName)}>
+						{value}
+					</p>
+					<p
+						className={cn(
+							"text-xs text-muted-foreground",
+							descriptionClassName,
+						)}
+					>
+						{description}
+					</p>
+				</div>
 			</CardContent>
 		</Card>
 	);

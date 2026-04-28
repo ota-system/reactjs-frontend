@@ -1,10 +1,14 @@
 export type Role = "TEACHER" | "STUDENT" | "NULL";
 
 export type UserInfo = {
-	username: string;
+	id: string;
+	username?: string;
 	email: string;
 	fullName: string;
 	role: Role;
+	avatarUrl: string | null;
+	isActive: boolean;
+	createdAt: string;
 };
 
 export type ApiResponse<T> = {

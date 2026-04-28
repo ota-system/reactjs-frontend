@@ -24,18 +24,6 @@ export const checkAuthAndFetchUser = async () => {
 	return userInfo;
 };
 
-export const privateLoader = async () => {
-	const userInfo = await checkAuthAndFetchUser();
-	if (!userInfo) {
-		return redirect("/sign-in");
-	}
-	const hasRole = !!userInfo.role && userInfo.role !== "NULL";
-	if (!hasRole) {
-		return redirect("/select-role");
-	}
-	return null;
-};
-
 export const authLoader = async () => {
 	const userInfo = await checkAuthAndFetchUser();
 	if (userInfo) {
@@ -55,6 +43,28 @@ export const selectRoleLoader = async () => {
 	const hasRole = !!userInfo.role && userInfo.role !== "NULL";
 	if (hasRole) {
 		return redirect("/");
+	}
+	return null;
+};
+
+export const teacherLoader = async () => {
+	const userInfo = await checkAuthAndFetchUser();
+	if (!userInfo) {
+		return redirect("/sign-in");
+	}
+	if (userInfo.role === "STUDENT") {
+		return redirect("/my-classes");
+	}
+	return null;
+};
+
+export const studentLoader = async () => {
+	const userInfo = await checkAuthAndFetchUser();
+	if (!userInfo) {
+		return redirect("/sign-in");
+	}
+	if (userInfo.role === "TEACHER") {
+		return redirect("/classes");
 	}
 	return null;
 };

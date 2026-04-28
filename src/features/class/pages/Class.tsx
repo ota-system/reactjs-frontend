@@ -2,9 +2,9 @@ import { BookOpen, FileText, Plus, Users } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ClassStatCard from "@/shared/components/ClassStatCard";
 import ClassItem from "../components/ClassItem";
 import CreateClassDialog from "../components/CreateClassDialog";
-import StatCard from "../components/StatCard";
 import { useTeacherClassQuery } from "../hooks/useTeacherClassQuery";
 import type { ClassResponse } from "../type";
 
@@ -22,23 +22,23 @@ const Class = () => {
 
 			{/* Stats */}
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-				<StatCard
+				<ClassStatCard
 					title="Lớp học"
 					value={isLoading ? 0 : data?.data.length || 0}
-					desc="Lớp bạn quản lý"
-					icon={<Users size={18} />}
+					description="Lớp bạn quản lý"
+					icon={Users}
 				/>
-				<StatCard
+				<ClassStatCard
 					title="Bài thi"
 					value={4}
-					desc="Bài thi đã tạo"
-					icon={<FileText size={18} />}
+					description="Bài thi đã tạo"
+					icon={FileText}
 				/>
-				<StatCard
+				<ClassStatCard
 					title="Học sinh"
 					value={5}
-					desc="Tổng số học sinh"
-					icon={<BookOpen size={18} />}
+					description="Tổng số học sinh"
+					icon={BookOpen}
 				/>
 			</div>
 

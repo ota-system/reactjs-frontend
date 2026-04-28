@@ -1,26 +1,26 @@
-import type { RouteObject } from "react-router";
+import type { RouteObject } from "react-router-dom";
 import ComingSoon from "@/shared/pages/ComingSoon";
 import StudentClass from "../pages/StudentClass";
 
 const ParticipationRoute: RouteObject[] = [
 	{
-		path: "/classes",
+		path: "/my-classes",
 		element: <StudentClass />,
 	},
 	{
-		path: "/classes/:classId/exams",
+		path: "/my-classes/:classId/exams",
 		element: <ComingSoon />,
 	},
 	{
-		path: "/exams",
+		path: "/my-exams",
 		element: <ComingSoon />,
 	},
 	{
-		path: "/results",
+		path: "/my-results",
 		element: <ComingSoon />,
 	},
 	{
-		path: "/weaknesses",
+		path: "/my-weaknesses",
 		element: <ComingSoon />,
 	},
 ];

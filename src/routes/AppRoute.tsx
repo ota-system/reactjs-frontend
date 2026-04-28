@@ -1,29 +1,21 @@
-import {
-	createBrowserRouter,
-	Navigate,
-	type RouteObject,
-} from "react-router-dom";
+import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import PrivateLayout from "@/core/layouts/PrivateLayout";
-import EnglishTestGeneration from "@/features/ai-test-generation/pages/EnglishTestGeneration";
+import AiTestGenerationRoute from "@/features/ai-test-generation/routes/AiTestGenerationRoute";
 import AnalyticRoute from "@/features/analysis/routes/AnalyticRoute";
 import AuthLayout from "@/features/auth/layout/AuthLayout";
 import NotFound from "@/features/auth/pages/NotFound";
 import Unauthorized from "@/features/auth/pages/Unauthorized";
 import VerifyEmail from "@/features/auth/pages/VerifyEmail";
 import AuthRoutes from "@/features/auth/routes/AuthRoute";
-import ClassDetailLayout from "@/features/class/layouts/ClassDetailLayout";
-import Class from "@/features/class/pages/Class";
-import ClassExamList from "@/features/class/pages/ClassExamList";
-import ClassStudentList from "@/features/class/pages/ClassStudentList";
+import ClassRoute from "@/features/class/routes/ClassRoute";
 import ExamRoute from "@/features/exam/routes/ExamRoute";
-import StudentClass from "@/features/participation/pages/StudentClass";
+import ParticipationRoute from "@/features/participation/routes/ParticipationRoute";
 import {
 	authLoader,
 	selectRoleLoader,
 	studentLoader,
 	teacherLoader,
 } from "@/shared/loaders/auth.loader";
-import ComingSoon from "@/shared/pages/ComingSoon";
 import RootRedirect from "./RootRedirect";
 
 const routes: RouteObject[] = [
@@ -52,52 +44,15 @@ const routes: RouteObject[] = [
 			{
 				loader: teacherLoader,
 				children: [
-					{
-						path: "/classes",
-						element: <Class />,
-					},
-					{
-						path: "/classes/:classId",
-						element: <ClassDetailLayout />,
-						children: [
-							{ index: true, element: <Navigate to="students" replace /> },
-							{ path: "students", element: <ClassStudentList /> },
-							{ path: "exams", element: <ClassExamList /> },
-						],
-					},
-					{
-						path: "/classes/:classId/ai-test-generation",
-						element: <EnglishTestGeneration />,
-					},
+					...ClassRoute,
+					...AiTestGenerationRoute,
 					...ExamRoute,
 					...AnalyticRoute,
 				],
 			},
-
 			{
 				loader: studentLoader,
-				children: [
-					{
-						path: "/my-classes",
-						element: <StudentClass />,
-					},
-					{
-						path: "/my-classes/:classId/exams",
-						element: <ComingSoon />,
-					},
-					{
-						path: "/my-exams",
-						element: <ComingSoon />,
-					},
-					{
-						path: "/my-results",
-						element: <ComingSoon />,
-					},
-					{
-						path: "/my-weaknesses",
-						element: <ComingSoon />,
-					},
-				],
+				children: [...ParticipationRoute],
 			},
 		],
 	},

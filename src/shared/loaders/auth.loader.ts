@@ -47,24 +47,19 @@ export const selectRoleLoader = async () => {
 	return null;
 };
 
-export const teacherLoader = async () => {
+const createRoleLoader = (blockedRole: string) => async () => {
 	const userInfo = await checkAuthAndFetchUser();
 	if (!userInfo) {
 		return redirect("/sign-in");
 	}
-	if (userInfo.role === "STUDENT") {
-		return redirect("/my-classes");
+	if (!userInfo.role || userInfo.role === "NULL") {
+		return redirect("/select-role");
+	}
+	if (userInfo.role === blockedRole) {
+		return redirect("/unauthorized");
 	}
 	return null;
 };
 
-export const studentLoader = async () => {
-	const userInfo = await checkAuthAndFetchUser();
-	if (!userInfo) {
-		return redirect("/sign-in");
-	}
-	if (userInfo.role === "TEACHER") {
-		return redirect("/classes");
-	}
-	return null;
-};
+export const teacherLoader = createRoleLoader("STUDENT");
+export const studentLoader = createRoleLoader("TEACHER");

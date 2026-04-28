@@ -107,7 +107,7 @@ const TestInformationPanel = ({
 								min={1}
 								value={values.totalScore}
 								disabled={true}
-								className="h-11 text-bold"
+								className="h-11 font-bold"
 							/>
 						</div>
 					</div>

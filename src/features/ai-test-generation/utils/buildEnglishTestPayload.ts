@@ -12,6 +12,33 @@ type BuildEnglishTestPayloadResult =
 	| { payload: EnglishTest }
 	| { error: string };
 
+const DIFFICULTY_TO_API: Record<string, string> = {
+	Dễ: "easy",
+	"Trung bình": "medium",
+	Khó: "hard",
+	easy: "easy",
+	medium: "medium",
+	hard: "hard",
+};
+
+const QUESTION_TYPE_TO_API: Record<string, string> = {
+	"Trắc nghiệm": "multiple_choice",
+	"Đúng/Sai": "true_false",
+	"Điền từ": "fill_in_the_blank",
+	multiple_choice: "multiple_choice",
+	true_false: "true_false",
+	fill_in_the_blank: "fill_in_the_blank",
+};
+
+const normalizeDifficultyToApi = (value: string) =>
+	DIFFICULTY_TO_API[value] ?? "medium";
+
+const normalizeQuestionTypeToApi = (value: string) =>
+	QUESTION_TYPE_TO_API[value] ?? "multiple_choice";
+
+const isMultipleChoiceUI = (value: string) =>
+	value === "Trắc nghiệm" || value === "multiple_choice";
+
 const buildEnglishTestPayload = ({
 	classId,
 	testInformation,
@@ -54,7 +81,13 @@ const buildEnglishTestPayload = ({
 			return { error: "Ngày hoặc giờ bắt đầu không hợp lệ." };
 		}
 
-		if (startTimestamp <= Date.now()) {
+		const startAt = new Date(startTimestamp);
+		startAt.setSeconds(0, 0);
+
+		const now = new Date();
+		now.setSeconds(0, 0);
+
+		if (startAt.getTime() <= now.getTime()) {
 			return { error: "Ngày và giờ bắt đầu phải lớn hơn thời điểm hiện tại." };
 		}
 
@@ -73,23 +106,20 @@ const buildEnglishTestPayload = ({
 			const normalizedOptions = question.options.map((option) =>
 				option.value.trim(),
 			);
-			const answer =
-				question.questionType === "Trắc nghiệm"
-					? (normalizedOptions[question.correctOptionIndex] ?? "")
-					: question.correctAnswer.trim();
+			const answer = isMultipleChoiceUI(question.questionType)
+				? (normalizedOptions[question.correctOptionIndex] ?? "")
+				: question.correctAnswer.trim();
 
 			return {
 				question: question.question.trim(),
-				difficulty: question.difficulty,
-				questionType: question.questionType,
-				options:
-					question.questionType === "Trắc nghiệm"
-						? normalizedOptions
-						: undefined,
-				correctOptionIndex:
-					question.questionType === "Trắc nghiệm"
-						? question.correctOptionIndex
-						: undefined,
+				difficulty: normalizeDifficultyToApi(question.difficulty),
+				questionType: normalizeQuestionTypeToApi(question.questionType),
+				options: isMultipleChoiceUI(question.questionType)
+					? normalizedOptions
+					: undefined,
+				correctOptionIndex: isMultipleChoiceUI(question.questionType)
+					? question.correctOptionIndex
+					: undefined,
 				answer,
 				explanation: question.explanation?.trim() ?? "",
 			};
@@ -100,7 +130,7 @@ const buildEnglishTestPayload = ({
 		(question) =>
 			!question.question ||
 			!question.answer ||
-			(question.questionType === "Trắc nghiệm" &&
+			(question.questionType === "multiple_choice" &&
 				(!question.options || question.options.filter(Boolean).length < 2)),
 	);
 

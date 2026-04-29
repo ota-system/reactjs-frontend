@@ -60,6 +60,7 @@ const routes: RouteObject[] = [
 	{
 		path: "/taking-test/:testId",
 		element: <TakingTest />,
+		loader: studentLoader,
 	},
 
 	{

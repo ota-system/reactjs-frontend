@@ -5,6 +5,7 @@ import StudentClassDetailLayout from "../layouts/StudentClassDetailLayout";
 import StudentClass from "../pages/StudentClass";
 import StudentClassExamList from "../pages/StudentClassExamList";
 import StudentExamIntro from "../pages/StudentExamIntro";
+import TestResult from "../pages/TestResult";
 
 const ParticipationRoute: RouteObject[] = [
 	{
@@ -35,6 +36,10 @@ const ParticipationRoute: RouteObject[] = [
 	{
 		path: "/my-weaknesses",
 		element: <ComingSoon />,
+	},
+	{
+		path: "/my-exams/:id/result",
+		element: <TestResult />,
 	},
 ];
 

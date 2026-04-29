@@ -42,12 +42,10 @@ export default function StudentFillInBlankQuestionCard({
 					}
 				</div>
 
-				<h3 className="text-2xl font-semibold text-[var(--primary-color)]">
-					{question}
-				</h3>
+				<p className="text-xl text-[var(--primary-color)]">{question}</p>
 
 				<Input
-					value={answer}
+					value={answer || ""}
 					onChange={(event) => onAnswerChange(event.target.value)}
 					placeholder="Nhập câu trả lời của bạn..."
 					disabled={disabled}

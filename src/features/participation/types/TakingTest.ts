@@ -17,7 +17,7 @@ export interface Choice {
 export interface ExamQuestion {
 	id: string;
 	question: string;
-	type: "MULTIPLE_CHOICE" | "FILL_IN_THE_BLANK";
+	type: "multiple_choice" | "fill_in_the_blank";
 	level: string;
 	choices: Choice[];
 }

@@ -70,6 +70,7 @@ const Class = () => {
 							examsCount={cls.examCount}
 							code={cls.code}
 							id={cls.id}
+							basePath="/classes"
 						/>
 					))}
 				</CardContent>

@@ -9,6 +9,7 @@ type ClassItemProps = {
 	studentsCount: number;
 	examsCount: number;
 	code: string;
+	basePath?: string;
 };
 
 const ClassItem = ({
@@ -18,11 +19,12 @@ const ClassItem = ({
 	studentsCount,
 	examsCount,
 	code,
+	basePath = "/my-classes",
 }: ClassItemProps) => {
 	const navigate = useNavigate();
 
 	const navigateToExamsPage = () => {
-		navigate(`/classes/${id}/exams`);
+		navigate(`${basePath}/${id}/exams`);
 	};
 	return (
 		// biome-ignore lint: a11y/useKeyWithClickEvents

@@ -6,4 +6,12 @@ const user = {
 	avatarUrl: null,
 };
 
-export { user };
+const testSubmittedResponse = {
+	score: 5.0,
+	correctRate: 50.0,
+	subject: "Grammar & Vocabulary Test - Unit 1",
+	correctQuestions: 10,
+	totalQuestions: 20,
+};
+
+export { testSubmittedResponse, user };

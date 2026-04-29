@@ -1,6 +1,7 @@
 import type { RouteObject } from "react-router-dom";
 import ComingSoon from "@/shared/pages/ComingSoon";
 import StudentClass from "../pages/StudentClass";
+import TestResult from "../pages/TestResult";
 
 const ParticipationRoute: RouteObject[] = [
 	{
@@ -22,6 +23,10 @@ const ParticipationRoute: RouteObject[] = [
 	{
 		path: "/my-weaknesses",
 		element: <ComingSoon />,
+	},
+	{
+		path: "/my-exams/:id/result",
+		element: <TestResult />,
 	},
 ];
 

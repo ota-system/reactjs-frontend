@@ -50,9 +50,7 @@ export default function StudentMultipleChoiceQuestionCard({
 					) : null}
 				</div>
 
-				<h3 className="text-2xl font-semibold text-[var(--primary-color)]">
-					{question}
-				</h3>
+				<p className="text-xl text-[var(--primary-color)]">{question}</p>
 
 				<RadioGroup
 					value={selectedOptionId}
@@ -80,10 +78,8 @@ export default function StudentMultipleChoiceQuestionCard({
 								)}
 							>
 								<RadioGroupItem value={option.id} id={optionElementId} />
-								<span className="min-w-6 text-lg font-semibold">
-									{optionLabel}.
-								</span>
-								<span className="text-xl">{option.content}</span>
+								<span className="min-w-6">{optionLabel}.</span>
+								<span>{option.content}</span>
 							</Label>
 						);
 					})}

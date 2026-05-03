@@ -9,6 +9,7 @@ import VerifyEmail from "@/features/auth/pages/VerifyEmail";
 import AuthRoutes from "@/features/auth/routes/AuthRoute";
 import ClassRoute from "@/features/class/routes/ClassRoute";
 import ExamRoute from "@/features/exam/routes/ExamRoute";
+import TakingTest from "@/features/participation/pages/TakingTest";
 import ParticipationRoute from "@/features/participation/routes/ParticipationRoute";
 import {
 	authLoader,
@@ -55,6 +56,11 @@ const routes: RouteObject[] = [
 				children: [...ParticipationRoute],
 			},
 		],
+	},
+	{
+		path: "/taking-test/:testId",
+		element: <TakingTest />,
+		loader: studentLoader,
 	},
 
 	{

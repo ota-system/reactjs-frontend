@@ -1,4 +1,5 @@
 import { useGoogleLogin } from "@react-oauth/google";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/lib/toast";
 import { tokenService } from "@/lib/tokens";
@@ -13,6 +14,7 @@ import type { SignInPayload } from "../type";
 
 const SignIn = () => {
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	const mutation = useSignInMutation();
 	const googleMutation = useSignInWithGoogleMutation();
@@ -30,6 +32,7 @@ const SignIn = () => {
 					uri: "postmessage",
 				});
 				tokenService.setTokens(data.data.accessToken, data.data.refreshToken);
+				await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
 				toast.success(data.message || "Đăng nhập Google thành công!");
 				navigate("/", { replace: true });
 			} catch (error: any) {
@@ -43,6 +46,7 @@ const SignIn = () => {
 		try {
 			const data = await mutation.mutateAsync(payload);
 			tokenService.setTokens(data.data.accessToken, data.data.refreshToken);
+			await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
 			toast.success(data.message || "Đăng nhập thành công!");
 			navigate("/", { replace: true });
 		} catch (error: any) {

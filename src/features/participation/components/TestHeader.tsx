@@ -1,6 +1,7 @@
 import { Maximize, Minimize } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 
 interface ExamHeaderProps {
@@ -69,9 +70,7 @@ export default function ExamHeader({
 
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button className="cursor-pointer">
-								Nộp bài ({answeredCount}/{totalQuestions})
-							</Button>
+							<Button className="cursor-pointer px-7 py-5">Nộp bài</Button>
 						</DialogTrigger>
 						<ConfirmedDialog
 							title="Nộp bài"
@@ -89,12 +88,7 @@ export default function ExamHeader({
 				</div>
 			</div>
 
-			<div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-				<div
-					className="h-full bg-primary transition-all"
-					style={{ width: `${progress}%` }}
-				/>
-			</div>
+			<Progress className="h-2 w-full" value={progress} id="progress-upload" />
 		</div>
 	);
 }

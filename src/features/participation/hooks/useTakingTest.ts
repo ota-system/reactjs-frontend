@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import useExamInfoQuery from "./useExamInfoQuery";
-import useExamQuestionsQuery from "./useExamQuestionsQuery";
+import useTestInfoQuery from "./useTestInfoQuery";
+import useTestQuestionsQuery from "./useTestQuestionsQuery";
 
 const getErrorMessage = (error: unknown) =>
 	error instanceof Error ? error.message : "Đã xảy ra lỗi. Vui lòng thử lại.";
@@ -18,18 +18,18 @@ const useTakingTest = (testId: string) => {
 		isLoading: isLoadingExam,
 		isError: isExamError,
 		error: examError,
-	} = useExamInfoQuery(testId);
+	} = useTestInfoQuery(testId);
 
 	const {
 		data: questionsData,
 		isLoading: isLoadingQuestions,
 		isError: isQuestionsError,
 		error: questionsError,
-	} = useExamQuestionsQuery(testId, page);
+	} = useTestQuestionsQuery(testId, page);
 
 	const questions = questionsData?.data ?? [];
 	const totalPages = questionsData?.metadata.totalPages ?? 1;
-	const totalQuestions = examData?.metadata.totalQuestions ?? 0;
+	const totalQuestions = examData?.data.totalQuestions ?? 0;
 
 	const answeredCount = useMemo(
 		() => Object.values(answers).filter((v) => v && v !== "").length,

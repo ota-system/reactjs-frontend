@@ -3,9 +3,6 @@ export interface ExamInfo {
 	testName: string;
 	duration: number;
 	startedTime: string;
-}
-
-export interface ExamInfoMeta {
 	totalQuestions: number;
 }
 

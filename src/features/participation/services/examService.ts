@@ -2,18 +2,15 @@ import { httpClient } from "@/core/api/httpClient.api";
 import type { ApiResponse } from "@/shared/type";
 import type {
 	ExamInfo,
-	ExamInfoMeta,
 	ExamQuestion,
 	ExamQuestionsMeta,
 } from "../types/TakingTest";
 
-export const getTestInfo = async (
-	testId: string,
-): Promise<{ data: ExamInfo; metadata: ExamInfoMeta }> => {
+export const getTestInfo = async (testId: string) => {
 	const response = (await httpClient.get(
 		`/api/v1/tests/${testId}`,
-	)) as ApiResponse<ExamInfo> & { metadata: ExamInfoMeta };
-	return { data: response.data, metadata: response.metadata };
+	)) as ApiResponse<ExamInfo>;
+	return response;
 };
 
 export const getTestQuestions = async (

@@ -6,7 +6,7 @@ import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import StudentFillInBlankQuestionCard from "@/shared/components/StudentFillInBlankQuestionCard";
 import StudentMultipleChoiceQuestionCard from "@/shared/components/StudentMultipleChoiceQuestionCard";
 import ExamErrorState from "../components/ExamErrorState";
-import ExamHeader from "../components/ExamHeader";
+import ExamHeader from "../components/TestHeader";
 import useTakingTest from "../hooks/useTakingTest";
 import type { ExamQuestion } from "../types/TakingTest";
 

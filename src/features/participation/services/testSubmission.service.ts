@@ -1,10 +1,14 @@
 import { httpClient } from "@/core/api/httpClient.api";
-import type { SubmitTestRequestDto, SubmitTestResponse } from "../types";
+import type { ApiResponse } from "@/shared/type";
+import type { SubmitTestRequestDto, SubmitTestResult } from "../types";
 
 export const testSubmissionService = {
 	submitTest: async (
 		payload: SubmitTestRequestDto,
-	): Promise<SubmitTestResponse> => {
-		return httpClient.post<SubmitTestResponse>("/api/v1/tests/submit", payload);
+	): Promise<ApiResponse<SubmitTestResult>> => {
+		return httpClient.post<ApiResponse<SubmitTestResult>>(
+			"/api/v1/tests/submit",
+			payload,
+		);
 	},
 };

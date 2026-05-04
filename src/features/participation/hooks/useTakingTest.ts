@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { TestQuestion } from "../types/TakingTest";
 import useTestInfoQuery from "./useTestInfoQuery";
 import useTestQuestionsQuery from "./useTestQuestionsQuery";
 
@@ -8,6 +9,7 @@ const getErrorMessage = (error: unknown) =>
 const useTakingTest = (testId: string) => {
 	const [page, setPage] = useState(1);
 	const [answers, setAnswers] = useState<Record<string, string>>({});
+	const accumulatedQuestionsRef = useRef<Map<string, TestQuestion>>(new Map());
 
 	const STORAGE_KEY = `taking-test-answers-${testId}`;
 
@@ -46,6 +48,14 @@ const useTakingTest = (testId: string) => {
 	const questions = questionsData?.data?.questions ?? [];
 	const totalPages = questionsData?.metadata.totalPages ?? 1;
 	const totalQuestions = questionsData?.data?.totalQuestions ?? 0;
+
+	useEffect(() => {
+		if (questions && questions.length > 0) {
+			questions.forEach((q: TestQuestion) => {
+				accumulatedQuestionsRef.current.set(q.id, q);
+			});
+		}
+	}, [questions]);
 
 	const answeredCount = useMemo(
 		() => Object.values(answers).filter((v) => v && v !== "").length,
@@ -145,6 +155,7 @@ const useTakingTest = (testId: string) => {
 		answeredCount,
 		progress,
 		errorMessage,
+		accumulatedQuestions: accumulatedQuestionsRef.current,
 	};
 };
 

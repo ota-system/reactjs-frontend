@@ -40,6 +40,7 @@ const TakingTest = () => {
 		answeredCount,
 		progress,
 		errorMessage,
+		accumulatedQuestions,
 	} = useTakingTest(testId ?? "");
 
 	const { mutateAsync: submitTest } = useSubmitTest();
@@ -54,7 +55,7 @@ const TakingTest = () => {
 			answers: Object.entries(answers)
 				.filter(([, v]) => v !== undefined && v !== null && v !== "")
 				.map(([questionId, value]) => {
-					const q = questions.find((qq) => qq.id === questionId);
+					const q = accumulatedQuestions.get(questionId);
 					if (q?.type === "fill_in_the_blank") {
 						return { questionId, answer: value };
 					}

@@ -17,11 +17,6 @@ export interface SubmitTestResult {
 	totalQuestions: number;
 }
 
-export interface SubmitTestResponse {
-	data: SubmitTestResult;
-	message: string;
-}
-
 export type TestSummary = {
 	id: string;
 	testName: string;

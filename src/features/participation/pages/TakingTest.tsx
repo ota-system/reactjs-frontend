@@ -8,7 +8,7 @@ import StudentMultipleChoiceQuestionCard from "@/shared/components/StudentMultip
 import ExamErrorState from "../components/ExamErrorState";
 import ExamHeader from "../components/TestHeader";
 import useTakingTest from "../hooks/useTakingTest";
-import type { ExamQuestion } from "../types/TakingTest";
+import type { TestQuestion } from "../types/TakingTest";
 
 const TakingTest = () => {
 	const { testId } = useParams<{ testId: string }>();
@@ -100,7 +100,7 @@ const TakingTest = () => {
 							</div>
 						) : (
 							<div className="max-w-5xl space-y-6 p-6 md:p-8">
-								{questions.map((q: ExamQuestion, i: number) => {
+								{questions.map((q: TestQuestion, i: number) => {
 									const index = (page - 1) * 10 + i + 1;
 									const points = Number((10 / totalQuestions).toFixed(2));
 

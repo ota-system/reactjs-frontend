@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTestInfo } from "../services/examService";
+import { getTestInfo } from "../services/testService";
 
 const useTestInfoQuery = (testId: string) => {
 	return useQuery({

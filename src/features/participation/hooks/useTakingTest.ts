@@ -27,9 +27,9 @@ const useTakingTest = (testId: string) => {
 		error: questionsError,
 	} = useTestQuestionsQuery(testId, page);
 
-	const questions = questionsData?.data ?? [];
+	const questions = questionsData?.data?.questions ?? [];
 	const totalPages = questionsData?.metadata.totalPages ?? 1;
-	const totalQuestions = examData?.data.totalQuestions ?? 0;
+	const totalQuestions = questionsData?.data?.totalQuestions ?? 0;
 
 	const answeredCount = useMemo(
 		() => Object.values(answers).filter((v) => v && v !== "").length,

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTestQuestions } from "../services/examService";
+import { getTestQuestions } from "../services/testService";
 
 const LIMIT = 10;
 

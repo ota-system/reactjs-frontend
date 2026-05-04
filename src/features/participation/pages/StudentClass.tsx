@@ -65,8 +65,8 @@ const StudentClass = () => {
 				<CardContent>
 					{classes.length === 0 ? (
 						<div className="flex flex-col items-center justify-center text-center py-16 space-y-4">
-							<div className="w-16 h-16 flex items-center justify-center rounded-full bg-muted">
-								<Users className="w-6 h-6 text-muted-foreground" />
+							<div className="size-16 flex items-center justify-center rounded-full bg-muted">
+								<Users className="size-6 text-muted-foreground" />
 							</div>
 
 							<div>

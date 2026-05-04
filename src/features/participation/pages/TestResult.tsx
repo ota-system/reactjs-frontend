@@ -16,7 +16,7 @@ export default function TestResult() {
 				<Card>
 					<CardContent>
 						<div className="flex flex-col items-center gap-4 py-6">
-							<div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
+							<div className="size-20 rounded-full bg-muted flex items-center justify-center">
 								<MdOutlineDone size={36} />
 							</div>
 
@@ -52,7 +52,7 @@ export default function TestResult() {
 								variant="destructive"
 								className="mt-6 bg-yellow-50 text-yellow-800 border-yellow-200"
 							>
-								<AlertTriangle className="h-4 w-4" />
+								<AlertTriangle className="size-4" />
 								<AlertTitle>Cảnh báo!</AlertTitle>
 								<AlertDescription>
 									{/* I hard coded here, please skip this when reviewing */}

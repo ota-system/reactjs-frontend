@@ -9,32 +9,36 @@ import {
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import type { HttpError } from "@/shared/type";
 import { useExamDetailQuery } from "../hooks/useExamDetailQuery";
 
 export default function StudentExamIntro() {
 	const { examId } = useParams<{ examId: string }>();
-	const { data, isLoading, isError } = useExamDetailQuery(examId);
+	const { data, isLoading, isError, error } = useExamDetailQuery(examId);
 
 	const examDetail = data?.data;
 
 	if (isLoading) {
 		return (
 			<div className="flex justify-center items-center min-h-screen">
-				<Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+				<Loader2 className="size-8 animate-spin text-muted-foreground" />
 			</div>
 		);
 	}
 
 	if (isError || !examDetail) {
+		const err = error as unknown as HttpError | undefined;
 		return (
 			<div className="flex justify-center items-start min-h-screen p-4 sm:p-8 pt-8">
 				<Card className="w-full max-w-3xl shadow-sm border rounded-2xl">
 					<CardContent className="p-6 sm:p-8 text-center space-y-4">
 						<p className="text-lg font-medium text-red-500">
-							Không tìm thấy bài thi
+							{err?.message || "Không tìm thấy bài thi"}
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Bài thi không tồn tại hoặc bạn không có quyền truy cập.
+							{err
+								? "Vui lòng thử lại sau."
+								: "Bài thi không tồn tại hoặc bạn không có quyền truy cập."}
 						</p>
 					</CardContent>
 				</Card>
@@ -58,7 +62,7 @@ export default function StudentExamIntro() {
 					<div className="grid grid-cols-3 gap-4">
 						<Card className="shadow-none rounded-xl">
 							<CardContent className="p-5 flex flex-col items-center justify-center gap-2 text-center">
-								<Clock className="w-7 h-7 text-indigo-500" />
+								<Clock className="size-7 text-indigo-500" />
 								<span className="text-2xl font-bold leading-none">
 									{examDetail.duration}
 								</span>
@@ -68,7 +72,7 @@ export default function StudentExamIntro() {
 
 						<Card className="shadow-none rounded-xl">
 							<CardContent className="p-5 flex flex-col items-center justify-center gap-2 text-center">
-								<BookOpen className="w-7 h-7 text-indigo-500" />
+								<BookOpen className="size-7 text-indigo-500" />
 								<span className="text-2xl font-bold leading-none">
 									{examDetail.totalQuestions}
 								</span>
@@ -78,7 +82,7 @@ export default function StudentExamIntro() {
 
 						<Card className="shadow-none rounded-xl">
 							<CardContent className="p-5 flex flex-col items-center justify-center gap-2 text-center">
-								<Tag className="w-7 h-7 text-indigo-500" />
+								<Tag className="size-7 text-indigo-500" />
 								<span className="text-base font-semibold leading-tight break-words">
 									{examDetail.topic}
 								</span>
@@ -108,7 +112,7 @@ export default function StudentExamIntro() {
 
 						{examDetail.antiCheating && (
 							<div className="flex items-start gap-2 text-orange-600 mt-4">
-								<AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+								<AlertTriangle className="size-5 shrink-0 mt-0.5" />
 								<p className="text-sm">
 									<span className="font-semibold">Chống gian lận:</span> Không
 									chuyển tab hoặc thoát khỏi trang trong khi làm bài
@@ -118,7 +122,7 @@ export default function StudentExamIntro() {
 					</div>
 
 					<div className="bg-blue-50/50 text-blue-800 border border-blue-100 rounded-xl p-4 flex items-start gap-3">
-						<Eye className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+						<Eye className="size-5 text-blue-500 shrink-0 mt-0.5" />
 						<p className="text-sm">
 							<span className="font-semibold">Lưu ý:</span> Đảm bảo kết nối
 							internet ổn định trong suốt bài thi

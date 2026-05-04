@@ -8,7 +8,7 @@ export type ClassResponse = {
 	name: string;
 	subject: string;
 	studentCount: number;
-	examCount: number;
+	testCount: number;
 	code: string;
 	createdAt: string;
 	updatedAt: string;
@@ -21,6 +21,7 @@ export type UserSummary = {
 	fullName: string;
 	email: string;
 	avatarUrl?: string;
+	role: "teacher" | "student";
 };
 
 export type ClassDetail = {
@@ -32,8 +33,8 @@ export type ClassDetail = {
 	createdAt: string;
 };
 
-// Just for mock Exam card page.
-export type ExamCardProps = {
+// Just for mock Test card page.
+export type TestCardProps = {
 	title: string;
 	duration: number;
 	questionCount: number;

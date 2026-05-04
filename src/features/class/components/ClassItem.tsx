@@ -7,7 +7,7 @@ type ClassItemProps = {
 	title: string;
 	teacher: string;
 	studentsCount: number;
-	examsCount: number;
+	testsCount: number;
 	code: string;
 	basePath?: string;
 };
@@ -17,21 +17,21 @@ const ClassItem = ({
 	title,
 	teacher,
 	studentsCount,
-	examsCount,
+	testsCount,
 	code,
 	basePath = "/my-classes",
 }: ClassItemProps) => {
 	const navigate = useNavigate();
 
-	const navigateToExamsPage = () => {
-		navigate(`${basePath}/${id}/exams`);
+	const navigateToTestsPage = () => {
+		navigate(`${basePath}/${id}/tests`);
 	};
 	return (
 		// biome-ignore lint: a11y/useKeyWithClickEvents
 		<div
 			role="button"
 			tabIndex={0}
-			onClick={navigateToExamsPage}
+			onClick={navigateToTestsPage}
 			className="border rounded-2xl px-5 py-4 flex flex-col gap-3 hover:bg-muted/30 transition cursor-pointer"
 		>
 			<div className="space-y-1">
@@ -54,7 +54,7 @@ const ClassItem = ({
 					</span>
 					<span className="flex items-center gap-1.5">
 						<FileText size={15} />
-						{examsCount || 0} bài thi
+						{testsCount || 0} bài thi
 					</span>
 				</div>
 

@@ -3,8 +3,8 @@ import { Navigate } from "react-router-dom";
 import ComingSoon from "@/shared/pages/ComingSoon";
 import StudentClassDetailLayout from "../layouts/StudentClassDetailLayout";
 import StudentClass from "../pages/StudentClass";
-import StudentClassExamList from "../pages/StudentClassExamList";
-import StudentExamIntro from "../pages/StudentExamIntro";
+import StudentClassTestList from "../pages/StudentClassTestList";
+import StudentTestIntro from "../pages/StudentTestIntro";
 import TestResult from "../pages/TestResult";
 
 const ParticipationRoute: RouteObject[] = [
@@ -16,17 +16,17 @@ const ParticipationRoute: RouteObject[] = [
 		path: "/my-classes/:classId",
 		element: <StudentClassDetailLayout />,
 		children: [
-			{ index: true, element: <Navigate to="exams" replace /> },
-			{ path: "exams", element: <StudentClassExamList /> },
+			{ index: true, element: <Navigate to="tests" replace /> },
+			{ path: "tests", element: <StudentClassTestList /> },
 			{ path: "students", element: <ComingSoon /> },
 		],
 	},
 	{
-		path: "/my-classes/:classId/exams/:examId",
-		element: <StudentExamIntro />,
+		path: "/my-classes/:classId/tests/:testId",
+		element: <StudentTestIntro />,
 	},
 	{
-		path: "/my-exams",
+		path: "/my-tests",
 		element: <ComingSoon />,
 	},
 	{
@@ -38,7 +38,7 @@ const ParticipationRoute: RouteObject[] = [
 		element: <ComingSoon />,
 	},
 	{
-		path: "/my-exams/:id/result",
+		path: "/my-tests/:id/result",
 		element: <TestResult />,
 	},
 ];

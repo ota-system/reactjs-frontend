@@ -1,11 +1,11 @@
 import { useOutletContext } from "react-router-dom";
-import ExamCard from "@/shared/components/ExamCard";
-export default function ClassExamList() {
+import TestCard from "@/shared/components/TestCard";
+export default function ClassTestList() {
 	useOutletContext<{ classId: string }>();
 
 	return (
 		<div className="p-8 text-center text-muted-foreground border rounded-lg bg-card">
-			<ExamCard
+			<TestCard
 				title="Bài thi giữa kỳ"
 				durationMinutes={60}
 				questionCount={20}

@@ -2,11 +2,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/lib/toast";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import StudentFillInBlankQuestionCard from "@/shared/components/StudentFillInBlankQuestionCard";
 import StudentMultipleChoiceQuestionCard from "@/shared/components/StudentMultipleChoiceQuestionCard";
-import ExamErrorState from "../components/ExamErrorState";
-import ExamHeader from "../components/TestHeader";
+import TestErrorState from "../components/TestErrorState";
+import TestHeader from "../components/TestHeader";
+import { useSubmitTest } from "../hooks/useSubmitTest";
 import useTakingTest from "../hooks/useTakingTest";
 import type { TestQuestion } from "../types/TakingTest";
 
@@ -29,8 +31,8 @@ const TakingTest = () => {
 		handleEnterFullscreen,
 		handleDismissFullscreen,
 		formatTime,
-		examData,
-		isLoadingExam,
+		testData,
+		isLoadingTest,
 		questions,
 		totalPages,
 		totalQuestions,
@@ -40,7 +42,38 @@ const TakingTest = () => {
 		errorMessage,
 	} = useTakingTest(testId ?? "");
 
-	const handleSubmit = () => {};
+	const { mutateAsync: submitTest } = useSubmitTest();
+
+	const handleSubmit = async () => {
+		if (!testData?.data) {
+			return;
+		}
+
+		const payload = {
+			testId: testData.data.id,
+			answers: Object.entries(answers)
+				.filter(([, v]) => v !== undefined && v !== null && v !== "")
+				.map(([questionId, value]) => {
+					const q = questions.find((qq) => qq.id === questionId);
+					if (q?.type === "fill_in_the_blank") {
+						return { questionId, answer: value };
+					}
+					return { questionId, optionId: value };
+				}),
+		};
+
+		try {
+			const testRes = await submitTest(payload);
+			toast.success(testRes.message);
+			navigate(`/my-tests/${testData.data.id}/result`, {
+				state: { testResult: testRes.data },
+				replace: true,
+			});
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : "Nộp bài thất bại";
+			toast.error(msg);
+		}
+	};
 
 	return (
 		<div ref={containerRef} className="min-h-screen w-full bg-background">
@@ -63,20 +96,20 @@ const TakingTest = () => {
 			</Dialog>
 
 			{errorMessage ? (
-				<ExamErrorState
+				<TestErrorState
 					errorMessage={errorMessage}
-					testName={examData?.data.testName}
+					testName={testData?.data.testName}
 					totalQuestions={totalQuestions}
 					answeredCount={answeredCount}
 					onBack={() => navigate("/")}
 				/>
 			) : (
 				<div className="mx-auto w-full">
-					{isLoadingExam ? (
+					{isLoadingTest ? (
 						<Skeleton className="h-24 w-full" />
-					) : examData ? (
-						<ExamHeader
-							testName={examData.data.testName}
+					) : testData ? (
+						<TestHeader
+							testName={testData.data.testName}
 							answeredCount={answeredCount}
 							totalQuestions={totalQuestions}
 							timeLeft={timeLeft}

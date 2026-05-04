@@ -9,5 +9,9 @@ export const useSubmitTest = () => {
 		onSuccess: (_data, _variables) => {
 			//TODO: Invalidate or update relevant queries here (releated to test results, user performance, etc.)
 		},
+		onSettled: (_data, _error, variables) => {
+			const STORAGE_KEY = `taking-test-answers-${variables.testId}`;
+			localStorage.removeItem(STORAGE_KEY);
+		},
 	});
 };

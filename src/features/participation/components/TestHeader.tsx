@@ -4,7 +4,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 
-interface ExamHeaderProps {
+interface TestHeaderProps {
 	testName: string;
 	answeredCount: number;
 	totalQuestions: number;
@@ -16,7 +16,7 @@ interface ExamHeaderProps {
 	onSubmit: () => void;
 }
 
-export default function ExamHeader({
+export default function TestHeader({
 	testName,
 	answeredCount,
 	totalQuestions,
@@ -26,7 +26,7 @@ export default function ExamHeader({
 	isFullscreen,
 	onToggleFullscreen,
 	onSubmit,
-}: ExamHeaderProps) {
+}: TestHeaderProps) {
 	return (
 		<div className="sticky top-0 z-10 space-y-3 border bg-background p-5 shadow-sm">
 			<div className="flex items-center justify-between">

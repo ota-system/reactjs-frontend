@@ -6,17 +6,18 @@ import {
 	Loader2,
 	Tag,
 } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { HttpError } from "@/shared/type";
-import { useExamDetailQuery } from "../hooks/useExamDetailQuery";
+import { useTestDetailQuery } from "../hooks/useTestDetailQuery";
 
-export default function StudentExamIntro() {
-	const { examId } = useParams<{ examId: string }>();
-	const { data, isLoading, isError, error } = useExamDetailQuery(examId);
+export default function StudentTestIntro() {
+	const { testId } = useParams<{ testId: string }>();
+	const { data, isLoading, isError, error } = useTestDetailQuery(testId);
+	const navigate = useNavigate();
 
-	const examDetail = data?.data;
+	const testDetail = data?.data;
 
 	if (isLoading) {
 		return (
@@ -26,7 +27,7 @@ export default function StudentExamIntro() {
 		);
 	}
 
-	if (isError || !examDetail) {
+	if (isError || !testDetail) {
 		const err = error as unknown as HttpError | undefined;
 		return (
 			<div className="flex justify-center items-start min-h-screen p-4 sm:p-8 pt-8">
@@ -52,7 +53,7 @@ export default function StudentExamIntro() {
 				<CardContent className="p-6 sm:p-8 space-y-8">
 					<div className="space-y-2">
 						<h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
-							{examDetail.testName}
+							{testDetail.testName}
 						</h1>
 						<p className="text-muted-foreground text-sm">
 							Đọc kỹ hướng dẫn trước khi bắt đầu
@@ -64,7 +65,7 @@ export default function StudentExamIntro() {
 							<CardContent className="p-5 flex flex-col items-center justify-center gap-2 text-center">
 								<Clock className="size-7 text-indigo-500" />
 								<span className="text-2xl font-bold leading-none">
-									{examDetail.duration}
+									{testDetail.duration}
 								</span>
 								<span className="text-sm text-muted-foreground">Phút</span>
 							</CardContent>
@@ -74,7 +75,7 @@ export default function StudentExamIntro() {
 							<CardContent className="p-5 flex flex-col items-center justify-center gap-2 text-center">
 								<BookOpen className="size-7 text-indigo-500" />
 								<span className="text-2xl font-bold leading-none">
-									{examDetail.totalQuestions}
+									{testDetail.totalQuestions}
 								</span>
 								<span className="text-sm text-muted-foreground">Câu hỏi</span>
 							</CardContent>
@@ -84,7 +85,7 @@ export default function StudentExamIntro() {
 							<CardContent className="p-5 flex flex-col items-center justify-center gap-2 text-center">
 								<Tag className="size-7 text-indigo-500" />
 								<span className="text-base font-semibold leading-tight break-words">
-									{examDetail.topic}
+									{testDetail.topic}
 								</span>
 								<span className="text-sm text-muted-foreground">Chủ đề</span>
 							</CardContent>
@@ -97,20 +98,20 @@ export default function StudentExamIntro() {
 							<li>
 								Bạn có{" "}
 								<span className="font-semibold text-foreground">
-									{examDetail.duration} phút
+									{testDetail.duration} phút
 								</span>{" "}
 								để hoàn thành bài thi
 							</li>
 							<li>
 								Bài thi gồm{" "}
 								<span className="font-semibold text-foreground">
-									{examDetail.totalQuestions} câu hỏi
+									{testDetail.totalQuestions} câu hỏi
 								</span>
 							</li>
 							<li>Chọn đáp án đúng nhất cho mỗi câu hỏi</li>
 						</ul>
 
-						{examDetail.antiCheating && (
+						{testDetail.antiCheating && (
 							<div className="flex items-start gap-2 text-orange-600 mt-4">
 								<AlertTriangle className="size-5 shrink-0 mt-0.5" />
 								<p className="text-sm">
@@ -129,7 +130,12 @@ export default function StudentExamIntro() {
 						</p>
 					</div>
 
-					<Button className="w-full bg-black text-white hover:bg-black/90 py-6 rounded-xl font-medium text-base cursor-pointer shadow-md">
+					<Button
+						className="w-full bg-black text-white hover:bg-black/90 py-6 rounded-xl font-medium text-base cursor-pointer shadow-md"
+						onClick={() => {
+							navigate(`/taking-test/${testId}`, { replace: true });
+						}}
+					>
 						Bắt đầu làm bài
 					</Button>
 				</CardContent>

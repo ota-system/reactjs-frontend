@@ -2,8 +2,8 @@ import type { RouteObject } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import ClassDetailLayout from "../layouts/ClassDetailLayout";
 import Class from "../pages/Class";
-import ClassExamList from "../pages/ClassExamList";
 import ClassStudentList from "../pages/ClassStudentList";
+import ClassTestList from "../pages/ClassTestList";
 
 const ClassRoute: RouteObject[] = [
 	{
@@ -23,8 +23,8 @@ const ClassRoute: RouteObject[] = [
 				element: <ClassStudentList />,
 			},
 			{
-				path: "exams",
-				element: <ClassExamList />,
+				path: "tests",
+				element: <ClassTestList />,
 			},
 		],
 	},

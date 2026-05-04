@@ -5,30 +5,30 @@ import { Button } from "@/components/ui/button";
 type ClassManagementToggleProps = {
 	classId: string;
 	basePath: "classes" | "my-classes";
-	onPrefetchExams?: () => void;
+	onPrefetchTests?: () => void;
 	onPrefetchStudents?: () => void;
 };
 
 export default function ClassManagementToggle({
 	classId,
 	basePath,
-	onPrefetchExams,
+	onPrefetchTests,
 	onPrefetchStudents,
 }: ClassManagementToggleProps) {
 	const location = useLocation();
-	const active = location.pathname.includes("exams") ? "exam" : "student";
+	const active = location.pathname.includes("tests") ? "test" : "student";
 
 	return (
 		<div className="flex max-w-sm rounded-lg bg-secondary/50 p-1 border">
 			<Link
-				to={`/${basePath}/${classId}/exams`}
-				onMouseEnter={onPrefetchExams}
+				to={`/${basePath}/${classId}/tests`}
+				onMouseEnter={onPrefetchTests}
 				className="flex-1"
 			>
 				<Button
 					variant="ghost"
 					className={`w-full rounded-md py-2 text-sm font-medium transition-all cursor-pointer ${
-						active === "exam"
+						active === "test"
 							? "bg-white shadow-sm text-black"
 							: "text-muted-foreground"
 					} flex items-center justify-center gap-2`}

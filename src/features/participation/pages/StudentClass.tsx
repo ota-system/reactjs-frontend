@@ -82,9 +82,9 @@ const StudentClass = () => {
 								<ClassItem
 									key={cls.id}
 									title={cls.name}
-									teacher={cls.teacherName ?? "N/A"}
+									teacher={cls.teacher?.fullName ?? "N/A"}
 									studentsCount={cls.studentCount}
-									examsCount={cls.examCount}
+									testsCount={cls.testCount}
 									code={cls.code}
 									id={cls.id}
 									basePath="/my-classes"

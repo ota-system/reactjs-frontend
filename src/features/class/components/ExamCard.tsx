@@ -2,16 +2,16 @@ import { Clock, FileText, ShieldAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import type { ExamCardProps } from "../type";
+import type { TestCardProps } from "../type";
 
-export function ExamCard({
+export function TestCard({
 	title,
 	duration,
 	questionCount,
 	totalPoints,
 	tags,
 	stats,
-}: ExamCardProps) {
+}: TestCardProps) {
 	return (
 		<Card className="w-full border-[#E5E7EB] rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] bg-white overflow-hidden">
 			<CardHeader className="flex flex-row justify-between items-start space-y-0 p-6 pb-5">

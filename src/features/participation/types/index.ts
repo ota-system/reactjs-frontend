@@ -9,10 +9,28 @@ export interface SubmitTestRequestDto {
 	answers: AnswerDto[];
 }
 
-export interface SubmitTestResponse {
+export interface SubmitTestResult {
 	score: number;
 	correctRate: number;
 	subject: string;
 	correctQuestions: number;
 	totalQuestions: number;
 }
+
+export interface SubmitTestResponse {
+	data: SubmitTestResult;
+	message: string;
+}
+
+export type TestSummary = {
+	id: string;
+	testName: string;
+	startedTime: string;
+	duration: number;
+	totalQuestions: number;
+	antiCheating: boolean;
+	topic: string;
+	createdAt: string;
+};
+
+export type TestDetail = TestSummary;

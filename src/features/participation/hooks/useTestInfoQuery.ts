@@ -3,7 +3,7 @@ import { getTestInfo } from "../services/testService";
 
 const useTestInfoQuery = (testId: string) => {
 	return useQuery({
-		queryKey: ["exam-info", testId],
+		queryKey: ["test-info", testId],
 		queryFn: () => getTestInfo(testId),
 		enabled: !!testId,
 	});

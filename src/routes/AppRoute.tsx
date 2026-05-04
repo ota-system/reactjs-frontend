@@ -8,9 +8,9 @@ import Unauthorized from "@/features/auth/pages/Unauthorized";
 import VerifyEmail from "@/features/auth/pages/VerifyEmail";
 import AuthRoutes from "@/features/auth/routes/AuthRoute";
 import ClassRoute from "@/features/class/routes/ClassRoute";
-import ExamRoute from "@/features/exam/routes/ExamRoute";
 import TakingTest from "@/features/participation/pages/TakingTest";
 import ParticipationRoute from "@/features/participation/routes/ParticipationRoute";
+import TestRoute from "@/features/test/routes/TestRoute";
 import {
 	authLoader,
 	selectRoleLoader,
@@ -47,7 +47,7 @@ const routes: RouteObject[] = [
 				children: [
 					...ClassRoute,
 					...AiTestGenerationRoute,
-					...ExamRoute,
+					...TestRoute,
 					...AnalyticRoute,
 				],
 			},

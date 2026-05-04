@@ -5,6 +5,6 @@ export const testSubmissionService = {
 	submitTest: async (
 		payload: SubmitTestRequestDto,
 	): Promise<SubmitTestResponse> => {
-		return httpClient.post<SubmitTestResponse>("/tests/submit", payload);
+		return httpClient.post<SubmitTestResponse>("/api/v1/tests/submit", payload);
 	},
 };

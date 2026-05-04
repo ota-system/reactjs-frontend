@@ -16,7 +16,6 @@ const StudentClass = () => {
 
 	return (
 		<div className="p-4 md:p-8 space-y-6 w-full mx-auto">
-			{/* Header */}
 			<div>
 				<h1 className="text-2xl md:text-3xl font-semibold">Lớp học</h1>
 				<p className="text-muted-foreground text-sm">
@@ -46,7 +45,6 @@ const StudentClass = () => {
 				/>
 			</div>
 
-			{/* Class List */}
 			<Card className="rounded-2xl">
 				<CardHeader className="flex flex-row items-center justify-between">
 					<div>
@@ -66,10 +64,9 @@ const StudentClass = () => {
 
 				<CardContent>
 					{classes.length === 0 ? (
-						/* EMPTY STATE */
 						<div className="flex flex-col items-center justify-center text-center py-16 space-y-4">
-							<div className="w-16 h-16 flex items-center justify-center rounded-full bg-muted">
-								<Users className="w-6 h-6 text-muted-foreground" />
+							<div className="size-16 flex items-center justify-center rounded-full bg-muted">
+								<Users className="size-6 text-muted-foreground" />
 							</div>
 
 							<div>
@@ -90,6 +87,7 @@ const StudentClass = () => {
 									examsCount={cls.examCount}
 									code={cls.code}
 									id={cls.id}
+									basePath="/my-classes"
 								/>
 							))}
 						</div>
@@ -97,7 +95,6 @@ const StudentClass = () => {
 				</CardContent>
 			</Card>
 
-			{/* Join Class Dialog */}
 			<JoinClassDialog open={open} onOpenChange={setOpen} />
 		</div>
 	);

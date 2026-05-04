@@ -6,7 +6,7 @@ const ComingSoon = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className="flex flex-col items-center justify-center text-center px-4 w-full h-full">
+		<div className="flex flex-col items-center justify-center text-center px-4 size-full">
 			{/* Icon */}
 			<div className="text-5xl mb-4">
 				<GrInProgress width={32} height={32} />

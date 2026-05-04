@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { TestQuestion } from "../types/TakingTest";
 import useTestInfoQuery from "./useTestInfoQuery";
 import useTestQuestionsQuery from "./useTestQuestionsQuery";
 
@@ -8,16 +9,33 @@ const getErrorMessage = (error: unknown) =>
 const useTakingTest = (testId: string) => {
 	const [page, setPage] = useState(1);
 	const [answers, setAnswers] = useState<Record<string, string>>({});
+	const accumulatedQuestionsRef = useRef<Map<string, TestQuestion>>(new Map());
+
+	const STORAGE_KEY = `taking-test-answers-${testId}`;
+
+	useEffect(() => {
+		if (!testId) {
+			return;
+		}
+		try {
+			const raw = localStorage.getItem(STORAGE_KEY);
+			if (raw) {
+				setAnswers(JSON.parse(raw));
+			}
+		} catch (error) {
+			console.warn("Failed to load saved answers from localStorage", error);
+		}
+	}, [STORAGE_KEY, testId]);
 	const [timeLeft, setTimeLeft] = useState<number | null>(null);
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [showFullscreenPrompt, setShowFullscreenPrompt] = useState(true);
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	const {
-		data: examData,
-		isLoading: isLoadingExam,
-		isError: isExamError,
-		error: examError,
+		data: testData,
+		isLoading: isLoadingTest,
+		isError: isTestError,
+		error: testError,
 	} = useTestInfoQuery(testId);
 
 	const {
@@ -30,6 +48,14 @@ const useTakingTest = (testId: string) => {
 	const questions = questionsData?.data?.questions ?? [];
 	const totalPages = questionsData?.metadata.totalPages ?? 1;
 	const totalQuestions = questionsData?.data?.totalQuestions ?? 0;
+
+	useEffect(() => {
+		if (questions && questions.length > 0) {
+			questions.forEach((q: TestQuestion) => {
+				accumulatedQuestionsRef.current.set(q.id, q);
+			});
+		}
+	}, [questions]);
 
 	const answeredCount = useMemo(
 		() => Object.values(answers).filter((v) => v && v !== "").length,
@@ -57,14 +83,14 @@ const useTakingTest = (testId: string) => {
 
 	// ===== Timer =====
 	useEffect(() => {
-		if (!examData?.data) {
+		if (!testData?.data) {
 			return;
 		}
-		const { startedTime, duration } = examData.data;
+		const { startedTime, duration } = testData.data;
 		const endTime = new Date(startedTime).getTime() + duration * 60 * 1000;
 		const remaining = Math.floor((endTime - Date.now()) / 1000);
 		setTimeLeft(remaining > 0 ? remaining : 0);
-	}, [examData?.data]);
+	}, [testData?.data]);
 
 	useEffect(() => {
 		if (timeLeft === null || timeLeft <= 0) {
@@ -84,11 +110,21 @@ const useTakingTest = (testId: string) => {
 
 	// ===== Answers =====
 	const setAnswer = (id: string, value: string) =>
-		setAnswers((prev) => ({ ...prev, [id]: value }));
+		setAnswers((prev) => {
+			const next = { ...prev, [id]: value };
+			try {
+				if (testId) {
+					localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+				}
+			} catch (error) {
+				console.warn("Failed to save answers to localStorage", error);
+			}
+			return next;
+		});
 
 	// ===== Error =====
-	const errorMessage = isExamError
-		? getErrorMessage(examError)
+	const errorMessage = isTestError
+		? getErrorMessage(testError)
 		: isQuestionsError
 			? getErrorMessage(questionsError)
 			: timeLeft === 0
@@ -110,8 +146,8 @@ const useTakingTest = (testId: string) => {
 		handleEnterFullscreen,
 		handleDismissFullscreen,
 		formatTime,
-		examData,
-		isLoadingExam,
+		testData,
+		isLoadingTest,
 		questions,
 		totalPages,
 		totalQuestions,
@@ -119,6 +155,7 @@ const useTakingTest = (testId: string) => {
 		answeredCount,
 		progress,
 		errorMessage,
+		accumulatedQuestions: accumulatedQuestionsRef.current,
 	};
 };
 

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-interface ExamErrorStateProps {
+interface TestErrorStateProps {
 	errorMessage: string;
 	testName?: string;
 	totalQuestions?: number;
@@ -8,13 +8,13 @@ interface ExamErrorStateProps {
 	onBack: () => void;
 }
 
-export default function ExamErrorState({
+export default function TestErrorState({
 	errorMessage,
 	testName,
 	totalQuestions,
 	answeredCount,
 	onBack,
-}: ExamErrorStateProps) {
+}: TestErrorStateProps) {
 	return (
 		<div className="flex h-screen flex-col items-center justify-center gap-4">
 			{testName && (

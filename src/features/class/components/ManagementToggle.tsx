@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import ClassManagementToggle from "@/shared/components/ClassManagementToggle";
 import { fetchClassStudents } from "../services/classService";
 
-// import { fetchClassExams } from "../services/class.api"; // For when exams API is ready
+// import { fetchClassTests } from "../services/class.api"; // For when tests API is ready
 
 type Props = {
 	classId: string;
@@ -12,10 +12,10 @@ const ManagementToggle = ({ classId }: Props) => {
 	const queryClient = useQueryClient();
 
 	// prefetch incuming
-	const prefetchExams = () => {
+	const prefetchTests = () => {
 		// queryClient.prefetchQuery({
-		// 	queryKey: ['class-exams', classId],
-		// 	queryFn: () => fetchClassExams(classId),
+		// 	queryKey: ['class-tests', classId],
+		// 	queryFn: () => fetchClassTests(classId),
 		// });
 	};
 
@@ -30,7 +30,7 @@ const ManagementToggle = ({ classId }: Props) => {
 		<ClassManagementToggle
 			classId={classId}
 			basePath="classes"
-			onPrefetchExams={prefetchExams}
+			onPrefetchTests={prefetchTests}
 			onPrefetchStudents={prefetchStudents}
 		/>
 	);

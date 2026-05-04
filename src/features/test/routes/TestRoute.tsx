@@ -1,11 +1,11 @@
 import type { RouteObject } from "react-router-dom";
 import ComingSoon from "@/shared/pages/ComingSoon";
 
-const ExamRoute: RouteObject[] = [
+const TestRoute: RouteObject[] = [
 	{
-		path: "/exams",
+		path: "/tests",
 		element: <ComingSoon />,
 	},
 ];
 
-export default ExamRoute;
+export default TestRoute;

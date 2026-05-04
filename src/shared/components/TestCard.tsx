@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-interface ExamCardProps {
+interface TestCardProps {
 	title: string;
 	durationMinutes: number;
 	questionCount: number;
@@ -14,7 +14,7 @@ interface ExamCardProps {
 	className?: string;
 }
 
-const ExamCard = ({
+const TestCard = ({
 	title,
 	durationMinutes,
 	questionCount,
@@ -23,7 +23,7 @@ const ExamCard = ({
 	actionLabel,
 	onAction,
 	className,
-}: ExamCardProps) => {
+}: TestCardProps) => {
 	return (
 		<Card
 			className={cn(
@@ -82,4 +82,4 @@ const ExamCard = ({
 	);
 };
 
-export default ExamCard;
+export default TestCard;

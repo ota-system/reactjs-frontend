@@ -1,14 +1,14 @@
 import { FileText, Loader2 } from "lucide-react";
 import { useParams } from "react-router-dom";
 import type { HttpError } from "@/shared/type";
-import StudentExamCard from "../components/StudentExamCard";
-import { useExamListQuery } from "../hooks/useExamListQuery";
+import StudentTestCard from "../components/StudentTestCard";
+import { useTestListQuery } from "../hooks/useTestListQuery";
 
-export default function StudentClassExamList() {
+export default function StudentClassTestList() {
 	const { classId } = useParams<{ classId: string }>();
-	const { data, isLoading, isError, error } = useExamListQuery(classId);
+	const { data, isLoading, isError, error } = useTestListQuery(classId);
 
-	const exams = data?.data ?? [];
+	const tests = data?.data ?? [];
 
 	if (isLoading) {
 		return (
@@ -32,7 +32,7 @@ export default function StudentClassExamList() {
 
 	return (
 		<div className="p-6">
-			{exams.length === 0 ? (
+			{tests.length === 0 ? (
 				<div className="flex flex-col items-center justify-center py-16 text-center space-y-4">
 					<div className="size-16 flex items-center justify-center rounded-full bg-muted">
 						<FileText className="size-6 text-muted-foreground" />
@@ -46,8 +46,8 @@ export default function StudentClassExamList() {
 				</div>
 			) : (
 				<div className="space-y-4">
-					{exams.map((exam) => (
-						<StudentExamCard key={exam.id} exam={exam} />
+					{tests.map((test) => (
+						<StudentTestCard key={test.id} test={test} />
 					))}
 				</div>
 			)}

@@ -5,7 +5,7 @@ const LIMIT = 10;
 
 const useTestQuestionsQuery = (testId: string, page: number) => {
 	return useQuery({
-		queryKey: ["exam-questions", testId, page],
+		queryKey: ["test-questions", testId, page],
 		queryFn: () => getTestQuestions(testId, page, LIMIT),
 		enabled: !!testId,
 	});

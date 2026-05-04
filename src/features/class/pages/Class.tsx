@@ -67,7 +67,7 @@ const Class = () => {
 							title={cls.name}
 							teacher={"Lớp của bạn"}
 							studentsCount={cls.studentCount}
-							examsCount={cls.examCount}
+							testsCount={cls.testCount}
 							code={cls.code}
 							id={cls.id}
 							basePath="/classes"

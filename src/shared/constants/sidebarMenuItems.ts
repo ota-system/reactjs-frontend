@@ -10,7 +10,7 @@ const studentMenuItems = [
 	{
 		title: "Bài thi",
 		icon: LuFileText,
-		tab: "my-exams",
+		tab: "my-tests",
 	},
 	{
 		title: "Kết quả",
@@ -33,7 +33,7 @@ const teacherMenuItems = [
 	{
 		title: "Quản lý bài thi",
 		icon: LuFileText,
-		tab: "exams",
+		tab: "tests",
 	},
 	{
 		title: "Phân tích",

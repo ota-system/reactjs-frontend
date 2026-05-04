@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import ClassManagementToggle from "@/shared/components/ClassManagementToggle";
-import { getExamsByClass } from "../services/examService";
+import { getTestsByClass } from "../services/testService";
 
 type Props = {
 	classId: string;
@@ -9,10 +9,10 @@ type Props = {
 const StudentManagementToggle = ({ classId }: Props) => {
 	const queryClient = useQueryClient();
 
-	const prefetchExams = () => {
+	const prefetchTests = () => {
 		queryClient.prefetchQuery({
-			queryKey: ["exams", classId],
-			queryFn: () => getExamsByClass(classId),
+			queryKey: ["tests", classId],
+			queryFn: () => getTestsByClass(classId),
 		});
 	};
 
@@ -28,7 +28,7 @@ const StudentManagementToggle = ({ classId }: Props) => {
 		<ClassManagementToggle
 			classId={classId}
 			basePath="my-classes"
-			onPrefetchExams={prefetchExams}
+			onPrefetchTests={prefetchTests}
 			onPrefetchStudents={prefetchStudents}
 		/>
 	);

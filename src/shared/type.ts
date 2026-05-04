@@ -30,3 +30,9 @@ export type ErrorResponse = {
 };
 
 export type HttpError = ErrorResponse & { status: number };
+
+export interface PageMetaData {
+	page: number;
+	limit: number;
+	totalPages: number;
+}

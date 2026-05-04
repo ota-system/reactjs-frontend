@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTestQuestions } from "../services/examService";
+import { getTestQuestions } from "../services/testService";
 
 const LIMIT = 10;
 
-const useExamQuestionsQuery = (testId: string, page: number) => {
+const useTestQuestionsQuery = (testId: string, page: number) => {
 	return useQuery({
 		queryKey: ["exam-questions", testId, page],
 		queryFn: () => getTestQuestions(testId, page, LIMIT),
@@ -11,4 +11,4 @@ const useExamQuestionsQuery = (testId: string, page: number) => {
 	});
 };
 
-export default useExamQuestionsQuery;
+export default useTestQuestionsQuery;

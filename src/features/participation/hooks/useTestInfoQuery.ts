@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTestInfo } from "../services/examService";
+import { getTestInfo } from "../services/testService";
 
-const useExamInfoQuery = (testId: string) => {
+const useTestInfoQuery = (testId: string) => {
 	return useQuery({
 		queryKey: ["exam-info", testId],
 		queryFn: () => getTestInfo(testId),
@@ -9,4 +9,4 @@ const useExamInfoQuery = (testId: string) => {
 	});
 };
 
-export default useExamInfoQuery;
+export default useTestInfoQuery;

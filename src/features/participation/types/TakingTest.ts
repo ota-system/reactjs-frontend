@@ -1,11 +1,8 @@
-export interface ExamInfo {
+export interface TestInfo {
 	id: string;
 	testName: string;
 	duration: number;
 	startedTime: string;
-}
-
-export interface ExamInfoMeta {
 	totalQuestions: number;
 }
 
@@ -14,7 +11,7 @@ export interface Choice {
 	answer: string;
 }
 
-export interface ExamQuestion {
+export interface TestQuestion {
 	id: string;
 	question: string;
 	type: "multiple_choice" | "fill_in_the_blank";
@@ -22,9 +19,7 @@ export interface ExamQuestion {
 	choices: Choice[];
 }
 
-export interface ExamQuestionsMeta {
-	total: number;
-	page: number;
-	limit: number;
-	totalPages: number;
+export interface TestQuestionResponse {
+	questions: TestQuestion[];
+	totalQuestions: number;
 }

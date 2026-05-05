@@ -133,7 +133,7 @@ export default function StudentTestIntro() {
 					<Button
 						className="w-full bg-black text-white hover:bg-black/90 py-6 rounded-xl font-medium text-base cursor-pointer shadow-md"
 						onClick={() => {
-							navigate(`/taking-test/${testId}`, { replace: true });
+							navigate(`/taking-test/${testId}`);
 						}}
 					>
 						Bắt đầu làm bài

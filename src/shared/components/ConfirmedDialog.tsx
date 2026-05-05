@@ -21,6 +21,7 @@ interface ConfirmedDialogProps {
 		action: () => void;
 		variant?: VariantProps<typeof buttonVariants>["variant"];
 	};
+	showCloseButton?: boolean;
 }
 
 const ConfirmedDialog = (props: ConfirmedDialogProps) => {
@@ -29,7 +30,7 @@ const ConfirmedDialog = (props: ConfirmedDialogProps) => {
 	const actionVariant = props.actionVariant ?? "outline";
 
 	return (
-		<DialogContent>
+		<DialogContent showCloseButton={props.showCloseButton}>
 			<DialogHeader>
 				<DialogTitle>{props.title}</DialogTitle>
 				<DialogDescription>

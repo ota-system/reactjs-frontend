@@ -1,4 +1,3 @@
-import { Maximize, Minimize } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
@@ -11,8 +10,6 @@ interface TestHeaderProps {
 	timeLeft: number | null;
 	formatTime: (seconds: number) => string;
 	progress: number;
-	isFullscreen: boolean;
-	onToggleFullscreen: () => void;
 	onSubmit: () => void;
 }
 
@@ -23,28 +20,12 @@ export default function TestHeader({
 	timeLeft,
 	formatTime,
 	progress,
-	isFullscreen,
-	onToggleFullscreen,
 	onSubmit,
 }: TestHeaderProps) {
 	return (
 		<div className="sticky top-0 z-10 space-y-3 border bg-background p-5 shadow-sm">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
-					<Button
-						type="button"
-						variant="ghost"
-						size="icon"
-						onClick={onToggleFullscreen}
-						className="cursor-pointer"
-						aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
-					>
-						{isFullscreen ? (
-							<Minimize className="size-4" />
-						) : (
-							<Maximize className="size-4" />
-						)}
-					</Button>
 					<div>
 						<h1 className="text-xl font-bold text-[var(--primary-color)]">
 							{testName}

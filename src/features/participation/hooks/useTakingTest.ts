@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { HttpError } from "@/shared/type";
 import type { TestQuestion } from "../types/TakingTest";
 import useTestInfoQuery from "./useTestInfoQuery";
@@ -8,6 +9,7 @@ const useTakingTest = (testId: string) => {
 	const [page, setPage] = useState(1);
 	const [answers, setAnswers] = useState<Record<string, string>>({});
 	const accumulatedQuestionsRef = useRef<Map<string, TestQuestion>>(new Map());
+	const navigate = useNavigate();
 
 	const STORAGE_KEY = `taking-test-answers-${testId}`;
 
@@ -73,9 +75,6 @@ const useTakingTest = (testId: string) => {
 	const progress =
 		totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0;
 
-	const enterFullscreen = () => containerRef.current?.requestFullscreen();
-	const exitFullscreen = () => document.exitFullscreen();
-
 	useEffect(() => {
 		const onChange = () => setIsFullscreen(!!document.fullscreenElement);
 		document.addEventListener("fullscreenchange", onChange);
@@ -87,7 +86,7 @@ const useTakingTest = (testId: string) => {
 		containerRef.current?.requestFullscreen().catch(() => {});
 	};
 
-	const handleDismissFullscreen = () => setShowFullscreenPrompt(false);
+	const handleDismissFullscreen = () => navigate(-1);
 
 	// ===== Timer =====
 	useEffect(() => {
@@ -157,9 +156,6 @@ const useTakingTest = (testId: string) => {
 		answers,
 		setAnswer,
 		timeLeft,
-		isFullscreen,
-		enterFullscreen,
-		exitFullscreen,
 		showFullscreenPrompt,
 		setShowFullscreenPrompt,
 		handleEnterFullscreen,

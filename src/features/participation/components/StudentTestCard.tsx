@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import TestCard from "@/shared/components/TeacherTestCard";
+import TestCard from "@/shared/components/TestCard";
 import type { TestSummary } from "../types/index";
 
 export default function StudentTestCard({ test }: { test: TestSummary }) {

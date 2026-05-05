@@ -47,3 +47,20 @@ export type TestCardProps = {
 		highestScore: number;
 	};
 };
+
+export type TestStats = {
+	attempts: number;
+	averageScore: number;
+	highestScore: number;
+};
+
+export type TestWithStatsResponse = {
+	id: string;
+	testName: string;
+	duration: number;
+	totalQuestions: number;
+	maxScore: number;
+	antiCheating: boolean;
+	topicName?: string;
+	stats: TestStats;
+};

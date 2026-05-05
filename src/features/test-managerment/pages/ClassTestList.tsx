@@ -1,6 +1,6 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import TeacherTestCard from "../components/TeacherTestCard";
+import TeacherTestCard from "@/shared/components/TeacherTestCard";
 
 export default function ClassTestList() {
 	useOutletContext<{ classId: string }>();

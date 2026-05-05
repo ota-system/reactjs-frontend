@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ClassItem from "../components/ClassItem";
+import ClassItem from "@/shared/components/ClassCardItem";
 import { useTeacherClassQuery } from "../hooks/useTeacherClassQuery";
 import type { ClassResponse } from "../type";
 
@@ -27,7 +27,7 @@ const ClassList = () => {
 						testsCount={cls.testCount}
 						code={cls.code}
 						id={cls.id}
-						basePath="/test-management"
+						href={`/test-management/classes/${cls.id}`}
 					/>
 				))}
 			</CardContent>

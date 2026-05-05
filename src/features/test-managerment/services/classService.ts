@@ -1,23 +1,8 @@
 import { httpClient } from "@/core/api/httpClient.api";
 import type { ApiResponse } from "@/shared/type";
-import type {
-	ClassDetail,
-	ClassResponse,
-	CreateClassPayload,
-	UserSummary,
-} from "../type";
+import type { ClassDetail, ClassResponse, UserSummary } from "../type";
 
 const classApi = "/api/v1/classes";
-
-export const createClass = async (
-	data: CreateClassPayload,
-): Promise<ApiResponse<unknown>> => {
-	const response: ApiResponse<unknown> = await httpClient.post(
-		`${classApi}`,
-		data,
-	);
-	return response;
-};
 
 export const getClassByTeacherId = async (): Promise<
 	ApiResponse<ClassResponse[]>

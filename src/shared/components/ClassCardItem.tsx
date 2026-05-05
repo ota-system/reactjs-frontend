@@ -9,22 +9,21 @@ type ClassItemProps = {
 	studentsCount: number;
 	testsCount: number;
 	code: string;
-	basePath?: string;
+	href: string;
 };
 
 const ClassItem = ({
-	id,
 	title,
 	teacher,
 	studentsCount,
 	testsCount,
 	code,
-	basePath = "/my-classes",
+	href,
 }: ClassItemProps) => {
 	const navigate = useNavigate();
 
 	const navigateToTestsPage = () => {
-		navigate(`${basePath}/classes/${id}`);
+		navigate(href);
 	};
 	return (
 		// biome-ignore lint: a11y/useKeyWithClickEvents

@@ -1,20 +1,45 @@
 import { useOutletContext } from "react-router-dom";
-import TestCard from "@/shared/components/TestCard";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import TeacherTestCard from "@/shared/components/TeacherTestCard";
 export default function ClassTestList() {
 	useOutletContext<{ classId: string }>();
 
 	return (
-		<div className="p-8 text-center text-muted-foreground border rounded-lg bg-card">
-			<TestCard
-				title="Bài thi giữa kỳ"
-				durationMinutes={60}
-				questionCount={20}
-				topics={["Toán", "Học kỳ 1"]}
-				onAction={() => {}}
-				antiCheatLabel="Chống gian lận"
-				actionLabel="Xem kết quả"
-				className="PNV26A"
-			/>
-		</div>
+		<Card className="rounded-2xl">
+			<CardHeader className="flex flex-row items-center justify-between">
+				<CardTitle className="text-xl">Danh sách bài thi</CardTitle>
+			</CardHeader>
+			<CardContent className="p-6 md:p-8 space-y-6 bg-muted/10">
+				{/* Dummy data to match UI */}
+				<TeacherTestCard
+					title="Grammar & Vocabulary Test - Unit 1"
+					durationMinutes={45}
+					questionCount={2}
+					topics={["Grammar", "Vocabulary"]}
+					antiCheatLabel="Chống gian lận"
+					onAction={() => {}}
+					stats={{
+						attempts: 2,
+						averageScore: 9,
+						highestScore: 9,
+					}}
+					className="bg-white"
+				/>
+				<TeacherTestCard
+					title="Grammar & Vocabulary Test - Unit 2"
+					durationMinutes={45}
+					questionCount={2}
+					topics={["Grammar", "Vocabulary"]}
+					antiCheatLabel="Chống gian lận"
+					onAction={() => {}}
+					stats={{
+						attempts: 2,
+						averageScore: 9,
+						highestScore: 9,
+					}}
+					className="bg-white"
+				/>
+			</CardContent>
+		</Card>
 	);
 }

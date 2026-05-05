@@ -10,7 +10,7 @@ import AuthRoutes from "@/features/auth/routes/AuthRoute";
 import ClassRoute from "@/features/class/routes/ClassRoute";
 import TakingTest from "@/features/participation/pages/TakingTest";
 import ParticipationRoute from "@/features/participation/routes/ParticipationRoute";
-import TestRoute from "@/features/test/routes/TestRoute";
+import TestRoute from "@/features/test-managerment/routes/TestRoute";
 import {
 	authLoader,
 	selectRoleLoader,

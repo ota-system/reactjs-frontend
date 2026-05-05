@@ -43,3 +43,30 @@ export type TestCardProps = {
 		highestScore: number;
 	};
 };
+
+export type TestSummaryStats = {
+	totalStudents: number;
+	averageScore: number;
+	highestScore: number;
+	lowestScore: number;
+};
+
+export type TestStudentListItem = {
+	id: string;
+	studentName: string;
+	violations: number;
+	score: number;
+	totalScore: number;
+	percentage: number;
+	durationMinutes: number;
+	submittedAt: string;
+};
+
+export type TestStudentResponse = {
+	data: TestStudentListItem[];
+	meta: {
+		total: number;
+		page: number;
+		limit: number;
+	};
+};

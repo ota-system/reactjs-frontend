@@ -18,7 +18,7 @@ export default function ClassStudentList() {
 	}
 
 	return (
-		<div className="w-full h-full">
+		<div className="size-full">
 			<StudentList students={students || []} />
 		</div>
 	);

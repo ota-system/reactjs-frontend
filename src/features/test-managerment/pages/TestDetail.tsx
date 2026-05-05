@@ -1,20 +1,31 @@
 import { CheckCircle2, Target, TrendingUp, Trophy } from "lucide-react";
+import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TestStudentList } from "../components/TestStudentList";
+import { useTestStudentsQuery } from "../hooks/useTestStudentsQuery";
+import { useTestSummaryQuery } from "../hooks/useTestSummaryQuery";
 
 export default function TestDetail() {
-	const students = [
-		{
-			id: "1",
-			fullName: "Trần Văn Tuấn",
-			warnings: 4,
-			score: 0,
-			maxScore: 10,
-			percentage: 0,
-			timeTakenMinutes: 0,
-			dateTaken: "09/04/2026",
-		},
-	];
+	const { testId } = useParams<{ testId: string }>();
+
+	const { data: summary, isLoading: isSummaryLoading } = useTestSummaryQuery(
+		testId || "",
+	);
+	const { data: studentData, isLoading: isStudentsLoading } =
+		useTestStudentsQuery(testId || "");
+
+	const mappedStudents =
+		studentData?.data.map((s) => ({
+			id: s.id,
+			fullName: s.studentName,
+			warnings: s.violations,
+			score: s.score,
+			maxScore: s.totalScore,
+			percentage: s.percentage,
+			timeTakenMinutes: s.durationMinutes,
+			dateTaken: s.submittedAt,
+		})) || [];
 
 	return (
 		<div className="space-y-6">
@@ -35,7 +46,13 @@ export default function TestDetail() {
 									<CheckCircle2 className="size-4" />
 								</div>
 							</div>
-							<div className="text-3xl font-bold mt-2">1</div>
+							<div className="text-3xl font-bold mt-2">
+								{isSummaryLoading ? (
+									<Skeleton className="h-9 w-12" />
+								) : (
+									summary?.totalStudents || 0
+								)}
+							</div>
 						</div>
 
 						{/* Average Score */}
@@ -48,7 +65,13 @@ export default function TestDetail() {
 									<TrendingUp className="size-4" />
 								</div>
 							</div>
-							<div className="text-3xl font-bold mt-2">9.0</div>
+							<div className="text-3xl font-bold mt-2">
+								{isSummaryLoading ? (
+									<Skeleton className="h-9 w-16" />
+								) : (
+									summary?.averageScore?.toFixed(1) || "0.0"
+								)}
+							</div>
 						</div>
 
 						{/* Highest Score */}
@@ -61,7 +84,13 @@ export default function TestDetail() {
 									<Trophy className="size-4" />
 								</div>
 							</div>
-							<div className="text-3xl font-bold mt-2">9</div>
+							<div className="text-3xl font-bold mt-2">
+								{isSummaryLoading ? (
+									<Skeleton className="h-9 w-12" />
+								) : (
+									summary?.highestScore || 0
+								)}
+							</div>
 						</div>
 
 						{/* Lowest Score */}
@@ -74,7 +103,13 @@ export default function TestDetail() {
 									<Target className="size-4" />
 								</div>
 							</div>
-							<div className="text-3xl font-bold mt-2">9</div>
+							<div className="text-3xl font-bold mt-2">
+								{isSummaryLoading ? (
+									<Skeleton className="h-9 w-12" />
+								) : (
+									summary?.lowestScore || 0
+								)}
+							</div>
 						</div>
 					</div>
 				</CardContent>
@@ -83,7 +118,15 @@ export default function TestDetail() {
 			{/* Student List Card */}
 			<Card className="rounded-2xl border-0 shadow-sm md:border md:shadow-sm bg-white">
 				<CardContent className="p-0 sm:p-2 md:p-6 lg:p-8">
-					<TestStudentList students={students} />
+					{isStudentsLoading ? (
+						<div className="space-y-4 p-4">
+							<Skeleton className="h-10 w-full" />
+							<Skeleton className="h-20 w-full" />
+							<Skeleton className="h-20 w-full" />
+						</div>
+					) : (
+						<TestStudentList students={mappedStudents} />
+					)}
 				</CardContent>
 			</Card>
 		</div>

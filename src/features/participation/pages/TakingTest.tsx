@@ -40,7 +40,8 @@ const TakingTest = () => {
 		testAndQuestionsError,
 	} = useTakingTest(testId ?? "");
 
-	const { mutateAsync: submitTest } = useSubmitTest();
+	const { mutateAsync: submitTest, isPending: isSubmittingTest } =
+		useSubmitTest();
 
 	const handleSubmit = async () => {
 		if (!testData) {
@@ -112,6 +113,8 @@ const TakingTest = () => {
 						formatTime={formatTime}
 						progress={progress}
 						onSubmit={handleSubmit}
+						isSubmitting={isSubmittingTest}
+						submitDialogContainer={containerRef}
 					/>
 				) : null}
 

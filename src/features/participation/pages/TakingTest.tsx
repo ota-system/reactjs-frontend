@@ -46,7 +46,7 @@ const TakingTest = () => {
 	const { mutateAsync: submitTest } = useSubmitTest();
 
 	const handleSubmit = async () => {
-		if (!testData?.data) {
+		if (!testData) {
 			return;
 		}
 

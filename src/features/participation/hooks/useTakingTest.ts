@@ -1,10 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { ErrorResponse, HttpError } from "@/shared/type";
 import type { TestQuestion } from "../types/TakingTest";
 import useTestInfoQuery from "./useTestInfoQuery";
 import useTestQuestionsQuery from "./useTestQuestionsQuery";
 
-const getErrorMessage = (error: unknown) =>
-	error instanceof Error ? error.message : "Đã xảy ra lỗi. Vui lòng thử lại.";
+const getErrorMessage = (error: HttpError) => {
+	if (error) {
+		const errData = error as ErrorResponse;
+		if (errData && errData.message) {
+			return errData.message;
+		}
+	}
+	return "Đã xảy ra lỗi. Vui lòng thử lại.";
+};
 
 const useTakingTest = (testId: string) => {
 	const [page, setPage] = useState(1);
@@ -28,7 +36,7 @@ const useTakingTest = (testId: string) => {
 	}, [STORAGE_KEY, testId]);
 	const [timeLeft, setTimeLeft] = useState<number | null>(null);
 	const [isFullscreen, setIsFullscreen] = useState(false);
-	const [showFullscreenPrompt, setShowFullscreenPrompt] = useState(true);
+	const [showFullscreenPrompt, setShowFullscreenPrompt] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	const {
@@ -36,6 +44,7 @@ const useTakingTest = (testId: string) => {
 		isLoading: isLoadingTest,
 		isError: isTestError,
 		error: testError,
+		isSuccess: isTestSuccess,
 	} = useTestInfoQuery(testId);
 
 	const {
@@ -56,6 +65,12 @@ const useTakingTest = (testId: string) => {
 			});
 		}
 	}, [questions]);
+
+	useEffect(() => {
+		if (isTestSuccess && !isFullscreen) {
+			setShowFullscreenPrompt(true);
+		}
+	}, [isTestSuccess, isFullscreen]);
 
 	const answeredCount = useMemo(
 		() => Object.values(answers).filter((v) => v && v !== "").length,

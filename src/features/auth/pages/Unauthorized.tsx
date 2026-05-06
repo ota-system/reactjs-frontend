@@ -1,10 +1,10 @@
 import EdgePage from "./EdgePage";
 
-const Unauthorized = () => {
+const Unauthorized = ({ description }: { description?: string }) => {
 	return (
 		<EdgePage
 			title="Không có quyền truy cập"
-			description="Bạn không có quyền truy cập vào trang này."
+			description={description || "Bạn không có quyền truy cập vào trang này."}
 		/>
 	);
 };

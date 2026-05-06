@@ -6,7 +6,7 @@ import { toast } from "@/lib/toast";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import StudentFillInBlankQuestionCard from "@/shared/components/StudentFillInBlankQuestionCard";
 import StudentMultipleChoiceQuestionCard from "@/shared/components/StudentMultipleChoiceQuestionCard";
-import TestErrorState from "../components/TestErrorState";
+import ErrorPage from "@/shared/pages/ErrorPage";
 import TestHeader from "../components/TestHeader";
 import { useSubmitTest } from "../hooks/useSubmitTest";
 import useTakingTest from "../hooks/useTakingTest";
@@ -39,14 +39,14 @@ const TakingTest = () => {
 		isLoadingQuestions,
 		answeredCount,
 		progress,
-		errorMessage,
 		accumulatedQuestions,
+		testAndQuestionsError,
 	} = useTakingTest(testId ?? "");
 
 	const { mutateAsync: submitTest } = useSubmitTest();
 
 	const handleSubmit = async () => {
-		if (!testData?.data) {
+		if (!testData) {
 			return;
 		}
 
@@ -76,6 +76,10 @@ const TakingTest = () => {
 		}
 	};
 
+	if (testAndQuestionsError) {
+		return <ErrorPage error={testAndQuestionsError} />;
+	}
+
 	return (
 		<div ref={containerRef} className="min-h-screen w-full bg-background">
 			<Dialog
@@ -95,109 +99,96 @@ const TakingTest = () => {
 					}}
 				/>
 			</Dialog>
+			<div className="mx-auto w-full">
+				{isLoadingTest ? (
+					<Skeleton className="h-24 w-full" />
+				) : testData ? (
+					<TestHeader
+						testName={testData.data.testName}
+						answeredCount={answeredCount}
+						totalQuestions={totalQuestions}
+						timeLeft={timeLeft}
+						formatTime={formatTime}
+						progress={progress}
+						isFullscreen={isFullscreen}
+						onToggleFullscreen={isFullscreen ? exitFullscreen : enterFullscreen}
+						onSubmit={handleSubmit}
+					/>
+				) : null}
 
-			{errorMessage ? (
-				<TestErrorState
-					errorMessage={errorMessage}
-					testName={testData?.data.testName}
-					totalQuestions={totalQuestions}
-					answeredCount={answeredCount}
-					onBack={() => navigate("/")}
-				/>
-			) : (
-				<div className="mx-auto w-full">
-					{isLoadingTest ? (
-						<Skeleton className="h-24 w-full" />
-					) : testData ? (
-						<TestHeader
-							testName={testData.data.testName}
-							answeredCount={answeredCount}
-							totalQuestions={totalQuestions}
-							timeLeft={timeLeft}
-							formatTime={formatTime}
-							progress={progress}
-							isFullscreen={isFullscreen}
-							onToggleFullscreen={
-								isFullscreen ? exitFullscreen : enterFullscreen
-							}
-							onSubmit={handleSubmit}
-						/>
-					) : null}
+				<div className="w-full flex flex-col items-center justify-center">
+					{isLoadingQuestions ? (
+						<div className="space-y-4 p-6 w-full max-w-5xl">
+							{Array.from({ length: 3 }).map((_, i) => (
+								// biome-ignore lint:suspicious/noArrayIndexKey
+								<Skeleton key={i} className="h-40 w-full rounded-2xl" />
+							))}
+						</div>
+					) : (
+						<div className="max-w-5xl space-y-6 p-6 md:p-8">
+							{questions.map((q: TestQuestion, i: number) => {
+								const index = (page - 1) * 10 + i + 1;
+								const points = Number((10 / totalQuestions).toFixed(2));
 
-					<div className="w-full flex flex-col items-center justify-center">
-						{isLoadingQuestions ? (
-							<div className="space-y-4 p-6 w-full max-w-5xl">
-								{Array.from({ length: 3 }).map((_, i) => (
-									// biome-ignore lint:suspicious/noArrayIndexKey
-									<Skeleton key={i} className="h-40 w-full rounded-2xl" />
-								))}
-							</div>
-						) : (
-							<div className="max-w-5xl space-y-6 p-6 md:p-8">
-								{questions.map((q: TestQuestion, i: number) => {
-									const index = (page - 1) * 10 + i + 1;
-									const points = Number((10 / totalQuestions).toFixed(2));
-
-									if (q.type === "fill_in_the_blank") {
-										return (
-											<StudentFillInBlankQuestionCard
-												key={q.id}
-												index={index}
-												points={points}
-												question={q.question}
-												topic={"Topic placeholder"}
-												answer={answers[q.id] ?? ""}
-												onAnswerChange={(value) => setAnswer(q.id, value)}
-											/>
-										);
-									}
-
+								if (q.type === "fill_in_the_blank") {
 									return (
-										<StudentMultipleChoiceQuestionCard
+										<StudentFillInBlankQuestionCard
 											key={q.id}
 											index={index}
 											points={points}
 											question={q.question}
 											topic={"Topic placeholder"}
-											options={q.choices.map((c) => ({
-												id: c.id,
-												content: c.answer,
-											}))}
-											selectedOptionId={answers[q.id]}
-											onSelectOption={(optionId) => setAnswer(q.id, optionId)}
+											answer={answers[q.id] ?? ""}
+											onAnswerChange={(value) => setAnswer(q.id, value)}
 										/>
 									);
-								})}
-							</div>
-						)}
+								}
 
-						{!isLoadingQuestions && (
-							<div className="flex items-center justify-between pt-2 w-full max-w-3xl px-6 md:px-8 mb-8">
-								<Button
-									variant="outline"
-									disabled={page <= 1}
-									onClick={() => setPage((p) => p - 1)}
-									className="cursor-pointer"
-								>
-									Trang trước
-								</Button>
+								return (
+									<StudentMultipleChoiceQuestionCard
+										key={q.id}
+										index={index}
+										points={points}
+										question={q.question}
+										topic={"Topic placeholder"}
+										options={q.choices.map((c) => ({
+											id: c.id,
+											content: c.answer,
+										}))}
+										selectedOptionId={answers[q.id]}
+										onSelectOption={(optionId) => setAnswer(q.id, optionId)}
+									/>
+								);
+							})}
+						</div>
+					)}
 
-								<span className="text-sm text-muted-foreground">
-									Trang {page} / {totalPages}
-								</span>
+					{!isLoadingQuestions && (
+						<div className="flex items-center justify-between pt-2 w-full max-w-3xl px-6 md:px-8 mb-8">
+							<Button
+								variant="outline"
+								disabled={page <= 1}
+								onClick={() => setPage((p) => p - 1)}
+								className="cursor-pointer"
+							>
+								Trang trước
+							</Button>
 
-								<Button
-									disabled={page >= totalPages}
-									onClick={() => setPage((p) => p + 1)}
-									className="cursor-pointer"
-								>
-									Trang tiếp
-								</Button>
-							</div>
-						)}
-					</div>
+							<span className="text-sm text-muted-foreground">
+								Trang {page} / {totalPages}
+							</span>
+
+							<Button
+								disabled={page >= totalPages}
+								onClick={() => setPage((p) => p + 1)}
+								className="cursor-pointer"
+							>
+								Trang tiếp
+							</Button>
+						</div>
+					)}
 				</div>
-			)}
+			</div>
 		</div>
 	);
 };

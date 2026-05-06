@@ -1,6 +1,11 @@
 import { Clock3, FileText, Play, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 interface TestCardProps {
@@ -8,7 +13,7 @@ interface TestCardProps {
 	durationMinutes: number;
 	questionCount: number;
 	topics: string[];
-	antiCheatLabel: string;
+	isCheating: boolean;
 	actionLabel?: string;
 	onAction: () => void;
 	className?: string;
@@ -20,7 +25,7 @@ const TestCard = ({
 	durationMinutes,
 	questionCount,
 	topics = [],
-	antiCheatLabel,
+	isCheating = false,
 	actionLabel,
 	onAction,
 	className,
@@ -49,12 +54,18 @@ const TestCard = ({
 						</span>
 						<span>|</span>
 						<span className="text-lg">10 điểm</span>
-						{antiCheatLabel ? (
-							<span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--danger-border-color)] bg-[var(--danger-bg-color)] px-2 py-1 text-base font-medium text-[var(--danger-text-color)]">
-								<ShieldAlert className="size-4" />
-								{antiCheatLabel}
-							</span>
-						) : null}
+						{isCheating && (
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--danger-border-color)] bg-[var(--danger-bg-color)] px-2 py-1 text-base font-medium text-[var(--danger-text-color)]">
+										<ShieldAlert className="size-4" />
+									</span>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p>Chống gian lận</p>
+								</TooltipContent>
+							</Tooltip>
+						)}
 					</div>
 
 					{topics.length > 0 ? (

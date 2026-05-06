@@ -19,7 +19,10 @@ jobs:
       - name: Build Project
         run: npm run build
         env:
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_CLIENT_SECRECT: ${{ secrets.VITE_GOOGLE_CLIENT_SECRET }}
+
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2

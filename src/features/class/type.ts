@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { Role } from "@/shared/type";
+import type { UserSummary } from "@/shared/type";
 import type { CreateClassSchema } from "./schema/CreateClassSchema";
 
 export type CreateClassPayload = z.infer<typeof CreateClassSchema>;
@@ -15,14 +15,6 @@ export type ClassResponse = {
 	updatedAt: string;
 	teacherName?: string;
 	teacher?: UserSummary;
-};
-
-export type UserSummary = {
-	id: string;
-	fullName: string;
-	email: string;
-	avatarUrl?: string;
-	role: Role;
 };
 
 export type ClassDetail = {

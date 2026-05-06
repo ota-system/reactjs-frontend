@@ -11,6 +11,7 @@ export default function ClassTestList() {
 				questionCount={20}
 				topics={["Toán", "Học kỳ 1"]}
 				onAction={() => {}}
+				isCheating={true}
 				antiCheatLabel="Chống gian lận"
 				actionLabel="Xem kết quả"
 				className="PNV26A"

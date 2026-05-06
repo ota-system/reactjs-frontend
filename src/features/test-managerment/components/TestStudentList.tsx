@@ -26,7 +26,7 @@ interface TestStudentListProps {
 
 export function TestStudentList({ students }: TestStudentListProps) {
 	return (
-		<div className="rounded-xl w-full flex flex-col h-full border-0">
+		<div className="rounded-xl size-full flex flex-col border-0">
 			<div className="mb-6 flex-none">
 				<h3 className="text-lg font-bold">Danh sách thí sinh</h3>
 				<p className="text-sm text-muted-foreground">

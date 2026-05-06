@@ -42,7 +42,7 @@ export default function TestDetail() {
 								<span className="text-sm font-medium text-muted-foreground">
 									Tổng thí sinh
 								</span>
-								<div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+								<div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
 									<CheckCircle2 className="size-4" />
 								</div>
 							</div>
@@ -61,7 +61,7 @@ export default function TestDetail() {
 								<span className="text-sm font-medium text-muted-foreground">
 									Điểm TB
 								</span>
-								<div className="flex h-8 w-8 items-center justify-center rounded-md bg-green-100 text-green-600">
+								<div className="flex size-8 items-center justify-center rounded-md bg-green-100 text-green-600">
 									<TrendingUp className="size-4" />
 								</div>
 							</div>
@@ -80,7 +80,7 @@ export default function TestDetail() {
 								<span className="text-sm font-medium text-muted-foreground">
 									Điểm cao nhất
 								</span>
-								<div className="flex h-8 w-8 items-center justify-center rounded-md bg-yellow-100 text-yellow-600">
+								<div className="flex size-8 items-center justify-center rounded-md bg-yellow-100 text-yellow-600">
 									<Trophy className="size-4" />
 								</div>
 							</div>
@@ -99,7 +99,7 @@ export default function TestDetail() {
 								<span className="text-sm font-medium text-muted-foreground">
 									Điểm thấp nhất
 								</span>
-								<div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-100 text-purple-600">
+								<div className="flex size-8 items-center justify-center rounded-full bg-purple-100 text-purple-600">
 									<Target className="size-4" />
 								</div>
 							</div>

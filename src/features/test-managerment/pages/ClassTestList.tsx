@@ -32,7 +32,7 @@ export default function ClassTestList() {
 							durationMinutes={test.duration}
 							questionCount={test.totalQuestions}
 							topics={test.topicName ? [test.topicName] : []}
-							antiCheatLabel={test.antiCheating ? "Chống gian lận" : ""}
+							antiCheatLabel={test.antiCheating ? "Chống gian lận" : undefined}
 							onAction={() => handleViewResults(test.id)}
 							stats={{
 								attempts: test.stats?.attempts || 0,

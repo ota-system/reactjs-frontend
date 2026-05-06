@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 
 type ClassItemProps = {
-	id: string;
 	title: string;
 	teacher: string;
 	studentsCount: number;

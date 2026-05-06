@@ -13,9 +13,11 @@ export const fetchTestSummary = async (
 
 export const fetchTestStudents = async (
 	testId: string,
+	page: number = 1,
 ): Promise<TestStudentResponse> => {
 	const response: ApiResponse<TestStudentResponse> = await httpClient.get(
-		`/api/v1/tests/${testId}/students`,
+		`/api/v1/tests/${testId}/students?page=${page}`,
+		//TO DO: update API to support pagination later
 	);
 	return response.data;
 };

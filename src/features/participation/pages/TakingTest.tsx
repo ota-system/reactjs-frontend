@@ -23,9 +23,6 @@ const TakingTest = () => {
 		answers,
 		setAnswer,
 		timeLeft,
-		isFullscreen,
-		enterFullscreen,
-		exitFullscreen,
 		showFullscreenPrompt,
 		setShowFullscreenPrompt,
 		handleEnterFullscreen,
@@ -43,7 +40,8 @@ const TakingTest = () => {
 		testAndQuestionsError,
 	} = useTakingTest(testId ?? "");
 
-	const { mutateAsync: submitTest } = useSubmitTest();
+	const { mutateAsync: submitTest, isPending: isSubmittingTest } =
+		useSubmitTest();
 
 	const handleSubmit = async () => {
 		if (!testData) {
@@ -81,7 +79,10 @@ const TakingTest = () => {
 	}
 
 	return (
-		<div ref={containerRef} className="min-h-screen w-full bg-background">
+		<div
+			ref={containerRef}
+			className="min-h-screen w-full bg-background overflow-y-auto"
+		>
 			<Dialog
 				open={showFullscreenPrompt}
 				onOpenChange={setShowFullscreenPrompt}
@@ -93,10 +94,11 @@ const TakingTest = () => {
 					actionVariant="default"
 					action={handleEnterFullscreen}
 					secondaryAction={{
-						label: "Bỏ qua",
+						label: "Quay lại",
 						action: handleDismissFullscreen,
 						variant: "outline",
 					}}
+					showCloseButton={false}
 				/>
 			</Dialog>
 			<div className="mx-auto w-full">
@@ -110,9 +112,9 @@ const TakingTest = () => {
 						timeLeft={timeLeft}
 						formatTime={formatTime}
 						progress={progress}
-						isFullscreen={isFullscreen}
-						onToggleFullscreen={isFullscreen ? exitFullscreen : enterFullscreen}
 						onSubmit={handleSubmit}
+						isSubmitting={isSubmittingTest}
+						submitDialogContainer={containerRef}
 					/>
 				) : null}
 

@@ -1,9 +1,8 @@
+import { classApi, testApi } from "@/core/api/endpoints";
 import { httpClient } from "@/core/api/httpClient.api";
 import type { ApiResponse, PageMetaData } from "@/shared/type";
 import type { TestDetail, TestSummary } from "../types/index";
 import type { TestInfo, TestQuestionResponse } from "../types/TakingTest";
-
-const classApi = "/api/v1/classes";
 
 export const getTestsByClass = async (
 	classId: string,
@@ -15,11 +14,11 @@ export const getTestsByClass = async (
 	return response;
 };
 
-export const getTestDetail = async (
+export const getDetailedTestInfo = async (
 	testId: string,
 ): Promise<ApiResponse<TestDetail>> => {
 	const response: ApiResponse<TestDetail> = await httpClient.get(
-		`${classApi}/tests/${testId}`,
+		`${testApi}/${testId}?detail=true`,
 	);
 
 	return response;
@@ -27,7 +26,7 @@ export const getTestDetail = async (
 
 export const getTestInfo = async (testId: string) => {
 	const response = (await httpClient.get(
-		`/api/v1/tests/${testId}`,
+		`${testApi}/${testId}?detail=false`,
 	)) as ApiResponse<TestInfo>;
 	return response;
 };
@@ -38,7 +37,7 @@ export const getTestQuestions = async (
 	limit = 10,
 ) => {
 	const response = (await httpClient.get(
-		`/api/v1/tests/${testId}/questions?page=${page}&limit=${limit}`,
+		`${testApi}/${testId}/questions?page=${page}&limit=${limit}`,
 	)) as { data: TestQuestionResponse; metadata: PageMetaData };
 	return response;
 };

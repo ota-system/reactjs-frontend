@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { HttpError } from "@/shared/type";
 import type { TestQuestion } from "../types/TakingTest";
 import useTestInfoQuery from "./useTestInfoQuery";
 import useTestQuestionsQuery from "./useTestQuestionsQuery";
-
-const getErrorMessage = (error: unknown) =>
-	error instanceof Error ? error.message : "Đã xảy ra lỗi. Vui lòng thử lại.";
 
 const useTakingTest = (testId: string) => {
 	const [page, setPage] = useState(1);
 	const [answers, setAnswers] = useState<Record<string, string>>({});
 	const accumulatedQuestionsRef = useRef<Map<string, TestQuestion>>(new Map());
+	const navigate = useNavigate();
 
 	const STORAGE_KEY = `taking-test-answers-${testId}`;
 
@@ -28,14 +28,18 @@ const useTakingTest = (testId: string) => {
 	}, [STORAGE_KEY, testId]);
 	const [timeLeft, setTimeLeft] = useState<number | null>(null);
 	const [isFullscreen, setIsFullscreen] = useState(false);
-	const [showFullscreenPrompt, setShowFullscreenPrompt] = useState(true);
+	const [showFullscreenPrompt, setShowFullscreenPrompt] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
+
+	const [testAndQuestionsError, setTestAndQuestionsError] =
+		useState<HttpError | null>(null);
 
 	const {
 		data: testData,
 		isLoading: isLoadingTest,
 		isError: isTestError,
 		error: testError,
+		isSuccess: isTestSuccess,
 	} = useTestInfoQuery(testId);
 
 	const {
@@ -57,6 +61,12 @@ const useTakingTest = (testId: string) => {
 		}
 	}, [questions]);
 
+	useEffect(() => {
+		if (isTestSuccess && !isFullscreen) {
+			setShowFullscreenPrompt(true);
+		}
+	}, [isTestSuccess, isFullscreen]);
+
 	const answeredCount = useMemo(
 		() => Object.values(answers).filter((v) => v && v !== "").length,
 		[answers],
@@ -64,9 +74,6 @@ const useTakingTest = (testId: string) => {
 
 	const progress =
 		totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0;
-
-	const enterFullscreen = () => containerRef.current?.requestFullscreen();
-	const exitFullscreen = () => document.exitFullscreen();
 
 	useEffect(() => {
 		const onChange = () => setIsFullscreen(!!document.fullscreenElement);
@@ -79,7 +86,7 @@ const useTakingTest = (testId: string) => {
 		containerRef.current?.requestFullscreen().catch(() => {});
 	};
 
-	const handleDismissFullscreen = () => setShowFullscreenPrompt(false);
+	const handleDismissFullscreen = () => navigate(-1);
 
 	// ===== Timer =====
 	useEffect(() => {
@@ -123,13 +130,24 @@ const useTakingTest = (testId: string) => {
 		});
 
 	// ===== Error =====
-	const errorMessage = isTestError
-		? getErrorMessage(testError)
-		: isQuestionsError
-			? getErrorMessage(questionsError)
-			: timeLeft === 0
-				? "Hết thời gian làm bài!"
-				: null;
+	useEffect(() => {
+		if (isTestError) {
+			setTestAndQuestionsError(testError);
+		} else if (isQuestionsError) {
+			setTestAndQuestionsError(questionsError);
+		} else if (timeLeft === 0) {
+			setTestAndQuestionsError({
+				status: 408,
+				message: "Hết thời gian làm bài!",
+				code: "REQUEST_TIMEOUT",
+				path: window.location.pathname,
+				details: [],
+				timestamp: new Date().toISOString(),
+			});
+		} else {
+			setTestAndQuestionsError(null);
+		}
+	}, [isTestError, isQuestionsError, testError, questionsError, timeLeft]);
 
 	return {
 		containerRef,
@@ -138,9 +156,6 @@ const useTakingTest = (testId: string) => {
 		answers,
 		setAnswer,
 		timeLeft,
-		isFullscreen,
-		enterFullscreen,
-		exitFullscreen,
 		showFullscreenPrompt,
 		setShowFullscreenPrompt,
 		handleEnterFullscreen,
@@ -154,8 +169,8 @@ const useTakingTest = (testId: string) => {
 		isLoadingQuestions,
 		answeredCount,
 		progress,
-		errorMessage,
 		accumulatedQuestions: accumulatedQuestionsRef.current,
+		testAndQuestionsError,
 	};
 };
 

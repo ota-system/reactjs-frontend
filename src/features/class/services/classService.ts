@@ -1,3 +1,4 @@
+import { classApi } from "@/core/api/endpoints";
 import { httpClient } from "@/core/api/httpClient.api";
 import type { ApiResponse } from "@/shared/type";
 import type {
@@ -6,8 +7,6 @@ import type {
 	CreateClassPayload,
 	UserSummary,
 } from "../type";
-
-const classApi = "/api/v1/classes";
 
 export const createClass = async (
 	data: CreateClassPayload,

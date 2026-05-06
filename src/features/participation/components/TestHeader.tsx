@@ -1,8 +1,8 @@
-import { Maximize, Minimize } from "lucide-react";
+import type { RefObject } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
+import FullscreenSubmitDialog from "./FullscreenSubmitDialog";
 
 interface TestHeaderProps {
 	testName: string;
@@ -11,9 +11,9 @@ interface TestHeaderProps {
 	timeLeft: number | null;
 	formatTime: (seconds: number) => string;
 	progress: number;
-	isFullscreen: boolean;
-	onToggleFullscreen: () => void;
 	onSubmit: () => void;
+	isSubmitting: boolean;
+	submitDialogContainer?: RefObject<HTMLElement | null>;
 }
 
 export default function TestHeader({
@@ -23,28 +23,16 @@ export default function TestHeader({
 	timeLeft,
 	formatTime,
 	progress,
-	isFullscreen,
-	onToggleFullscreen,
 	onSubmit,
+	isSubmitting,
+	submitDialogContainer,
 }: TestHeaderProps) {
+	const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+
 	return (
 		<div className="sticky top-0 z-10 space-y-3 border bg-background p-5 shadow-sm">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
-					<Button
-						type="button"
-						variant="ghost"
-						size="icon"
-						onClick={onToggleFullscreen}
-						className="cursor-pointer"
-						aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
-					>
-						{isFullscreen ? (
-							<Minimize className="size-4" />
-						) : (
-							<Maximize className="size-4" />
-						)}
-					</Button>
 					<div>
 						<h1 className="text-xl font-bold text-[var(--primary-color)]">
 							{testName}
@@ -68,23 +56,21 @@ export default function TestHeader({
 						</div>
 					)}
 
-					<Dialog>
-						<DialogTrigger asChild>
-							<Button className="cursor-pointer px-7 py-5">Nộp bài</Button>
-						</DialogTrigger>
-						<ConfirmedDialog
-							title="Nộp bài"
-							description="Bạn có chắc muốn nộp bài? Hành động này không thể hoàn tác."
-							actionLabel="Nộp bài"
-							actionVariant="default"
-							action={onSubmit}
-							secondaryAction={{
-								label: "Hủy",
-								action: () => {},
-								variant: "outline",
-							}}
-						/>
-					</Dialog>
+					<Button
+						className="cursor-pointer px-7 py-5"
+						disabled={isSubmitting}
+						onClick={() => setIsSubmitDialogOpen(true)}
+					>
+						{isSubmitting ? "Đang nộp..." : "Nộp bài"}
+					</Button>
+
+					<FullscreenSubmitDialog
+						open={isSubmitDialogOpen}
+						onOpenChange={setIsSubmitDialogOpen}
+						onSubmit={onSubmit}
+						isSubmitting={isSubmitting}
+						container={submitDialogContainer?.current}
+					/>
 				</div>
 			</div>
 

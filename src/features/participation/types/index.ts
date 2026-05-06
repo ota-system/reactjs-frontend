@@ -27,6 +27,7 @@ export type TestSummary = {
 	topic: string;
 	createdAt: string;
 	hasAttempted: boolean;
+	timesUp: boolean;
 };
 
 export type TestDetail = TestSummary;

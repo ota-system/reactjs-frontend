@@ -17,9 +17,11 @@ export default function StudentTestCard({ test }: { test: TestSummary }) {
 			questionCount={test.totalQuestions}
 			topics={[test.topic]}
 			antiCheatLabel={test.antiCheating ? "Chống gian lận" : ""}
-			actionLabel={test.hasAttempted ? "Đã làm" : "Làm bài"}
+			actionLabel={
+				test.hasAttempted ? "Đã làm" : test.timesUp ? "Hết hạn" : "Làm bài"
+			}
 			onAction={handleStart}
-			disabled={test.hasAttempted}
+			disabled={test.hasAttempted || test.timesUp}
 		/>
 	);
 }

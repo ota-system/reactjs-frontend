@@ -3,11 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { HttpError } from "@/shared/type";
-import { useTestDetailQuery } from "../hooks/useTestDetailQuery";
+import { useDetailedTestInfoQuery } from "../hooks/useTestDetailQuery";
 
 export default function StudentTestIntro() {
 	const { testId } = useParams<{ testId: string }>();
-	const { data, isLoading, isError, error } = useTestDetailQuery(testId);
+	const { data, isLoading, isError, error } = useDetailedTestInfoQuery(testId);
 	const navigate = useNavigate();
 
 	const testDetail = data?.data;

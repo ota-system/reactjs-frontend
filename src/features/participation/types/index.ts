@@ -26,6 +26,7 @@ export type TestSummary = {
 	antiCheating: boolean;
 	topic: string;
 	createdAt: string;
+	hasAttempted: boolean;
 };
 
 export type TestDetail = TestSummary;

@@ -1,11 +1,4 @@
-import {
-	AlertTriangle,
-	BookOpen,
-	Clock,
-	Eye,
-	Loader2,
-	Tag,
-} from "lucide-react";
+import { BookOpen, Clock, Eye, Loader2, Tag } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -55,9 +48,6 @@ export default function StudentTestIntro() {
 						<h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
 							{testDetail.testName}
 						</h1>
-						<p className="text-muted-foreground text-sm">
-							Đọc kỹ hướng dẫn trước khi bắt đầu
-						</p>
 					</div>
 
 					<div className="grid grid-cols-3 gap-4">
@@ -110,23 +100,15 @@ export default function StudentTestIntro() {
 							</li>
 							<li>Chọn đáp án đúng nhất cho mỗi câu hỏi</li>
 						</ul>
-
-						{testDetail.antiCheating && (
-							<div className="flex items-start gap-2 text-orange-600 mt-4">
-								<AlertTriangle className="size-5 shrink-0 mt-0.5" />
-								<p className="text-sm">
-									<span className="font-semibold">Chống gian lận:</span> Không
-									chuyển tab hoặc thoát khỏi trang trong khi làm bài
-								</p>
-							</div>
-						)}
 					</div>
 
 					<div className="bg-blue-50/50 text-blue-800 border border-blue-100 rounded-xl p-4 flex items-start gap-3">
-						<Eye className="size-5 text-blue-500 shrink-0 mt-0.5" />
+						<Eye className="size-5 text-blue-500 shrink-0" />
 						<p className="text-sm">
 							<span className="font-semibold">Lưu ý:</span> Đảm bảo kết nối
 							internet ổn định trong suốt bài thi
+							{testDetail.antiCheating &&
+								" và không chuyển tab hoặc thoát khỏi trang."}
 						</p>
 					</div>
 
@@ -135,8 +117,11 @@ export default function StudentTestIntro() {
 						onClick={() => {
 							navigate(`/taking-test/${testId}`);
 						}}
+						disabled={testDetail.hasAttempted}
 					>
-						Bắt đầu làm bài
+						{testDetail.hasAttempted
+							? "Bạn đã làm bài thi này"
+							: "Bắt đầu làm bài"}
 					</Button>
 				</CardContent>
 			</Card>

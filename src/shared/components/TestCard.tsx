@@ -12,6 +12,7 @@ interface TestCardProps {
 	actionLabel?: string;
 	onAction: () => void;
 	className?: string;
+	disabled?: boolean;
 }
 
 const TestCard = ({
@@ -23,6 +24,7 @@ const TestCard = ({
 	actionLabel,
 	onAction,
 	className,
+	disabled = false,
 }: TestCardProps) => {
 	return (
 		<Card
@@ -73,6 +75,7 @@ const TestCard = ({
 					type="button"
 					onClick={onAction}
 					className="h-12 px-6 text-lg font-medium hover:opacity-80 cursor-pointer"
+					disabled={disabled}
 				>
 					<Play className="size-4" />
 					{actionLabel}

@@ -18,7 +18,7 @@ export const getDetailedTestInfo = async (
 	testId: string,
 ): Promise<ApiResponse<TestDetail>> => {
 	const response: ApiResponse<TestDetail> = await httpClient.get(
-		`${testApi}/${testId}?detail=true`,
+		`${testApi}/${testId}?detailed=true`,
 	);
 
 	return response;
@@ -26,7 +26,7 @@ export const getDetailedTestInfo = async (
 
 export const getTestInfo = async (testId: string) => {
 	const response = (await httpClient.get(
-		`${testApi}/${testId}?detail=false`,
+		`${testApi}/${testId}?detailed=false`,
 	)) as ApiResponse<TestInfo>;
 	return response;
 };

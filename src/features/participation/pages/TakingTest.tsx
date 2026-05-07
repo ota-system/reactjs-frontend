@@ -1,3 +1,4 @@
+import { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
@@ -7,7 +8,9 @@ import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import StudentFillInBlankQuestionCard from "@/shared/components/StudentFillInBlankQuestionCard";
 import StudentMultipleChoiceQuestionCard from "@/shared/components/StudentMultipleChoiceQuestionCard";
 import ErrorPage from "@/shared/pages/ErrorPage";
+import FraudWarningDialog from "../components/FraudWarningDialog";
 import TestHeader from "../components/TestHeader";
+import useFraudDetection from "../hooks/useFraudDetection";
 import { useSubmitTest } from "../hooks/useSubmitTest";
 import useTakingTest from "../hooks/useTakingTest";
 import type { TestQuestion } from "../types/TakingTest";
@@ -15,6 +18,8 @@ import type { TestQuestion } from "../types/TakingTest";
 const TakingTest = () => {
 	const { testId } = useParams<{ testId: string }>();
 	const navigate = useNavigate();
+	const [fraudWarningOpen, setFraudWarningOpen] = useState(false);
+	const [fraudWarningMessage, setFraudWarningMessage] = useState("");
 
 	const {
 		containerRef,
@@ -43,6 +48,32 @@ const TakingTest = () => {
 	const { mutateAsync: submitTest, isPending: isSubmittingTest } =
 		useSubmitTest();
 
+	const showFraudWarning = useCallback((message: string) => {
+		setFraudWarningMessage(message);
+		setFraudWarningOpen(true);
+	}, []);
+
+	const handleSubmitRef = useRef<() => Promise<void>>(async () => {});
+
+	const { reset } = useFraudDetection({
+		threshold: 10,
+		testId: testData?.data.id,
+		containerRef,
+		onViolation: (v, _containerRef, currentCount) => {
+			showFraudWarning(
+				`${v.message ?? "Đã phát hiện hành vi nghi ngờ gian lận."} Tổng vi phạm: ${currentCount} lần.`,
+			);
+		},
+		onThresholdReached: async () => {
+			showFraudWarning(
+				"Đã cảnh báo nghi ngờ gian lận 10 lần — tự động nộp bài.",
+			);
+			setTimeout(() => {
+				handleSubmitRef.current().catch(() => {});
+			}, 5000);
+		},
+	});
+
 	const handleSubmit = async () => {
 		if (!testData) {
 			return;
@@ -64,6 +95,7 @@ const TakingTest = () => {
 		try {
 			const testRes = await submitTest(payload);
 			toast.success(testRes.message);
+			reset();
 			navigate(`/my-tests/${testData.data.id}/result`, {
 				state: { testResult: testRes.data },
 				replace: true,
@@ -73,6 +105,8 @@ const TakingTest = () => {
 			toast.error(msg);
 		}
 	};
+
+	handleSubmitRef.current = handleSubmit;
 
 	if (testAndQuestionsError) {
 		return <ErrorPage error={testAndQuestionsError} />;
@@ -101,10 +135,15 @@ const TakingTest = () => {
 					showCloseButton={false}
 				/>
 			</Dialog>
+			<FraudWarningDialog
+				open={fraudWarningOpen}
+				onOpenChange={setFraudWarningOpen}
+				message={fraudWarningMessage}
+				container={containerRef.current}
+			/>
 			<div className="mx-auto w-full">
-				{isLoadingTest ? (
-					<Skeleton className="h-24 w-full" />
-				) : testData ? (
+				{isLoadingTest && <Skeleton className="h-24 w-full" />}
+				{testData && (
 					<TestHeader
 						testName={testData.data.testName}
 						answeredCount={answeredCount}
@@ -116,7 +155,7 @@ const TakingTest = () => {
 						isSubmitting={isSubmittingTest}
 						submitDialogContainer={containerRef}
 					/>
-				) : null}
+				)}
 
 				<div className="w-full flex flex-col items-center justify-center">
 					{isLoadingQuestions ? (
@@ -127,67 +166,66 @@ const TakingTest = () => {
 							))}
 						</div>
 					) : (
-						<div className="max-w-5xl space-y-6 p-6 md:p-8">
-							{questions.map((q: TestQuestion, i: number) => {
-								const index = (page - 1) * 10 + i + 1;
-								const points = Number((10 / totalQuestions).toFixed(2));
+						<>
+							<div className="max-w-5xl space-y-6 p-6 md:p-8">
+								{questions.map((q: TestQuestion, i: number) => {
+									const index = (page - 1) * 10 + i + 1;
+									const points = Number((10 / totalQuestions).toFixed(2));
 
-								if (q.type === "fill_in_the_blank") {
+									if (q.type === "fill_in_the_blank") {
+										return (
+											<StudentFillInBlankQuestionCard
+												key={q.id}
+												index={index}
+												points={points}
+												question={q.question}
+												topic={"Topic placeholder"}
+												answer={answers[q.id] ?? ""}
+												onAnswerChange={(value) => setAnswer(q.id, value)}
+											/>
+										);
+									}
+
 									return (
-										<StudentFillInBlankQuestionCard
+										<StudentMultipleChoiceQuestionCard
 											key={q.id}
 											index={index}
 											points={points}
 											question={q.question}
 											topic={"Topic placeholder"}
-											answer={answers[q.id] ?? ""}
-											onAnswerChange={(value) => setAnswer(q.id, value)}
+											options={q.choices.map((c) => ({
+												id: c.id,
+												content: c.answer,
+											}))}
+											selectedOptionId={answers[q.id]}
+											onSelectOption={(optionId) => setAnswer(q.id, optionId)}
 										/>
 									);
-								}
+								})}
+							</div>
+							<div className="flex items-center justify-between pt-2 w-full max-w-3xl px-6 md:px-8 mb-8">
+								<Button
+									variant="outline"
+									disabled={page <= 1}
+									onClick={() => setPage((p) => p - 1)}
+									className="cursor-pointer"
+								>
+									Trang trước
+								</Button>
 
-								return (
-									<StudentMultipleChoiceQuestionCard
-										key={q.id}
-										index={index}
-										points={points}
-										question={q.question}
-										topic={"Topic placeholder"}
-										options={q.choices.map((c) => ({
-											id: c.id,
-											content: c.answer,
-										}))}
-										selectedOptionId={answers[q.id]}
-										onSelectOption={(optionId) => setAnswer(q.id, optionId)}
-									/>
-								);
-							})}
-						</div>
-					)}
+								<span className="text-sm text-muted-foreground">
+									Trang {page} / {totalPages}
+								</span>
 
-					{!isLoadingQuestions && (
-						<div className="flex items-center justify-between pt-2 w-full max-w-3xl px-6 md:px-8 mb-8">
-							<Button
-								variant="outline"
-								disabled={page <= 1}
-								onClick={() => setPage((p) => p - 1)}
-								className="cursor-pointer"
-							>
-								Trang trước
-							</Button>
-
-							<span className="text-sm text-muted-foreground">
-								Trang {page} / {totalPages}
-							</span>
-
-							<Button
-								disabled={page >= totalPages}
-								onClick={() => setPage((p) => p + 1)}
-								className="cursor-pointer"
-							>
-								Trang tiếp
-							</Button>
-						</div>
+								<Button
+									disabled={page >= totalPages}
+									onClick={() => setPage((p) => p + 1)}
+									className="cursor-pointer"
+								>
+									Trang tiếp
+								</Button>
+							</div>
+						</>
 					)}
 				</div>
 			</div>

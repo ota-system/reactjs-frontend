@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { testSubmittedResponse } from "@/shared/data/mook";
 import type { SubmitTestResult } from "../types";
+import { fraudToString } from "../utils/fraudToString";
 
 export default function TestResult() {
 	const location = useLocation();
@@ -59,17 +60,18 @@ export default function TestResult() {
 								<Progress value={testResult.correctRate} className="h-3" />
 							</div>
 
-							<Alert
-								variant="destructive"
-								className="mt-6 bg-yellow-50 text-yellow-800 border-yellow-200"
-							>
-								<AlertTriangle className="size-4" />
-								<AlertTitle>Cảnh báo!</AlertTitle>
-								<AlertDescription>
-									{/* I hard coded here, please skip this when reviewing */}
-									Phát hiện 4 hành vi bất thường trong quá trình làm bài.
-								</AlertDescription>
-							</Alert>
+							{testResult.fraud.length > 0 && (
+								<Alert
+									variant="destructive"
+									className="mt-6 bg-yellow-50 text-yellow-800 border-yellow-200"
+								>
+									<AlertTriangle className="size-4" />
+									<AlertTitle>Cảnh báo!</AlertTitle>
+									<AlertDescription>
+										<span>{fraudToString(testResult.fraud)}</span>
+									</AlertDescription>
+								</Alert>
+							)}
 
 							<div className="w-full mt-6 flex gap-4 justify-center">
 								<Button

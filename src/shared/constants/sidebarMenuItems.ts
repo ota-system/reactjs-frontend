@@ -33,7 +33,7 @@ const teacherMenuItems = [
 	{
 		title: "Quản lý bài thi",
 		icon: LuFileText,
-		tab: "tests",
+		tab: "test-management",
 	},
 	{
 		title: "Phân tích",

@@ -3,28 +3,26 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 
 type ClassItemProps = {
-	id: string;
 	title: string;
 	teacher: string;
 	studentsCount: number;
 	testsCount: number;
 	code: string;
-	basePath?: string;
+	href: string;
 };
 
 const ClassItem = ({
-	id,
 	title,
 	teacher,
 	studentsCount,
 	testsCount,
 	code,
-	basePath = "/my-classes",
+	href,
 }: ClassItemProps) => {
 	const navigate = useNavigate();
 
 	const navigateToTestsPage = () => {
-		navigate(`${basePath}/${id}/tests`);
+		navigate(href);
 	};
 	return (
 		// biome-ignore lint: a11y/useKeyWithClickEvents

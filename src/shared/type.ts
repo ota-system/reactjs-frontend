@@ -36,3 +36,11 @@ export interface PageMetaData {
 	limit: number;
 	totalPages: number;
 }
+
+export type UserSummary = {
+	id: string;
+	fullName: string;
+	email: string;
+	avatarUrl?: string;
+	role: Role;
+};

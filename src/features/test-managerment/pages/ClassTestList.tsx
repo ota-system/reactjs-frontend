@@ -1,37 +1,27 @@
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import TeacherTestCard from "@/shared/components/TeacherTestCard";
-import { useClassTestsQuery } from "../hooks/useClassTestsQuery";
-
-interface TestItem {
-	id: string;
-	testName: string;
-	duration: number;
-	totalQuestions: number;
-	topicName?: string;
-	antiCheating: boolean;
-	stats?: {
-		attempts: number;
-		averageScore: number;
-		highestScore: number;
-	};
-}
+import { useClassTestsQuery } from "../../class/hooks/useClassTestsQuery";
 
 export default function ClassTestList() {
-	const { classId } = useOutletContext<{ classId: string }>();
+	const { classId } = useParams<{ classId: string }>();
 	const { data: tests, isLoading } = useClassTestsQuery(classId);
-	let listContent = null;
+	const navigate = useNavigate();
 
+	const handleViewResults = (testId: string) => {
+		navigate(`/test-management/tests/${testId}`);
+	};
+	let content = null;
 	if (isLoading) {
-		listContent = (
+		content = (
 			<div className="space-y-4">
 				<Skeleton className="h-[200px] w-full rounded-xl bg-white" />
 				<Skeleton className="h-[200px] w-full rounded-xl bg-white" />
 			</div>
 		);
 	} else if (tests && tests.length > 0) {
-		listContent = tests.map((test: TestItem) => (
+		content = tests.map((test) => (
 			<TeacherTestCard
 				key={test.id}
 				title={test.testName}
@@ -39,7 +29,7 @@ export default function ClassTestList() {
 				questionCount={test.totalQuestions}
 				topics={test.topicName ? [test.topicName] : []}
 				antiCheatLabel={test.antiCheating ? "Chống gian lận" : ""}
-				onAction={() => {}}
+				onAction={() => handleViewResults(test.id)}
 				stats={{
 					attempts: test.stats?.attempts || 0,
 					averageScore: test.stats?.averageScore || 0,
@@ -49,7 +39,7 @@ export default function ClassTestList() {
 			/>
 		));
 	} else {
-		listContent = (
+		content = (
 			<div className="text-center py-12 text-muted-foreground bg-white rounded-xl">
 				Chưa có bài thi nào trong lớp học này.
 			</div>
@@ -62,7 +52,7 @@ export default function ClassTestList() {
 				<CardTitle className="text-xl">Danh sách bài thi</CardTitle>
 			</CardHeader>
 			<CardContent className="p-6 md:p-8 space-y-6 bg-muted/10">
-				{listContent}
+				{content}
 			</CardContent>
 		</Card>
 	);

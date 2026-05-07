@@ -35,6 +35,36 @@ const TeacherTestCard = ({
 	className,
 	stats,
 }: TeacherTestCardProps) => {
+	let antiCheatElement = null;
+	if (antiCheatLabel) {
+		antiCheatElement = (
+			<Tooltip>
+				<TooltipTrigger className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-base font-medium text-foreground">
+					<ShieldAlert className="size-4 text-[var(--danger-border-color)]" />
+				</TooltipTrigger>
+				<TooltipContent className="text-sm">
+					<span className="text-white-500">{antiCheatLabel} đang bật</span>
+				</TooltipContent>
+			</Tooltip>
+		);
+	}
+
+	let topicsElement = null;
+	if (topics.length > 0) {
+		topicsElement = (
+			<div className="mt-4 flex flex-wrap gap-2">
+				{topics.map((topic) => (
+					<span
+						key={topic}
+						className="rounded-lg bg-muted/50 border px-3 py-1 font-medium text-foreground text-sm"
+					>
+						{topic}
+					</span>
+				))}
+			</div>
+		);
+	}
+
 	return (
 		<Card
 			className={cn(
@@ -42,7 +72,7 @@ const TeacherTestCard = ({
 				className,
 			)}
 		>
-			<CardContent className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:px-2 md:py-1 border-b border-border/50">
+			<CardContent className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:px-6 md:py-1 border-b border-border/50">
 				<div className="min-w-0 flex-1">
 					<h3 className="truncate text-xl font-semibold">{title}</h3>
 					<div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground">
@@ -57,31 +87,11 @@ const TeacherTestCard = ({
 						</span>
 						<span>|</span>
 						<span className="text-lg">10 điểm</span>
-						{antiCheatLabel ? (
-							<Tooltip>
-								<TooltipTrigger className="inline-flex items-center gap-1.5 rounded-md border border-[var(--danger-border-color)] bg-muted/20 px-2 py-1 text-base font-medium text-foreground">
-									<ShieldAlert className="size-4 text-[var(--danger-border-color)]" />
-								</TooltipTrigger>
-								<TooltipContent className="text-sm">
-									<span className="text-white-500">
-										{antiCheatLabel} đang bật
-									</span>
-								</TooltipContent>
-							</Tooltip>
-						) : null}
+
+						{antiCheatElement}
 					</div>
-					{topics.length > 0 ? (
-						<div className="mt-4 flex flex-wrap gap-2">
-							{topics.map((topic) => (
-								<span
-									key={topic}
-									className="rounded-lg bg-muted/50 border px-3 py-1 font-medium text-foreground text-sm"
-								>
-									{topic}
-								</span>
-							))}
-						</div>
-					) : null}
+
+					{topicsElement}
 				</div>
 
 				<Button
@@ -94,7 +104,6 @@ const TeacherTestCard = ({
 				</Button>
 			</CardContent>
 
-			{/* Stats Footer */}
 			<div className="flex items-center justify-between bg-muted/50 py-4 text-center divide-x">
 				<div className="flex-1 flex flex-col items-center">
 					<span className="text-xl font-bold">{stats.attempts}</span>

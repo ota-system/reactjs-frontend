@@ -7,7 +7,7 @@ const TestManagementLayout = () => {
 			<div>
 				<h1 className="text-2xl md:text-3xl font-semibold">Bài thi</h1>
 				<p className="text-muted-foreground text-sm">
-					Quản lý kết quả thi của học sinh lớp học của bạn.
+					Quản lý kết quả thi của học sinh trong lớp học.
 				</p>
 			</div>
 			<Outlet />

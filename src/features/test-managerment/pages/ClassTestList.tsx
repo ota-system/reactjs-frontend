@@ -12,6 +12,39 @@ export default function ClassTestList() {
 	const handleViewResults = (testId: string) => {
 		navigate(`/test-management/tests/${testId}`);
 	};
+	let content = null;
+	if (isLoading) {
+		content = (
+			<div className="space-y-4">
+				<Skeleton className="h-[200px] w-full rounded-xl bg-white" />
+				<Skeleton className="h-[200px] w-full rounded-xl bg-white" />
+			</div>
+		);
+	} else if (tests && tests.length > 0) {
+		content = tests.map((test) => (
+			<TeacherTestCard
+				key={test.id}
+				title={test.testName}
+				durationMinutes={test.duration}
+				questionCount={test.totalQuestions}
+				topics={test.topicName ? [test.topicName] : []}
+				antiCheatLabel={test.antiCheating ? "Chống gian lận" : ""}
+				onAction={() => handleViewResults(test.id)}
+				stats={{
+					attempts: test.stats?.attempts || 0,
+					averageScore: test.stats?.averageScore || 0,
+					highestScore: test.stats?.highestScore || 0,
+				}}
+				className="bg-white"
+			/>
+		));
+	} else {
+		content = (
+			<div className="text-center py-12 text-muted-foreground bg-white rounded-xl">
+				Chưa có bài thi nào trong lớp học này.
+			</div>
+		);
+	}
 
 	return (
 		<Card className="rounded-2xl">
@@ -19,34 +52,7 @@ export default function ClassTestList() {
 				<CardTitle className="text-xl">Danh sách bài thi</CardTitle>
 			</CardHeader>
 			<CardContent className="p-6 md:p-8 space-y-6 bg-muted/10">
-				{isLoading ? (
-					<div className="space-y-4">
-						<Skeleton className="h-[200px] w-full rounded-xl bg-white" />
-						<Skeleton className="h-[200px] w-full rounded-xl bg-white" />
-					</div>
-				) : tests?.length ? (
-					tests.map((test) => (
-						<TeacherTestCard
-							key={test.id}
-							title={test.testName}
-							durationMinutes={test.duration}
-							questionCount={test.totalQuestions}
-							topics={test.topicName ? [test.topicName] : []}
-							antiCheatLabel={test.antiCheating ? "Chống gian lận" : undefined}
-							onAction={() => handleViewResults(test.id)}
-							stats={{
-								attempts: test.stats?.attempts || 0,
-								averageScore: test.stats?.averageScore || 0,
-								highestScore: test.stats?.highestScore || 0,
-							}}
-							className="bg-white"
-						/>
-					))
-				) : (
-					<div className="text-center py-12 text-muted-foreground bg-white rounded-xl">
-						Chưa có bài thi nào trong lớp học này.
-					</div>
-				)}
+				{content}
 			</CardContent>
 		</Card>
 	);

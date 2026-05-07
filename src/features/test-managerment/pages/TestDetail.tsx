@@ -12,17 +12,7 @@ import { cn } from "@/lib/utils";
 import { TestStudentList } from "../components/TestStudentList";
 import { useTestStudentsQuery } from "../hooks/useTestStudentsQuery";
 import { useTestSummaryQuery } from "../hooks/useTestSummaryQuery";
-
-interface StudentResponse {
-	id: string;
-	studentName: string;
-	violations: number;
-	score: number;
-	totalScore: number;
-	percentage: number;
-	durationMinutes: number;
-	submittedAt: string;
-}
+import type { StudentResponse } from "../type";
 
 export default function TestDetail() {
 	const { testId } = useParams<{ testId: string }>();
@@ -32,8 +22,10 @@ export default function TestDetail() {
 	const { data: studentData, isLoading: isStudentsLoading } =
 		useTestStudentsQuery(testId || "");
 
+	console.log("Test students:", studentData);
+
 	const mappedStudents =
-		studentData?.data.map((s: StudentResponse) => ({
+		studentData?.map((s: StudentResponse) => ({
 			id: s.id,
 			fullName: s.studentName,
 			warnings: s.violations,

@@ -62,11 +62,13 @@ export type TestStudentListItem = {
 	submittedAt: string;
 };
 
-export type TestStudentResponse = {
-	data: TestStudentListItem[];
-	meta: {
-		total: number;
-		page: number;
-		limit: number;
-	};
+export type StudentResponse = {
+	id: string;
+	studentName: string;
+	violations: number;
+	score: number;
+	totalScore: number;
+	percentage: number;
+	durationMinutes: number;
+	submittedAt: string;
 };

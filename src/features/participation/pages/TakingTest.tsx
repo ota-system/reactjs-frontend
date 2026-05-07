@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
@@ -10,6 +10,11 @@ import StudentMultipleChoiceQuestionCard from "@/shared/components/StudentMultip
 import ErrorPage from "@/shared/pages/ErrorPage";
 import FraudWarningDialog from "../components/FraudWarningDialog";
 import TestHeader from "../components/TestHeader";
+import {
+	AUTO_SUBMIT_COUNTDOWN_MS,
+	threshold,
+	thresholdMessages,
+} from "../constants";
 import useFraudDetection from "../hooks/useFraudDetection";
 import { useSubmitTest } from "../hooks/useSubmitTest";
 import useTakingTest from "../hooks/useTakingTest";
@@ -54,27 +59,42 @@ const TakingTest = () => {
 	}, []);
 
 	const handleSubmitRef = useRef<() => Promise<void>>(async () => {});
+	const autoSubmitTimeoutRef = useRef<ReturnType<
+		typeof window.setTimeout
+	> | null>(null);
+
+	const clearAutoSubmitTimeout = useCallback(() => {
+		if (autoSubmitTimeoutRef.current !== null) {
+			window.clearTimeout(autoSubmitTimeoutRef.current);
+			autoSubmitTimeoutRef.current = null;
+		}
+	}, []);
+
+	useEffect(() => {
+		return () => {
+			clearAutoSubmitTimeout();
+		};
+	}, [clearAutoSubmitTimeout]);
 
 	const { reset } = useFraudDetection({
-		threshold: 10,
+		threshold: threshold,
 		testId: testData?.data.id,
 		containerRef,
 		onViolation: (v, _containerRef, currentCount) => {
-			showFraudWarning(
-				`${v.message ?? "Đã phát hiện hành vi nghi ngờ gian lận."} Tổng vi phạm: ${currentCount} lần.`,
-			);
+			showFraudWarning(`${v.message} Tổng vi phạm: ${currentCount} lần.`);
 		},
 		onThresholdReached: async () => {
-			showFraudWarning(
-				"Đã cảnh báo nghi ngờ gian lận 10 lần — tự động nộp bài.",
-			);
-			setTimeout(() => {
+			showFraudWarning(thresholdMessages[threshold]);
+			clearAutoSubmitTimeout();
+			autoSubmitTimeoutRef.current = window.setTimeout(() => {
 				handleSubmitRef.current().catch(() => {});
-			}, 5000);
+			}, AUTO_SUBMIT_COUNTDOWN_MS);
 		},
 	});
 
 	const handleSubmit = async () => {
+		clearAutoSubmitTimeout();
+
 		if (!testData) {
 			return;
 		}
@@ -94,6 +114,7 @@ const TakingTest = () => {
 
 		try {
 			const testRes = await submitTest(payload);
+			clearAutoSubmitTimeout();
 			toast.success(testRes.message);
 			reset();
 			navigate(`/my-tests/${testData.data.id}/result`, {

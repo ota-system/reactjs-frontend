@@ -1,9 +1,12 @@
+import type { RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
+import { VISIBILITY_DEDUP_WINDOW_MS } from "../constants";
 import { fraudTypes } from "../constants/fraudType";
+import type { FraudType } from "../types";
 import { useSaveFraudReport } from "./useSaveFraudReport";
 
 export type Violation = {
-	fraudType: string;
+	fraudType: FraudType;
 	message?: string;
 };
 
@@ -14,20 +17,18 @@ type TrackedViolation = Violation & {
 type Options = {
 	threshold?: number;
 	testId?: string;
-	containerRef?: React.RefObject<HTMLElement | HTMLDivElement | null>;
+	containerRef?: RefObject<HTMLElement | HTMLDivElement | null>;
 	onViolation?: (
 		v: Violation,
-		containerRef?: React.RefObject<HTMLElement | HTMLDivElement | null>,
+		containerRef?: RefObject<HTMLElement | HTMLDivElement | null>,
 		currentCount?: number,
 	) => void;
 	onThresholdReached?: (
 		violations: Violation[],
-		containerRef?: React.RefObject<HTMLElement | HTMLDivElement | null>,
+		containerRef?: RefObject<HTMLElement | HTMLDivElement | null>,
 	) => void;
 	debug?: boolean;
 };
-
-const VISIBILITY_DEDUP_WINDOW_MS = 1200;
 
 const stripViolationId = ({
 	id: _id,
@@ -75,13 +76,16 @@ export default function useFraudDetection(options: Options = {}) {
 		return result;
 	}, []);
 
-	const createViolation = useCallback((fraudType: string): TrackedViolation => {
-		violationCounterRef.current += 1;
-		return {
-			id: `${Date.now()}-${violationCounterRef.current}`,
-			fraudType,
-		};
-	}, []);
+	const createViolation = useCallback(
+		(fraudType: FraudType): TrackedViolation => {
+			violationCounterRef.current += 1;
+			return {
+				id: `${Date.now()}-${violationCounterRef.current}`,
+				fraudType,
+			};
+		},
+		[],
+	);
 
 	const canRegisterVisibilityViolation = useCallback(() => {
 		const now = Date.now();
@@ -97,7 +101,7 @@ export default function useFraudDetection(options: Options = {}) {
 	}, []);
 
 	const registerViolation = useCallback(
-		(fraudType: string) => {
+		(fraudType: FraudType) => {
 			if (isLockedRef.current) {
 				return;
 			}

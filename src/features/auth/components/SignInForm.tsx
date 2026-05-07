@@ -27,6 +27,7 @@ const SignInForm = ({ handleSubmit, isPending }: Props) => {
 	return (
 		<fieldset disabled={isPending} className="w-full">
 			<form
+				noValidate
 				onSubmit={form.handleSubmit((data) => {
 					handleSubmit(data, form);
 				})}

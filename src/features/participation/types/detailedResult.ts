@@ -31,7 +31,7 @@ export interface QuestionDetail {
 	type: "multiple_choice" | "fill_in_the_blank";
 	choices: QuestionChoice[];
 	answer: string | null;
-	explaination: string | null;
+	explanation: string | null;
 	studentOptionId: string | null;
 	studentAnswer: string | null;
 	isCorrect: boolean | null;

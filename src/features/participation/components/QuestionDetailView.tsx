@@ -83,7 +83,7 @@ export default function QuestionDetailView({
 			)}
 
 			{/* Explanation Toggle */}
-			{detail.explaination && (
+			{detail.explanation && (
 				<>
 					<div className="flex justify-start">
 						<Button
@@ -106,7 +106,7 @@ export default function QuestionDetailView({
 					{showExplanation && (
 						<Card className="border shadow-none border-green-200">
 							<CardContent className="p-4 text-sm leading-relaxed text-muted-foreground">
-								{detail.explaination}
+								{detail.explanation}
 							</CardContent>
 						</Card>
 					)}

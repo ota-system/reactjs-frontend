@@ -99,9 +99,7 @@ export function ResultsTable({ data }: ResultsTableProps) {
 										</TableCell>
 										<TableCell>{result.score}</TableCell>
 										<TableCell>
-											<Badge variant="secondary">
-												{(result.correctRate * 100).toFixed(0)}%
-											</Badge>
+											<Badge variant="secondary">{result.correctRate}%</Badge>
 										</TableCell>
 										<TableCell className="max-w-0">
 											<TruncatedCell

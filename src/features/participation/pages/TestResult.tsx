@@ -68,7 +68,9 @@ export default function TestResult() {
 									<AlertTriangle className="size-4" />
 									<AlertTitle>Cảnh báo!</AlertTitle>
 									<AlertDescription>
-										<span>{fraudToString(testResult.fraud)}</span>
+										<span className="whitespace-pre-line">
+											{fraudToString(testResult.fraud)}
+										</span>
 									</AlertDescription>
 								</Alert>
 							)}

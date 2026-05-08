@@ -3,6 +3,36 @@ import type { ErrorResponse, HttpError } from "@/shared/type";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+async function refreshAccessToken(): Promise<boolean> {
+	tokenService.clearAccessToken();
+	try {
+		const refreshRes = await fetch(`${BASE_URL}/api/v1/auth/refresh-token`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				refreshToken: tokenService.getRefreshToken(),
+			}),
+		});
+
+		if (!refreshRes.ok) {
+			tokenService.clearTokens();
+			return false;
+		}
+
+		const res = await refreshRes.json().catch(() => ({}));
+		if (res && res.data && res.data.accessToken) {
+			tokenService.setAccessToken(res.data.accessToken);
+			return true;
+		}
+
+		tokenService.clearTokens();
+		return false;
+	} catch (e) {
+		tokenService.clearTokens();
+		return false;
+	}
+}
+
 async function request<T>(
 	endpoint: string,
 	options: RequestInit = {},
@@ -27,7 +57,10 @@ async function request<T>(
 	const response = await fetch(`${BASE_URL}${endpoint}`, config);
 
 	if (response.status === 401) {
-		throw new Error("Unauthorized");
+		const refreshed = await refreshAccessToken();
+		if (refreshed) {
+			return request<T>(endpoint, options);
+		}
 	}
 
 	if (!response.ok) {

@@ -15,6 +15,10 @@ export interface SubmitTestResult {
 	subject: string;
 	correctQuestions: number;
 	totalQuestions: number;
+	fraud: Array<{
+		type: FraudType;
+		times: number;
+	}>;
 }
 
 export type TestSummary = {
@@ -31,3 +35,7 @@ export type TestSummary = {
 };
 
 export type TestDetail = TestSummary;
+
+import type { fraudTypes } from "../constants/fraudType";
+
+export type FraudType = (typeof fraudTypes)[keyof typeof fraudTypes];

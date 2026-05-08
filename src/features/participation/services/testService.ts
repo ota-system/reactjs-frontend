@@ -41,3 +41,14 @@ export const getTestQuestions = async (
 	)) as { data: TestQuestionResponse; metadata: PageMetaData };
 	return response;
 };
+
+export const saveFraudReport = async (report: {
+	testId: string;
+	fraudType: string;
+}) => {
+	const response = await httpClient.post(
+		`${testApi}/${report.testId}/fraud-reports`,
+		{ fraudType: report.fraudType },
+	);
+	return response as ApiResponse<null>;
+};

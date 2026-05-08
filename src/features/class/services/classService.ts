@@ -48,9 +48,9 @@ export const fetchClassStudents = async (
 
 export const fetchClassTests = async (
 	classId: string,
-): Promise<TestWithStatsResponse[]> => {
+): Promise<ApiResponse<TestWithStatsResponse[]>> => {
 	const response: ApiResponse<TestWithStatsResponse[]> = await httpClient.get(
 		`${classApi}/${classId}/tests`,
 	);
-	return response.data;
+	return response;
 };

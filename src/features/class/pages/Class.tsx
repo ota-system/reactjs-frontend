@@ -11,7 +11,6 @@ import type { ClassResponse } from "../type";
 const Class = () => {
 	const [open, setOpen] = useState(false);
 	const { data, isLoading } = useTeacherClassQuery();
-	//TODO: API FOR GET TOTAL TESTS AND STUDENTS IN ALL CLASSES
 	const totalClasses = isLoading ? 0 : data?.data.length || 0;
 	const totalTests = 4;
 	const totalStudents = 5;

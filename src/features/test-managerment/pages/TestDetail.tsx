@@ -5,6 +5,7 @@ import {
 	TrendingUp,
 	Trophy,
 } from "lucide-react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,29 +13,25 @@ import { cn } from "@/lib/utils";
 import { TestStudentList } from "../components/TestStudentList";
 import { useTestStudentsQuery } from "../hooks/useTestStudentsQuery";
 import { useTestSummaryQuery } from "../hooks/useTestSummaryQuery";
-import type { StudentResponse } from "../type";
+
+const LIMIT = 10;
 
 export default function TestDetail() {
 	const { testId } = useParams<{ testId: string }>();
+	const [page, setPage] = useState(1);
+
 	const { data: summary, isLoading: isSummaryLoading } = useTestSummaryQuery(
 		testId || "",
 	);
-	const { data: studentData, isLoading: isStudentsLoading } =
-		useTestStudentsQuery(testId || "");
+	const {
+		data: studentData,
+		isLoading: isStudentsLoading,
+		isFetching: isStudentsFetching,
+	} = useTestStudentsQuery(testId || "", page, LIMIT);
 
-	console.log("Test students:", studentData);
-
-	const mappedStudents =
-		studentData?.map((s: StudentResponse) => ({
-			id: s.id,
-			fullName: s.studentName,
-			warnings: s.violations,
-			score: s.score,
-			maxScore: s.totalScore,
-			percentage: s.percentage,
-			timeTakenMinutes: s.durationMinutes,
-			dateTaken: s.submittedAt,
-		})) || [];
+	const students = studentData?.data ?? [];
+	const metadata = studentData?.metadata;
+	const totalPages = metadata ? Math.ceil(metadata.total / LIMIT) : 1;
 
 	const renderStat = (
 		label: string,
@@ -81,6 +78,7 @@ export default function TestDetail() {
 			</div>
 		);
 	};
+
 	let studentListContent = null;
 	if (isStudentsLoading) {
 		studentListContent = (
@@ -91,7 +89,15 @@ export default function TestDetail() {
 			</div>
 		);
 	} else {
-		studentListContent = <TestStudentList students={mappedStudents} />;
+		studentListContent = (
+			<TestStudentList
+				students={students}
+				page={page}
+				totalPages={totalPages}
+				onPageChange={setPage}
+				isLoading={isStudentsFetching}
+			/>
+		);
 	}
 
 	return (

@@ -81,7 +81,8 @@ const TakingTest = () => {
 		testId: testData?.data.id,
 		containerRef,
 		onViolation: (v, _containerRef, currentCount) => {
-			showFraudWarning(`${v.message} Tổng vi phạm: ${currentCount} lần.`);
+			const msg = v.message || "Phát hiện hành vi gian lận";
+			showFraudWarning(`${msg} Tổng vi phạm: ${currentCount} lần.`);
 		},
 		onThresholdReached: async () => {
 			showFraudWarning(thresholdMessages[threshold]);
@@ -114,7 +115,6 @@ const TakingTest = () => {
 
 		try {
 			const testRes = await submitTest(payload);
-			clearAutoSubmitTimeout();
 			toast.success(testRes.message);
 			reset();
 			navigate(`/my-tests/${testData.data.id}/result`, {
@@ -127,7 +127,9 @@ const TakingTest = () => {
 		}
 	};
 
-	handleSubmitRef.current = handleSubmit;
+	useEffect(() => {
+		handleSubmitRef.current = handleSubmit;
+	}, [handleSubmit]);
 
 	if (testAndQuestionsError) {
 		return <ErrorPage error={testAndQuestionsError} />;

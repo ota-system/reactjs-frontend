@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { HttpError } from "@/shared/type";
+import ClassAccessDenied from "../components/ClassAccessDenied";
 import { useDetailedTestInfoQuery } from "../hooks/useTestDetailQuery";
 
 export default function StudentTestIntro() {
@@ -22,6 +23,11 @@ export default function StudentTestIntro() {
 
 	if (isError || !testDetail) {
 		const err = error as unknown as HttpError | undefined;
+
+		if (err?.status === 403 || err?.code === "CLASS_ACCESS_DENIED") {
+			return <ClassAccessDenied />;
+		}
+
 		return (
 			<div className="flex justify-center items-start min-h-screen p-4 sm:p-8 pt-8">
 				<Card className="w-full max-w-3xl shadow-sm border rounded-2xl">

@@ -86,7 +86,6 @@ const StudentClass = () => {
 									studentsCount={cls.studentCount}
 									testsCount={cls.testCount}
 									code={cls.code}
-									id={cls.id}
 									href={`/my-classes/${cls.id}/tests`}
 								/>
 							))}

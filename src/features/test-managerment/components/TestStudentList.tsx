@@ -1,5 +1,6 @@
-import { AlertTriangle, Clock } from "lucide-react";
+import { AlertTriangle, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
 	Table,
 	TableBody,
@@ -8,13 +9,24 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import type { TestStudentListItem } from "../type";
 
 interface TestStudentListProps {
 	students: TestStudentListItem[];
+	page: number;
+	totalPages: number;
+	onPageChange: (page: number) => void;
+	isLoading?: boolean;
 }
 
-export function TestStudentList({ students }: TestStudentListProps) {
+export function TestStudentList({
+	students,
+	page,
+	totalPages,
+	onPageChange,
+	isLoading,
+}: TestStudentListProps) {
 	return (
 		<div className="rounded-xl size-full flex flex-col border-0">
 			<div className="mb-6 flex-none">
@@ -24,7 +36,12 @@ export function TestStudentList({ students }: TestStudentListProps) {
 				</p>
 			</div>
 
-			<div className="relative w-full overflow-auto flex-1 pr-2 scrollbar-thin">
+			<div
+				className={cn(
+					"relative w-full overflow-auto flex-1 pr-2 scrollbar-thin transition-opacity",
+					isLoading && "opacity-60 pointer-events-none",
+				)}
+			>
 				<Table>
 					<TableHeader className="relative z-10">
 						<TableRow className="hover:bg-transparent">
@@ -100,6 +117,36 @@ export function TestStudentList({ students }: TestStudentListProps) {
 					</TableBody>
 				</Table>
 			</div>
+
+			{totalPages > 1 && (
+				<div className="flex items-center justify-between pt-4 mt-2 border-t">
+					<span className="text-sm text-muted-foreground">
+						Trang {page} / {totalPages}
+					</span>
+					<div className="flex items-center gap-2">
+						<Button
+							variant="outline"
+							size="sm"
+							className="cursor-pointer"
+							onClick={() => onPageChange(page - 1)}
+							disabled={page <= 1 || isLoading}
+						>
+							<ChevronLeft className="size-4" />
+							Trước
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							className="cursor-pointer"
+							onClick={() => onPageChange(page + 1)}
+							disabled={page >= totalPages || isLoading}
+						>
+							Tiếp
+							<ChevronRight className="size-4" />
+						</Button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

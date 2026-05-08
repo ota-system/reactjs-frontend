@@ -2,10 +2,12 @@ import type { RouteObject } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import ComingSoon from "@/shared/pages/ComingSoon";
 import StudentClassDetailLayout from "../layouts/StudentClassDetailLayout";
+import DetailedResult from "../pages/DetailedResult";
 import StudentClass from "../pages/StudentClass";
 import StudentClassTestList from "../pages/StudentClassTestList";
 import StudentList from "../pages/StudentList";
 import StudentTestIntro from "../pages/StudentTestIntro";
+import TestHistory from "../pages/TestHistory";
 import TestResult from "../pages/TestResult";
 
 const ParticipationRoute: RouteObject[] = [
@@ -32,7 +34,11 @@ const ParticipationRoute: RouteObject[] = [
 	},
 	{
 		path: "/my-results",
-		element: <ComingSoon />,
+		element: <TestHistory />,
+	},
+	{
+		path: "/my-results/:id",
+		element: <DetailedResult />,
 	},
 	{
 		path: "/my-weaknesses",

@@ -34,6 +34,7 @@ function ClassListContent({
 			testsCount={cls.testCount}
 			code={cls.code}
 			href={`/classes/${cls.id}/tests`}
+			isTeacher={true}
 		/>
 	));
 }
@@ -50,7 +51,7 @@ export default function ClassListCard({
 	onCreateClick,
 }: Props) {
 	return (
-		<Card className="rounded-2xl">
+		<Card className="rounded-2xl size-full flex flex-col">
 			<CardHeader className="flex flex-row items-center justify-between">
 				<div>
 					<CardTitle className="text-lg">Lớp học của tôi</CardTitle>
@@ -58,6 +59,7 @@ export default function ClassListCard({
 						Quản lý lớp học và tạo bài thi
 					</p>
 				</div>
+
 				<Button
 					onClick={onCreateClick}
 					className="flex items-center gap-2 px-4 py-6 cursor-pointer hover:bg-primary/90"
@@ -66,7 +68,7 @@ export default function ClassListCard({
 				</Button>
 			</CardHeader>
 
-			<CardContent className="space-y-4">
+			<CardContent className="flex-1 min-h-0 space-y-4 overflow-y-auto">
 				<ClassListContent classes={classes} isLoading={isLoading} />
 			</CardContent>
 		</Card>

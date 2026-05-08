@@ -52,6 +52,13 @@ const ClassPreviewSection = ({
 							<span>{classPreview.teacher.fullName}</span>
 						)}
 					</div>
+
+					<div className="flex items-center justify-between text-xs text-muted-foreground">
+						<span>Mã lớp:</span>
+						<span className="font-mono font-semibold tracking-widest text-foreground bg-muted px-2 py-0.5 rounded">
+							{previewCode}
+						</span>
+					</div>
 				</div>
 			)}
 

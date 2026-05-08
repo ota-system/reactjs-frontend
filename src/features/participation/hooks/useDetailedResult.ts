@@ -10,12 +10,13 @@ const useDetailedResult = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const {
-		data: overall,
+		data: apiResponse,
 		isLoading: isLoadingOverall,
 		isError: isOverallError,
 		error: overallError,
 	} = useOverallResultQuery(id);
 
+	const overall = apiResponse?.data;
 	const questionResults = overall?.questionResults ?? [];
 	const selectedQuestionId = searchParams.get("questionId") ?? undefined;
 
@@ -29,11 +30,13 @@ const useDetailedResult = () => {
 	}, [questionResults, selectedQuestionId, setSearchParams]);
 
 	const {
-		data: questionDetail,
+		data,
 		isLoading: isLoadingQuestion,
 		isError: isQuestionError,
 		error: questionError,
 	} = useQuestionDetailQuery(id, selectedQuestionId);
+
+	const questionDetail = data?.data;
 
 	useEffect(() => {
 		if (isOverallError) {

@@ -12,6 +12,16 @@ const testSubmittedResponse = {
 	subject: "Grammar & Vocabulary Test - Unit 1",
 	correctQuestions: 10,
 	totalQuestions: 20,
+	fraud: [
+		{
+			type: "VISIBILITY CHANGE",
+			times: 4,
+		},
+		{
+			type: "FULLSCREEN EXIT",
+			times: 1,
+		},
+	],
 };
 
 export { testSubmittedResponse, user };

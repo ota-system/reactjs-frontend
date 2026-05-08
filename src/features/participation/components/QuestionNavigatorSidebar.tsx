@@ -43,10 +43,7 @@ export default function QuestionNavigatorSidebar({
 	onSelectQuestion,
 	info,
 }: QuestionNavigatorSidebarProps) {
-	const correctCount = questionResults.filter(
-		(q) => q.isCorrect === true,
-	).length;
-	const progressValue = (correctCount / info.totalQuestions) * 100;
+	const progressValue = info.correctRate;
 
 	return (
 		<div className="w-72 border-l p-5 flex flex-col shrink-0">
@@ -70,7 +67,7 @@ export default function QuestionNavigatorSidebar({
 				<Progress value={progressValue} />
 				<div className="space-y-1">
 					<p className="text-sm text-muted-foreground">
-						Tỷ lệ đúng: {progressValue}%
+						Tỷ lệ đúng: {info.correctRate}%
 					</p>
 					<p className="text-lg font-semibold">Điểm: {info.score}</p>
 				</div>

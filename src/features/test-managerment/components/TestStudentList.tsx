@@ -8,20 +8,10 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-
-interface TestStudent {
-	id: string;
-	fullName: string;
-	warnings: number;
-	score: number;
-	maxScore: number;
-	percentage: number;
-	timeTakenMinutes: number;
-	dateTaken: string;
-}
+import type { TestStudentListItem } from "../type";
 
 interface TestStudentListProps {
-	students: TestStudent[];
+	students: TestStudentListItem[];
 }
 
 export function TestStudentList({ students }: TestStudentListProps) {
@@ -72,20 +62,20 @@ export function TestStudentList({ students }: TestStudentListProps) {
 							students.map((s) => (
 								<TableRow key={s.id} className="hover:bg-muted/50 border-b-0">
 									<TableCell className="font-medium py-4">
-										{s.fullName}
+										{s.studentName}
 									</TableCell>
 									<TableCell className="text-center py-4">
-										{s.warnings > 0 ? (
+										{s.violations > 0 ? (
 											<span className="inline-flex items-center gap-1.5 text-[var(--warning-text-color,#f59e0b)] text-sm font-medium">
 												<AlertTriangle className="size-4" />
-												{s.warnings} cảnh báo
+												{s.violations} cảnh báo
 											</span>
 										) : (
 											<span className="text-muted-foreground">-</span>
 										)}
 									</TableCell>
 									<TableCell className="text-center py-4 font-medium">
-										{s.score}/{s.maxScore}
+										{s.score}/{s.totalScore}
 									</TableCell>
 									<TableCell className="text-center py-4">
 										<Badge
@@ -98,11 +88,11 @@ export function TestStudentList({ students }: TestStudentListProps) {
 									<TableCell className="py-4 text-muted-foreground">
 										<span className="inline-flex items-center gap-1.5">
 											<Clock className="size-4" />
-											{s.timeTakenMinutes} phút
+											{s.durationMinutes} phút
 										</span>
 									</TableCell>
 									<TableCell className="py-4 text-muted-foreground font-medium">
-										{s.dateTaken}
+										{s.submittedAt}
 									</TableCell>
 								</TableRow>
 							))

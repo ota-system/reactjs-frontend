@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { TestStudentList } from "../components/TestStudentList";
 import { useTestStudentsQuery } from "../hooks/useTestStudentsQuery";
 import { useTestSummaryQuery } from "../hooks/useTestSummaryQuery";
-import type { StudentResponse } from "../type";
+import type { TestStudentListItem } from "../type";
 
 export default function TestDetail() {
 	const { testId } = useParams<{ testId: string }>();
@@ -21,20 +21,7 @@ export default function TestDetail() {
 	);
 	const { data: studentData, isLoading: isStudentsLoading } =
 		useTestStudentsQuery(testId || "");
-
-	console.log("Test students:", studentData);
-
-	const mappedStudents =
-		studentData?.map((s: StudentResponse) => ({
-			id: s.id,
-			fullName: s.studentName,
-			warnings: s.violations,
-			score: s.score,
-			maxScore: s.totalScore,
-			percentage: s.percentage,
-			timeTakenMinutes: s.durationMinutes,
-			dateTaken: s.submittedAt,
-		})) || [];
+	const students: TestStudentListItem[] = studentData ?? [];
 
 	const renderStat = (
 		label: string,
@@ -91,7 +78,7 @@ export default function TestDetail() {
 			</div>
 		);
 	} else {
-		studentListContent = <TestStudentList students={mappedStudents} />;
+		studentListContent = <TestStudentList students={students} />;
 	}
 
 	return (

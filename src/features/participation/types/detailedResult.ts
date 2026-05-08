@@ -14,7 +14,7 @@ export interface QuestionResult {
 	isCorrect: boolean | null;
 }
 
-export interface OverallResult {
+export interface OverallTestResult {
 	testResultInfo: TestResultInfo;
 	questionResults: QuestionResult[];
 }
@@ -24,6 +24,17 @@ export interface QuestionChoice {
 	choice: string;
 	isCorrect: boolean;
 }
+
+export type DetailedResultState = {
+	overall: OverallTestResult | undefined;
+	isLoadingOverall: boolean;
+	questionResults: QuestionResult[];
+	selectedQuestionId: string | undefined;
+	questionDetail: QuestionDetail | undefined;
+	isLoadingQuestion: boolean;
+	handleSelectQuestion: (questionId: string) => void;
+	handleBack: () => void;
+};
 
 export interface QuestionDetail {
 	id: string;

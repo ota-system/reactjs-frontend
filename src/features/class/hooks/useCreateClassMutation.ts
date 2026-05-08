@@ -6,7 +6,13 @@ export const useCreateClassMutation = () => {
 	return useMutation({
 		mutationFn: createClass,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["teacher-class"] });
+			queryClient.invalidateQueries({
+				queryKey: ["teacher-class"],
+			});
+
+			queryClient.invalidateQueries({
+				queryKey: ["teacher-overview"],
+			});
 		},
 	});
 };

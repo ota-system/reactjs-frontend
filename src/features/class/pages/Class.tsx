@@ -1,47 +1,17 @@
-import { BookOpen, FileText, Plus, Users } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ClassItem from "@/shared/components/ClassCardItem";
+import { BookOpen, FileText, Users } from "lucide-react";
 import ClassStatCard from "@/shared/components/ClassStatCard";
+import ClassListCard from "../components/ClassListCard";
 import CreateClassDialog from "../components/CreateClassDialog";
-import { useTeacherClassQuery } from "../hooks/useTeacherClassQuery";
-import type { ClassResponse } from "../type";
+import { useClassPage } from "../hooks/useClassPage";
 
 const Class = () => {
-	const [open, setOpen] = useState(false);
-	const { data, isLoading } = useTeacherClassQuery();
-	const totalClasses = isLoading ? 0 : data?.data.length || 0;
-	const totalTests = 4;
-	const totalStudents = 5;
-
-	let classListContent = null;
-
-	if (isLoading) {
-		classListContent = (
-			<p className="text-center py-4 text-muted-foreground">
-				Đang tải danh sách lớp học...
-			</p>
-		);
-	} else if (data?.data && data.data.length > 0) {
-		classListContent = data.data.map((cls: ClassResponse) => (
-			<ClassItem
-				key={cls.id}
-				title={cls.name}
-				teacher={"Lớp của bạn"}
-				studentsCount={cls.studentCount}
-				testsCount={cls.testCount}
-				code={cls.code}
-				href={`/classes/${cls.id}/tests`}
-			/>
-		));
-	} else {
-		classListContent = (
-			<div className="text-center py-8 text-muted-foreground">
-				Bạn chưa quản lý lớp học nào. Hãy nhấn "Tạo lớp" để bắt đầu.
-			</div>
-		);
-	}
+	const {
+		classes,
+		isClassLoading,
+		overview,
+		isCreateDialogOpen,
+		setIsCreateDialogOpen,
+	} = useClassPage();
 
 	return (
 		<div className="p-4 md:p-8 space-y-6 w-full mx-auto">
@@ -55,47 +25,34 @@ const Class = () => {
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 				<ClassStatCard
 					title="Lớp học"
-					value={totalClasses}
+					value={overview?.totalClasses ?? "N/A"}
 					description="Lớp bạn quản lý"
 					icon={Users}
 				/>
 				<ClassStatCard
 					title="Bài thi"
-					value={totalTests}
+					value={overview?.totalTests ?? "N/A"}
 					description="Bài thi đã tạo"
 					icon={FileText}
 				/>
 				<ClassStatCard
 					title="Học sinh"
-					value={totalStudents}
+					value={overview?.totalStudents ?? "N/A"}
 					description="Tổng số học sinh"
 					icon={BookOpen}
 				/>
 			</div>
 
-			{/* Class List */}
-			<Card className="rounded-2xl">
-				<CardHeader className="flex flex-row items-center justify-between">
-					<div>
-						<CardTitle className="text-lg">Lớp học của tôi</CardTitle>
-						<p className="text-sm text-muted-foreground">
-							Quản lý lớp học và tạo bài thi
-						</p>
-					</div>
+			<ClassListCard
+				classes={classes}
+				isLoading={isClassLoading}
+				onCreateClick={() => setIsCreateDialogOpen(true)}
+			/>
 
-					<Button
-						onClick={() => setOpen(true)}
-						className="flex items-center gap-2 px-4 py-6 cursor-pointer hover:bg-primary/90"
-					>
-						<Plus size={16} /> Tạo lớp
-					</Button>
-				</CardHeader>
-
-				<CardContent className="space-y-4">{classListContent}</CardContent>
-			</Card>
-
-			{/* Popup (Dialog) */}
-			<CreateClassDialog open={open} onOpenChange={setOpen} />
+			<CreateClassDialog
+				open={isCreateDialogOpen}
+				onOpenChange={setIsCreateDialogOpen}
+			/>
 		</div>
 	);
 };

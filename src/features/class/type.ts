@@ -56,3 +56,9 @@ export type TestWithStatsResponse = {
 	topicName?: string;
 	stats: TestStats;
 };
+
+export type TeacherOverviewResponse = {
+	totalClasses: number;
+	totalStudents: number;
+	totalTests: number;
+};

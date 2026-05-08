@@ -51,7 +51,6 @@ async function request<T>(
 	const config: RequestInit = {
 		...options,
 		headers,
-		credentials: "include",
 	};
 
 	const response = await fetch(`${BASE_URL}${endpoint}`, config);
@@ -60,6 +59,8 @@ async function request<T>(
 		const refreshed = await refreshAccessToken();
 		if (refreshed) {
 			return request<T>(endpoint, options);
+		} else {
+			throw new Error("Unauthorized");
 		}
 	}
 

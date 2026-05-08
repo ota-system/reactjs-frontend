@@ -1,7 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StudentList } from "@/shared/components/StudentList";
-import { useClassStudentsQuery } from "../hooks/useClassStudentsQuery";
+import { useClassStudentsQuery } from "../../class/hooks/useClassStudentsQuery";
 
 export default function ClassStudentList() {
 	const { classId } = useOutletContext<{ classId: string }>();

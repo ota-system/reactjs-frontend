@@ -5,6 +5,7 @@ import type {
 	ClassDetail,
 	ClassResponse,
 	CreateClassPayload,
+	TestWithStatsResponse,
 	UserSummary,
 } from "../type";
 
@@ -43,4 +44,13 @@ export const fetchClassStudents = async (
 		`${classApi}/${classId}/students`,
 	);
 	return response.data;
+};
+
+export const fetchClassTests = async (
+	classId: string,
+): Promise<ApiResponse<TestWithStatsResponse[]>> => {
+	const response: ApiResponse<TestWithStatsResponse[]> = await httpClient.get(
+		`${classApi}/${classId}/tests`,
+	);
+	return response;
 };

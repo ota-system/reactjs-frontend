@@ -4,6 +4,7 @@ import ComingSoon from "@/shared/pages/ComingSoon";
 import StudentClassDetailLayout from "../layouts/StudentClassDetailLayout";
 import StudentClass from "../pages/StudentClass";
 import StudentClassTestList from "../pages/StudentClassTestList";
+import StudentList from "../pages/StudentList";
 import StudentTestIntro from "../pages/StudentTestIntro";
 import TestResult from "../pages/TestResult";
 
@@ -18,7 +19,7 @@ const ParticipationRoute: RouteObject[] = [
 		children: [
 			{ index: true, element: <Navigate to="tests" replace /> },
 			{ path: "tests", element: <StudentClassTestList /> },
-			{ path: "students", element: <ComingSoon /> },
+			{ path: "students", element: <StudentList /> },
 		],
 	},
 	{

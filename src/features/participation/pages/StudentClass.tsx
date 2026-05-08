@@ -2,8 +2,8 @@ import { BookOpen, FileText, UserPlus, Users } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ClassItem from "@/features/class/components/ClassItem";
 import type { ClassResponse } from "@/features/class/type";
+import ClassItem from "@/shared/components/ClassCardItem";
 import ClassStatCard from "@/shared/components/ClassStatCard";
 import JoinClassDialog from "../components/JoinClassDialog";
 import { useStudentClassQuery } from "../hooks/useStudentClassQuery";
@@ -87,7 +87,7 @@ const StudentClass = () => {
 									testsCount={cls.testCount}
 									code={cls.code}
 									id={cls.id}
-									basePath="/my-classes"
+									href={`/my-classes/${cls.id}/tests`}
 								/>
 							))}
 						</div>

@@ -1,8 +1,4 @@
-import type { z } from "zod";
-import type { UserSummary } from "@/shared/type";
-import type { CreateClassSchema } from "./schema/CreateClassSchema";
-
-export type CreateClassPayload = z.infer<typeof CreateClassSchema>;
+import type { Role } from "@/shared/type";
 
 export type ClassResponse = {
 	id: string;
@@ -15,6 +11,14 @@ export type ClassResponse = {
 	updatedAt: string;
 	teacherName?: string;
 	teacher?: UserSummary;
+};
+
+export type UserSummary = {
+	id: string;
+	fullName: string;
+	email: string;
+	avatarUrl?: string;
+	role: Role;
 };
 
 export type ClassDetail = {
@@ -40,19 +44,31 @@ export type TestCardProps = {
 	};
 };
 
-export type TestStats = {
-	attempts: number;
+export type TestSummaryStats = {
+	totalStudents: number;
 	averageScore: number;
 	highestScore: number;
+	lowestScore: number;
 };
 
-export type TestWithStatsResponse = {
+export type TestStudentListItem = {
 	id: string;
-	testName: string;
-	duration: number;
-	totalQuestions: number;
-	maxScore: number;
-	antiCheating: boolean;
-	topicName?: string;
-	stats: TestStats;
+	studentName: string;
+	violations: number;
+	score: number;
+	totalScore: number;
+	percentage: number;
+	durationMinutes: number;
+	submittedAt: string;
+};
+
+export type StudentResponse = {
+	id: string;
+	studentName: string;
+	violations: number;
+	score: number;
+	totalScore: number;
+	percentage: number;
+	durationMinutes: number;
+	submittedAt: string;
 };

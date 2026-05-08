@@ -58,7 +58,7 @@ const TestCard = ({
 						{isCheating && (
 							<Tooltip>
 								<TooltipTrigger asChild>
-									<span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--danger-border-color)] bg-[var(--danger-bg-color)] px-2 py-1 text-base font-medium text-[var(--danger-text-color)]">
+									<span className="inline-flex items-center gap-1.5 px-2 py-1 text-base font-medium text-[var(--danger-text-color)]">
 										<ShieldAlert className="size-4" />
 									</span>
 								</TooltipTrigger>

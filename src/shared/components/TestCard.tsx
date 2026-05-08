@@ -18,6 +18,7 @@ interface TestCardProps {
 	onAction: () => void;
 	className?: string;
 	disabled?: boolean;
+	antiCheatLabel?: string;
 }
 
 const TestCard = ({

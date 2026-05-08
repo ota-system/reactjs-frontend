@@ -40,12 +40,10 @@ export default function ClassTestList() {
 				topics={test.topicName ? [test.topicName] : []}
 				antiCheatLabel={test.antiCheating ? "Chống gian lận" : ""}
 				onAction={() => {}}
-				stats={{
-					attempts: test.stats?.attempts || 0,
-					averageScore: test.stats?.averageScore || 0,
-					highestScore: test.stats?.highestScore || 0,
-				}}
-				className="bg-white"
+				isCheating={true}
+				antiCheatLabel="Chống gian lận"
+				actionLabel="Xem kết quả"
+				className="PNV26A"
 			/>
 		));
 	} else {

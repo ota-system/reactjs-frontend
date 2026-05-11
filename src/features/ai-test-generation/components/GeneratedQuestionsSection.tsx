@@ -17,6 +17,7 @@ interface GeneratedQuestionsSectionProps {
 		updater: (current: GeneratedQuestionUI) => GeneratedQuestionUI,
 	) => void;
 	onDeleteQuestion: (id: string) => void;
+	onAddManualQuestion: () => void;
 	onQuestionRef: (id: string, element: HTMLDivElement | null) => void;
 	draftSnapshot: {
 		prompt: string;
@@ -107,6 +108,7 @@ export default function GeneratedQuestionsSection({
 	questions,
 	onUpdateQuestion,
 	onDeleteQuestion,
+	onAddManualQuestion,
 	onQuestionRef,
 	draftSnapshot,
 	isPending,
@@ -161,6 +163,16 @@ export default function GeneratedQuestionsSection({
 					)}
 				</div>
 			))}
+			{!isPending && (
+				<Button
+					type="button"
+					variant="outline"
+					onClick={onAddManualQuestion}
+					className="w-full border-dashed cursor-pointer"
+				>
+					+ Thêm câu hỏi thủ công
+				</Button>
+			)}
 		</div>
 	);
 }

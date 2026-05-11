@@ -17,6 +17,7 @@ import type {
 import buildEnglishTestPayload from "../utils/buildEnglishTestPayload";
 import buildGeneratePrompt from "../utils/buildGeneratePrompt";
 import cloneQuestions from "../utils/cloneQuestions";
+import focusInvalidQuestionField from "../utils/focusInvalidQuestionField";
 import mapGeneratedQuestionToUI, {
 	type GeneratedQuestionUI,
 } from "../utils/mapGeneratedQuestionToUI";
@@ -67,7 +68,7 @@ const EnglishTestGeneration = () => {
 			behavior: "smooth",
 			block: "nearest",
 		});
-	}, [questions.length]);
+	}, [questions]);
 
 	const updateQuestion = (
 		id: string,
@@ -186,6 +187,14 @@ const EnglishTestGeneration = () => {
 
 		if ("error" in result) {
 			toast.error(result.error);
+
+			if (result.errorFocus) {
+				focusInvalidQuestionField({
+					issue: result.errorFocus,
+					questionRefs,
+				});
+			}
+
 			return;
 		}
 
@@ -222,6 +231,28 @@ const EnglishTestGeneration = () => {
 				subject: value,
 			})),
 		);
+	};
+
+	const handleAddManualQuestion = () => {
+		const now = Date.now();
+		setQuestions((prev) => [
+			...prev,
+			{
+				id: `manual-${now}-${Math.random()}`,
+				question: "",
+				questionType: "Trắc nghiệm",
+				subject: subject.trim(),
+				difficulty: "Trung bình",
+				options: [
+					{ id: "0", value: "" },
+					{ id: "1", value: "" },
+					{ id: "2", value: "" },
+					{ id: "3", value: "" },
+				],
+				correctOptionIndex: 0,
+				correctAnswer: "",
+			},
+		]);
 	};
 
 	const handleRollbackToDraft = () => {
@@ -266,6 +297,7 @@ const EnglishTestGeneration = () => {
 				onDeleteQuestion={(id) =>
 					setQuestions((prev) => prev.filter((item) => item.id !== id))
 				}
+				onAddManualQuestion={handleAddManualQuestion}
 				onQuestionRef={handleQuestionRef}
 				draftSnapshot={draftSnapshot}
 				isPending={isPending}

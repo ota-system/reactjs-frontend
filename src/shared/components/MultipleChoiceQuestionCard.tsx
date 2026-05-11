@@ -75,6 +75,8 @@ export default function MultipleChoiceQuestionCard({
 								}
 								placeholder={`Option ${String.fromCharCode(65 + options.indexOf(option))}`}
 								disabled={disabled}
+								data-question-field="multiple-choice-option"
+								data-multiple-choice-option-id={option.id}
 							/>
 						</div>
 					))}

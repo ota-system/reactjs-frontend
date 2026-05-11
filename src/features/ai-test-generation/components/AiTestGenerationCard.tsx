@@ -50,6 +50,7 @@ export default function AiTestGenerationCard({
 						placeholder="VD: Tạo bài thi về Present Perfect Tense với các dạng bài nhận biết thì, chia động từ, và hoàn thành câu. Độ khó trung bình, 15 câu hỏi gồm 5 câu trắc nghiệm và 10 câu điền từ."
 						rows={3}
 						className="text-xl"
+						readOnly={isGenerating}
 					/>
 					<div className="flex items-start gap-2 text-sm text-red-500">
 						<CircleAlert className="mt-1 size-3" />

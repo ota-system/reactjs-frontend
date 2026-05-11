@@ -5,6 +5,10 @@ import type { HttpError } from "@/shared/type";
 import ClassAccessDenied from "../components/ClassAccessDenied";
 import StudentCourseHeader from "../components/StudentCourseHeader";
 import StudentManagementToggle from "../components/StudentManagementToggle";
+import {
+	ERROR_CODE_CLASS_ACCESS_DENIED,
+	HTTP_STATUS_FORBIDDEN,
+} from "../constants/httpErrors";
 
 export default function StudentClassDetailLayout() {
 	const { classId } = useParams();
@@ -19,8 +23,8 @@ export default function StudentClassDetailLayout() {
 	if (isError) {
 		const httpError = error as unknown as HttpError;
 		if (
-			httpError?.status === 403 ||
-			httpError?.code === "CLASS_ACCESS_DENIED"
+			httpError?.status === HTTP_STATUS_FORBIDDEN ||
+			httpError?.code === ERROR_CODE_CLASS_ACCESS_DENIED
 		) {
 			return <ClassAccessDenied />;
 		}

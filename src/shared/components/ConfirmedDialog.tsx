@@ -22,6 +22,7 @@ interface ConfirmedDialogProps {
 		variant?: VariantProps<typeof buttonVariants>["variant"];
 	};
 	showCloseButton?: boolean;
+	preventOutsideClose?: boolean;
 }
 
 const ConfirmedDialog = (props: ConfirmedDialogProps) => {
@@ -30,7 +31,19 @@ const ConfirmedDialog = (props: ConfirmedDialogProps) => {
 	const actionVariant = props.actionVariant ?? "outline";
 
 	return (
-		<DialogContent showCloseButton={props.showCloseButton}>
+		<DialogContent
+			showCloseButton={props.showCloseButton}
+			onPointerDownOutside={(event) => {
+				if (props.preventOutsideClose) {
+					event.preventDefault();
+				}
+			}}
+			onEscapeKeyDown={(event) => {
+				if (props.preventOutsideClose) {
+					event.preventDefault();
+				}
+			}}
+		>
 			<DialogHeader>
 				<DialogTitle>{props.title}</DialogTitle>
 				<DialogDescription>

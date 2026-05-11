@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { HttpError } from "@/shared/type";
 import ClassAccessDenied from "../components/ClassAccessDenied";
+import {
+	ERROR_CODE_CLASS_ACCESS_DENIED,
+	HTTP_STATUS_FORBIDDEN,
+} from "../constants/httpErrors";
 import { useDetailedTestInfoQuery } from "../hooks/useTestDetailQuery";
 
 export default function StudentTestIntro() {
@@ -24,7 +28,10 @@ export default function StudentTestIntro() {
 	if (isError || !testDetail) {
 		const err = error as unknown as HttpError | undefined;
 
-		if (err?.status === 403 || err?.code === "CLASS_ACCESS_DENIED") {
+		if (
+			err?.status === HTTP_STATUS_FORBIDDEN ||
+			err?.code === ERROR_CODE_CLASS_ACCESS_DENIED
+		) {
 			return <ClassAccessDenied />;
 		}
 

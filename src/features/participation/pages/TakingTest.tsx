@@ -156,6 +156,7 @@ const TakingTest = () => {
 						variant: "outline",
 					}}
 					showCloseButton={false}
+					preventOutsideClose={true}
 				/>
 			</Dialog>
 			<FraudWarningDialog

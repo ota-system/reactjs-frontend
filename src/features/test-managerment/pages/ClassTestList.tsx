@@ -6,7 +6,7 @@ import { useClassTestsQuery } from "../../class/hooks/useClassTestsQuery";
 
 export default function ClassTestList() {
 	const { classId } = useParams<{ classId: string }>();
-	const { data: tests, isLoading } = useClassTestsQuery(classId);
+	const { data: tests, isLoading } = useClassTestsQuery(classId!);
 	const navigate = useNavigate();
 
 	const handleViewResults = (testId: string) => {

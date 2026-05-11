@@ -62,3 +62,9 @@ export type TeacherOverviewResponse = {
 	totalStudents: number;
 	totalTests: number;
 };
+
+export type StudentClassStatsResponse = {
+	totalClasses: number;
+	totalTestResults: number;
+	averageScore: number;
+};

@@ -6,13 +6,16 @@ import type { ClassResponse } from "@/features/class/type";
 import ClassItem from "@/shared/components/ClassCardItem";
 import ClassStatCard from "@/shared/components/ClassStatCard";
 import JoinClassDialog from "../components/JoinClassDialog";
+import { useClassStatsQuery } from "../hooks/useClassStatsQuery";
 import { useStudentClassQuery } from "../hooks/useStudentClassQuery";
 
 const StudentClass = () => {
 	const [open, setOpen] = useState(false);
-	const { data, isLoading } = useStudentClassQuery();
+	const { data } = useStudentClassQuery();
+	const { data: statsData } = useClassStatsQuery();
 
 	const classes = data?.data || [];
+	const stats = statsData?.data;
 
 	return (
 		<div className="p-4 md:p-8 space-y-6 w-full mx-auto">
@@ -27,19 +30,19 @@ const StudentClass = () => {
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 				<ClassStatCard
 					title="Lớp học"
-					value={isLoading ? 0 : classes.length}
+					value={stats?.totalClasses ?? "N/A"}
 					description="Lớp bạn tham gia"
 					icon={Users}
 				/>
 				<ClassStatCard
 					title="Bài thi"
-					value={0}
+					value={stats?.totalTestResults ?? "N/A"}
 					description="Bài thi đã làm"
 					icon={FileText}
 				/>
 				<ClassStatCard
 					title="Điểm TB"
-					value={"0%"}
+					value={stats?.averageScore.toFixed(2) ?? "N/A"}
 					description="Điểm trung bình"
 					icon={BookOpen}
 				/>
@@ -86,7 +89,6 @@ const StudentClass = () => {
 									studentsCount={cls.studentCount}
 									testsCount={cls.testCount}
 									code={cls.code}
-									id={cls.id}
 									href={`/my-classes/${cls.id}/tests`}
 								/>
 							))}

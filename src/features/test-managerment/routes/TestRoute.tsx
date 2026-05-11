@@ -1,8 +1,8 @@
 import type { RouteObject } from "react-router-dom";
 import TestManagementLayout from "../layouts/TestManagementLayout";
-import ClassList from "../pages/ClassList";
 import ClassTestList from "../pages/ClassTestList";
 import TestDetail from "../pages/TestDetail";
+import TestManagementIndex from "../pages/TestManagementIndex";
 
 const TestRoute: RouteObject[] = [
 	{
@@ -11,7 +11,7 @@ const TestRoute: RouteObject[] = [
 		children: [
 			{
 				index: true,
-				element: <ClassList />,
+				element: <TestManagementIndex />,
 			},
 			{
 				path: "classes/:classId",

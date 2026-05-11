@@ -9,6 +9,7 @@ type ClassItemProps = {
 	testsCount: number;
 	code: string;
 	href: string;
+	isTeacher?: boolean;
 };
 
 const ClassItem = ({
@@ -18,6 +19,7 @@ const ClassItem = ({
 	testsCount,
 	code,
 	href,
+	isTeacher,
 }: ClassItemProps) => {
 	const navigate = useNavigate();
 
@@ -39,7 +41,9 @@ const ClassItem = ({
 					<Badge variant="secondary" className="px-2 py-0.5 text-xs">
 						English
 					</Badge>
-					<span>• Giáo viên: {teacher || "Chưa có thông tin"}</span>
+					{!isTeacher && (
+						<span>• Giáo viên: {teacher || "Chưa có thông tin"}</span>
+					)}
 				</div>
 			</div>
 

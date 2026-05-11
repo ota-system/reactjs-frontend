@@ -10,6 +10,7 @@ export interface SubmitTestRequestDto {
 }
 
 export interface SubmitTestResult {
+	resultId: string;
 	score: number;
 	correctRate: number;
 	subject: string;

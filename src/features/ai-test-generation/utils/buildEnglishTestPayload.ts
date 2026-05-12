@@ -119,24 +119,44 @@ const buildEnglishTestPayload = ({
 
 	const mappedQuestions: EnglishTest["questions"] = questions.map(
 		(question) => {
-			const normalizedOptions = question.options
-				.map((option) => option.value.trim())
-				.filter((option) => option !== "");
+			const trimmedOptions = question.options.map((option) =>
+				option.value.trim(),
+			);
 
-			const answer = isMultipleChoiceUI(question.questionType)
-				? (normalizedOptions[question.correctOptionIndex] ?? "")
-				: question.correctAnswer.trim();
+			if (isMultipleChoiceUI(question.questionType)) {
+				const answer = trimmedOptions[question.correctOptionIndex] ?? "";
+
+				const normalizedOptions: string[] = [];
+				let remappedCorrectOptionIndex = 0;
+
+				for (let i = 0; i < trimmedOptions.length; i++) {
+					if (trimmedOptions[i] !== "") {
+						if (i === question.correctOptionIndex) {
+							remappedCorrectOptionIndex = normalizedOptions.length;
+						}
+						normalizedOptions.push(trimmedOptions[i]);
+					}
+				}
+
+				return {
+					question: question.question.trim(),
+					difficulty: normalizeDifficultyToApi(question.difficulty),
+					questionType: normalizeQuestionTypeToApi(question.questionType),
+					options: normalizedOptions,
+					correctOptionIndex: remappedCorrectOptionIndex,
+					answer,
+					explanation: question.explanation?.trim() ?? "",
+				};
+			}
+
+			const answer = question.correctAnswer.trim();
 
 			return {
 				question: question.question.trim(),
 				difficulty: normalizeDifficultyToApi(question.difficulty),
 				questionType: normalizeQuestionTypeToApi(question.questionType),
-				options: isMultipleChoiceUI(question.questionType)
-					? normalizedOptions
-					: undefined,
-				correctOptionIndex: isMultipleChoiceUI(question.questionType)
-					? question.correctOptionIndex
-					: undefined,
+				options: undefined,
+				correctOptionIndex: undefined,
 				answer,
 				explanation: question.explanation?.trim() ?? "",
 			};

@@ -12,6 +12,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import TeacherTestCard from "@/shared/components/TeacherTestCard";
 import { useClassTestsQuery } from "../../class/hooks/useClassTestsQuery";
+import { ClassInfoCardInTestListPage } from "../components/ClassInfoCardInTestListPage";
 import { useTeacherClassQuery } from "../hooks/useTeacherClassQuery";
 import type { ClassResponse } from "../type";
 
@@ -104,31 +105,22 @@ export default function ClassTestList() {
 				<Card className="rounded-2xl border">
 					<CardContent>
 						<div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-							<div>
-								<p className="text-sm text-muted-foreground">Môn học</p>
-								<p className="text-lg font-semibold">{selectedClass.subject}</p>
-							</div>
-							<div>
-								<p className="text-sm text-muted-foreground">Học sinh</p>
-								<p className="text-lg font-semibold">
-									{selectedClass.studentCount}
-								</p>
-							</div>
-							<div>
-								<p className="text-sm text-muted-foreground">Bài thi</p>
-								<p className="text-lg font-semibold">
-									{selectedClass.testCount}
-								</p>
-							</div>
-							<div>
-								<p className="text-sm text-muted-foreground">Tạo lúc</p>
-								<p className="text-lg font-semibold">
-									{new Date(selectedClass.createdAt).toLocaleString("vi-VN", {
+							<ClassInfoCardInTestListPage info={selectedClass.subject} />
+							<ClassInfoCardInTestListPage
+								info={String(selectedClass.studentCount)}
+							/>
+							<ClassInfoCardInTestListPage
+								info={String(selectedClass.testCount)}
+							/>
+							<ClassInfoCardInTestListPage
+								info={new Date(selectedClass.createdAt).toLocaleString(
+									"vi-VN",
+									{
 										dateStyle: "short",
 										timeStyle: "short",
-									})}
-								</p>
-							</div>
+									},
+								)}
+							/>
 						</div>
 					</CardContent>
 				</Card>

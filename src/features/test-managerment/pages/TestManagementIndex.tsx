@@ -23,7 +23,7 @@ const TestManagementIndex = () => {
 	return (
 		<Card className="rounded-2xl">
 			<CardContent className="py-8 text-center text-muted-foreground">
-				Chưa có lớp học nào để quản lý bài thi.
+				Chưa có lớp học nào để quản lý kết quả thi.
 			</CardContent>
 		</Card>
 	);

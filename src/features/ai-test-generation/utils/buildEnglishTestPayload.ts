@@ -26,7 +26,7 @@ const DIFFICULTY_TO_API: Record<string, string> = {
 
 const QUESTION_TYPE_TO_API: Record<string, string> = {
 	"Trắc nghiệm": "multiple_choice",
-	"Đúng/Sai": "true_false",
+	"Đúng sai": "true_false",
 	"Điền từ": "fill_in_the_blank",
 	multiple_choice: "multiple_choice",
 	true_false: "true_false",
@@ -40,7 +40,10 @@ const normalizeQuestionTypeToApi = (value: string) =>
 	QUESTION_TYPE_TO_API[value] ?? "multiple_choice";
 
 const isMultipleChoiceUI = (value: string) =>
-	value === "Trắc nghiệm" || value === "multiple_choice";
+	value === "Trắc nghiệm" ||
+	value === "multiple_choice" ||
+	value === "Đúng sai" ||
+	value === "true_false";
 
 const buildEnglishTestPayload = ({
 	classId,
@@ -116,9 +119,10 @@ const buildEnglishTestPayload = ({
 
 	const mappedQuestions: EnglishTest["questions"] = questions.map(
 		(question) => {
-			const normalizedOptions = question.options.map((option) =>
-				option.value.trim(),
-			);
+			const normalizedOptions = question.options
+				.map((option) => option.value.trim())
+				.filter((option) => option !== "");
+
 			const answer = isMultipleChoiceUI(question.questionType)
 				? (normalizedOptions[question.correctOptionIndex] ?? "")
 				: question.correctAnswer.trim();

@@ -1,12 +1,12 @@
 const translateCorrectOptionIndex = (answer: string): number => {
 	switch (answer) {
-		case "A":
+		case "0":
 			return 0;
-		case "B":
+		case "1":
 			return 1;
-		case "C":
+		case "2":
 			return 2;
-		case "D":
+		case "3":
 			return 3;
 		default:
 			return 0;

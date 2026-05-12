@@ -1,0 +1,77 @@
+import { Skeleton } from "@/components/ui/skeleton";
+import { useTeacherClassQuery } from "../../class/hooks/useTeacherClassQuery";
+import AnalyticsHeader from "../components/AnalyticsHeader";
+import ClassMetrics from "../components/ClassMetrics";
+import TestResults from "../components/TestResults";
+import { useAnalyticsSelection } from "../hooks/useAnalyticsSelection";
+import {
+	useClassDashboardQuery,
+	useTestDashboardQuery,
+} from "../hooks/useDashboardQuery";
+
+export default function AnalyticsDashboard() {
+	const { data: classesData, isLoading: isClassesLoading } =
+		useTeacherClassQuery();
+
+	const {
+		selectedClassId,
+		selectedTestId,
+		handleClassChange,
+		handleTestChange,
+	} = useAnalyticsSelection(classesData);
+
+	const { data: classDashboardData, isLoading: isClassLoading } =
+		useClassDashboardQuery(selectedClassId);
+	const { data: testData, isLoading: isTestLoading } = useTestDashboardQuery(
+		selectedClassId,
+		selectedTestId,
+	);
+
+	if (isClassesLoading || (isClassLoading && !classDashboardData)) {
+		return (
+			<div className="p-6 space-y-4">
+				<Skeleton className="h-8 w-48" />
+				<div className="grid grid-cols-2 gap-4">
+					<Skeleton className="h-64 w-full rounded-xl" />
+					<Skeleton className="h-64 w-full rounded-xl" />
+				</div>
+				<Skeleton className="h-64 w-full rounded-xl" />
+			</div>
+		);
+	}
+
+	if (!classesData?.data || classesData.data.length === 0) {
+		return (
+			<div className="p-6 text-center py-12 text-muted-foreground">
+				Bạn chưa có lớp học nào để xem phân tích.
+			</div>
+		);
+	}
+
+	return (
+		<div className="p-6 space-y-6">
+			<AnalyticsHeader
+				classes={classesData}
+				selectedClassId={selectedClassId}
+				onClassChange={handleClassChange}
+			/>
+
+			{classDashboardData ? (
+				<>
+					<ClassMetrics data={classDashboardData} />
+					<TestResults
+						classData={classDashboardData}
+						testData={testData}
+						isTestLoading={isTestLoading}
+						selectedTestId={selectedTestId}
+						onTestChange={handleTestChange}
+					/>
+				</>
+			) : (
+				<div className="p-6 text-center py-12 text-muted-foreground">
+					Đang tải dữ liệu phân tích cho lớp học...
+				</div>
+			)}
+		</div>
+	);
+}

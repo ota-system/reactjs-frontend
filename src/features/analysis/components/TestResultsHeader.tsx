@@ -1,0 +1,58 @@
+import { CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import type { ClassDashboardData, TestDashboardData } from "../types/dashboard";
+import { formatTestLabel } from "../utils/format";
+
+interface TestResultsHeaderProps {
+	classData: ClassDashboardData;
+	testData: TestDashboardData | undefined;
+	selectedTestId: string | undefined;
+	onTestChange: (val: string) => void;
+}
+
+export default function TestResultsHeader({
+	classData,
+	testData,
+	selectedTestId,
+	onTestChange,
+}: TestResultsHeaderProps) {
+	return (
+		<CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+			<CardTitle className="text-base">Kết quả bài kiểm tra</CardTitle>
+			{classData.availableTests.length > 0 && (
+				<Select
+					value={selectedTestId ?? testData?.testId ?? ""}
+					onValueChange={onTestChange}
+				>
+					<SelectTrigger className="w-full sm:w-[300px] bg-white text-left h-auto min-h-10 [&>span]:truncate [&>span]:w-full [&>span]:block">
+						<SelectValue
+							placeholder={
+								testData?.testId
+									? formatTestLabel(
+											testData.testName ?? "",
+											classData.availableTests.find(
+												(t) => t.id === testData.testId,
+											)?.createdAt ?? "",
+										)
+									: "Chọn bài kiểm tra"
+							}
+						/>
+					</SelectTrigger>
+					<SelectContent>
+						{classData.availableTests.map((t) => (
+							<SelectItem key={t.id} value={t.id}>
+								{formatTestLabel(t.name, t.createdAt)}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			)}
+		</CardHeader>
+	);
+}

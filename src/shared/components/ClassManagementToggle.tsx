@@ -19,7 +19,7 @@ export default function ClassManagementToggle({
 	const active = location.pathname.includes("tests") ? "test" : "student";
 
 	return (
-		<div className="flex max-w-sm rounded-lg bg-secondary/50 p-1 border">
+		<div className="flex max-w-lg rounded-lg bg-secondary/50 p-1 border">
 			<Link
 				to={`/${basePath}/${classId}/tests`}
 				onMouseEnter={onPrefetchTests}

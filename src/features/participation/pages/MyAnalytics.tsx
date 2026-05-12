@@ -20,13 +20,7 @@ import { EmptyState } from "../components/EmptyState";
 import { ResultStatCard } from "../components/ResultStatCard";
 import { useClassAnalyticsQuery } from "../hooks/useClassAnalyticsQuery";
 import { useStudentClassQuery } from "../hooks/useStudentClassQuery";
-
-const COLORS = {
-	myScore: "#6366f1",
-	classAvg: "#f59e0b",
-	classMax: "#10b981",
-	classMin: "#f43f5e",
-};
+import { COLORS } from "../types";
 
 const renderDot = (props: any) => {
 	const { cx, cy, payload } = props;
@@ -156,7 +150,11 @@ const MyAnalytics = () => {
 						tickCount={6}
 						width={32}
 					/>
-					<Tooltip content={<CustomTooltip />} />
+					<Tooltip
+						trigger="hover"
+						cursor={{ strokeDasharray: "3 3" }}
+						content={<CustomTooltip />}
+					/>
 					<Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
 
 					<Bar

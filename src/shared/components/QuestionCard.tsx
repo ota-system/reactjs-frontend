@@ -72,11 +72,13 @@ export default function QuestionCard({
 						</DialogTrigger>
 						<ConfirmedDialog
 							title={`Bạn có chắc muốn xóa câu ${index}?`}
-							description={"Nội dung câu hỏi: " + question}
+							description={`Nội dung câu hỏi: ${question}`}
 							action={onDelete!}
 							secondaryAction={{
 								label: "Xóa ngay",
-								action: () => {},
+								action: () => {
+									onDelete!();
+								},
 								variant: "destructive",
 							}}
 						/>
@@ -92,6 +94,7 @@ export default function QuestionCard({
 						disabled={disabled}
 						rows={2}
 						className="resize-none"
+						data-question-field="question"
 					/>
 				</div>
 

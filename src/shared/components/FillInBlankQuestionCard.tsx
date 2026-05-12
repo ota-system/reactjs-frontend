@@ -39,8 +39,9 @@ export default function FillInBlankQuestionCard({
 				<Input
 					value={correctAnswer}
 					onChange={(event) => onCorrectAnswerChange(event.target.value)}
-					placeholder="0"
+					placeholder="Nhập đáp án đúng"
 					disabled={disabled}
+					data-question-field="fill-in-blank-answer"
 				/>
 				<p className="text-sm text-muted-[var(--primary-color)]">
 					Học sinh sẽ nhập câu trả lời vào ô trống. Đáp án không phân biệt chữ

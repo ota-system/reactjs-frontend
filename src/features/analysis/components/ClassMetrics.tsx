@@ -103,14 +103,14 @@ export default function ClassMetrics({ data }: ClassMetricsProps) {
 									fill="#818cf8"
 									radius={[4, 4, 0, 0]}
 								/>
-								{data.classAvgScore > 0 && (
+								{data.classTopicAvgScore > 0 && (
 									<ReferenceLine
-										y={data.classAvgScore}
+										y={data.classTopicAvgScore}
 										stroke="#22c55e"
 										strokeWidth={2}
 										strokeDasharray="6 3"
 										label={{
-											value: `TB lớp: ${data.classAvgScore}`,
+											value: `TB lớp: ${data.classTopicAvgScore}`,
 											fill: "#22c55e",
 											fontSize: 11,
 											position: "insideTopRight",

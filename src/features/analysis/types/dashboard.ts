@@ -23,7 +23,7 @@ export type ClassDashboardData = {
 	className: string;
 	gpaDistribution: GpaDistributionItem[];
 	gpaAcrossTopics: GpaAcrossTopicItem[];
-	classAvgScore: number;
+	classTopicAvgScore: number;
 	availableTests: AvailableTest[];
 };
 

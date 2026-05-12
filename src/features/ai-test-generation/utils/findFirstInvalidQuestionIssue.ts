@@ -46,8 +46,6 @@ const findFirstInvalidQuestionIssue = (
 					optionId: String(question.correctOptionIndex),
 				};
 			}
-
-			continue;
 		}
 
 		if (!question.correctAnswer.trim()) {

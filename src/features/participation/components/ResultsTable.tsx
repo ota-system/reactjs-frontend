@@ -85,53 +85,62 @@ export function ResultsTable({ data }: ResultsTableProps) {
 							</TableHeader>
 
 							<TableBody>
-								{data.map((result) => (
-									<TableRow
-										className="cursor-pointer"
-										key={result.id}
-										onClick={() => handleRowClick(result.id)}
-									>
-										<TableCell className="max-w-0 text-muted-foreground">
-											<TruncatedCell content={result.testName} />
-										</TableCell>
-										<TableCell className="max-w-0 text-muted-foreground">
-											<TruncatedCell content={result.className} />
-										</TableCell>
-										<TableCell>{result.score}</TableCell>
-										<TableCell>
-											<Badge variant="secondary">{result.correctRate}%</Badge>
-										</TableCell>
-										<TableCell className="max-w-0">
-											<TruncatedCell
-												content={`${result.timeSpent} phút`}
-												className="flex items-center gap-1 text-muted-foreground"
-											>
-												<Clock className="w-4 h-4 shrink-0" />
-												<span className="truncate">
-													{result.timeSpent} phút
-												</span>
-											</TruncatedCell>
-										</TableCell>
-										<TableCell className="max-w-0 text-muted-foreground">
-											<TruncatedCell
-												content={new Date(result.testDate).toLocaleDateString(
-													"vi-VN",
-												)}
-											/>
-										</TableCell>
-										<TableCell className="max-w-0">
-											<TruncatedCell
-												content={`${result.fraudCount} cảnh báo`}
-												className="flex items-center gap-1 text-orange-500"
-											>
-												<AlertCircle className="w-4 h-4 shrink-0" />
-												<span className="truncate">
-													{result.fraudCount} cảnh báo
-												</span>
-											</TruncatedCell>
+								{data.length === 0 && (
+									<TableRow>
+										<TableCell colSpan={7} className="py-12 text-center">
+											Không có kết quả nào để hiển thị.
 										</TableCell>
 									</TableRow>
-								))}
+								)}
+
+								{data.length !== 0 &&
+									data.map((result) => (
+										<TableRow
+											className="cursor-pointer"
+											key={result.id}
+											onClick={() => handleRowClick(result.id)}
+										>
+											<TableCell className="max-w-0 text-muted-foreground">
+												<TruncatedCell content={result.testName} />
+											</TableCell>
+											<TableCell className="max-w-0 text-muted-foreground">
+												<TruncatedCell content={result.className} />
+											</TableCell>
+											<TableCell>{result.score}</TableCell>
+											<TableCell>
+												<Badge variant="secondary">{result.correctRate}%</Badge>
+											</TableCell>
+											<TableCell className="max-w-0">
+												<TruncatedCell
+													content={`${result.timeSpent} phút`}
+													className="flex items-center gap-1 text-muted-foreground"
+												>
+													<Clock className="w-4 h-4 shrink-0" />
+													<span className="truncate">
+														{result.timeSpent} phút
+													</span>
+												</TruncatedCell>
+											</TableCell>
+											<TableCell className="max-w-0 text-muted-foreground">
+												<TruncatedCell
+													content={new Date(result.testDate).toLocaleDateString(
+														"vi-VN",
+													)}
+												/>
+											</TableCell>
+											<TableCell className="max-w-0">
+												<TruncatedCell
+													content={`${result.fraudCount} cảnh báo`}
+													className="flex items-center gap-1 text-orange-500"
+												>
+													<AlertCircle className="w-4 h-4 shrink-0" />
+													<span className="truncate">
+														{result.fraudCount} cảnh báo
+													</span>
+												</TruncatedCell>
+											</TableCell>
+										</TableRow>
+									))}
 							</TableBody>
 						</Table>
 					</div>

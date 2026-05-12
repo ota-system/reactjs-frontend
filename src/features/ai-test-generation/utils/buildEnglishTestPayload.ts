@@ -146,6 +146,7 @@ const buildEnglishTestPayload = ({
 	return {
 		payload: {
 			testName: title,
+			topicName: questions[0].subject,
 			classId,
 			startedTime,
 			duration,

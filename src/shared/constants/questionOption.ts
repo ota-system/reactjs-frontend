@@ -1,6 +1,12 @@
 type Difficulty = "Dễ" | "Trung bình" | "Khó";
 type QuestionType = "Trắc nghiệm" | "Điền từ" | "Đúng sai";
 
+enum LevelEnum {
+	EASY = "Dễ",
+	MEDIUM = "Trung bình",
+	HARD = "Khó",
+}
+
 enum QuestionTypeEnum {
 	MULTIPLE_CHOICE = "Trắc nghiệm",
 	FILL_IN_BLANK = "Điền từ",
@@ -15,4 +21,9 @@ const QUESTION_TYPE_OPTIONS: QuestionType[] = [
 ];
 
 export type { Difficulty, QuestionType };
-export { DIFFICULTY_OPTIONS, QUESTION_TYPE_OPTIONS, QuestionTypeEnum };
+export {
+	DIFFICULTY_OPTIONS,
+	LevelEnum,
+	QUESTION_TYPE_OPTIONS,
+	QuestionTypeEnum,
+};

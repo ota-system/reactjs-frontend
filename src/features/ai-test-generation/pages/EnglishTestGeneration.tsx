@@ -4,6 +4,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/lib/toast";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
+import { LevelEnum, QuestionTypeEnum } from "@/shared/constants/questionOption";
 import AiTestGenerationCard from "../components/AiTestGenerationCard";
 import GeneratedQuestionsSection from "../components/GeneratedQuestionsSection";
 import TestCreationHeader from "../components/TestCreationHeader";
@@ -69,7 +70,7 @@ const EnglishTestGeneration = () => {
 			behavior: "smooth",
 			block: "nearest",
 		});
-	}, [questions]);
+	}, [questions.length]);
 
 	const updateQuestion = (
 		id: string,
@@ -241,9 +242,9 @@ const EnglishTestGeneration = () => {
 			{
 				id: `manual-${now}-${Math.random()}`,
 				question: "",
-				questionType: "Trắc nghiệm",
+				questionType: QuestionTypeEnum.MULTIPLE_CHOICE,
 				subject: subject.trim(),
-				difficulty: "Trung bình",
+				difficulty: LevelEnum.MEDIUM,
 				options: [
 					{ id: "0", value: "" },
 					{ id: "1", value: "" },

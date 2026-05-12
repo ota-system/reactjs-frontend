@@ -6,7 +6,7 @@ const RootRedirect = () => {
 	if (role === "STUDENT") {
 		return <Navigate to="/my-classes" replace />;
 	}
-	return <Navigate to="/classes" replace />;
+	return <Navigate to="/analytics" replace />;
 };
 
 export default RootRedirect;

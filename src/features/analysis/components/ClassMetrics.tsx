@@ -22,107 +22,106 @@ export default function ClassMetrics({ data }: ClassMetricsProps) {
 	const paddedGpaDistribution = padDistributionData(data.gpaDistribution);
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-			{/* Chart 1: GPA Distribution across all tests */}
-			<Card>
-				<CardHeader>
-					<CardTitle className="text-base">
-						Phân bố điểm trung bình của sinh viên
-					</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<ResponsiveContainer width="100%" height={220}>
-						<BarChart
-							data={paddedGpaDistribution}
-							barCategoryGap={0}
-							margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
-						>
-							<CartesianGrid strokeDasharray="3 3" vertical={false} />
-							<XAxis dataKey="grade" tick={{ fontSize: 11 }}>
-								<Label
-									value="Điểm"
-									offset={-10}
-									position="insideBottom"
-									fontSize={12}
+		<Card>
+			<CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+				<CardTitle className="text-base">Tổng quan lớp học</CardTitle>
+			</CardHeader>
+			<CardContent className="p-6 pt-0">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+					{/* Chart 1: GPA Distribution across all tests */}
+					<div>
+						<p className="text-sm font-medium text-muted-foreground mb-3">
+							Phân bố điểm trung bình của sinh viên
+						</p>
+						<ResponsiveContainer width="100%" height={220}>
+							<BarChart
+								data={paddedGpaDistribution}
+								barCategoryGap={0}
+								margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
+							>
+								<CartesianGrid strokeDasharray="3 3" vertical={false} />
+								<XAxis dataKey="grade" tick={{ fontSize: 11 }}>
+									<Label
+										value="Điểm"
+										offset={-10}
+										position="insideBottom"
+										fontSize={12}
+									/>
+								</XAxis>
+								<YAxis allowDecimals={false} tick={{ fontSize: 11 }}>
+									<Label
+										value="Số học sinh"
+										angle={-90}
+										position="insideLeft"
+										style={{ textAnchor: "middle" }}
+										fontSize={12}
+									/>
+								</YAxis>
+								<Tooltip />
+								<Bar
+									dataKey="count"
+									name="Số học sinh"
+									fill="#6366f1"
+									radius={[4, 4, 0, 0]}
 								/>
-							</XAxis>
-							<YAxis allowDecimals={false} tick={{ fontSize: 11 }}>
-								<Label
-									value="Số học sinh"
-									angle={-90}
-									position="insideLeft"
-									style={{ textAnchor: "middle" }}
-									fontSize={12}
-								/>
-							</YAxis>
-							<Tooltip />
-							<Bar
-								dataKey="count"
-								name="Số học sinh"
-								fill="#6366f1"
-								radius={[4, 4, 0, 0]}
-							/>
-						</BarChart>
-					</ResponsiveContainer>
-				</CardContent>
-			</Card>
+							</BarChart>
+						</ResponsiveContainer>
+					</div>
 
-			{/* Chart 2: GPA across topics */}
-			<Card>
-				<CardHeader>
-					<CardTitle className="text-base">
-						Phân bố điểm trung bình theo chủ đề
-					</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<ResponsiveContainer width="100%" height={220}>
-						<ComposedChart
-							data={data.gpaAcrossTopics}
-							margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
-						>
-							<CartesianGrid strokeDasharray="3 3" vertical={false} />
-							<XAxis dataKey="topic" tick={{ fontSize: 11 }}>
-								<Label
-									value="Chủ đề"
-									offset={-10}
-									position="insideBottom"
-									fontSize={12}
+					{/* Chart 2: GPA across topics */}
+					<div>
+						<p className="text-sm font-medium text-muted-foreground mb-3">
+							Phân bố điểm trung bình theo chủ đề
+						</p>
+						<ResponsiveContainer width="100%" height={220}>
+							<ComposedChart
+								data={data.gpaAcrossTopics}
+								margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
+							>
+								<CartesianGrid strokeDasharray="3 3" vertical={false} />
+								<XAxis dataKey="topic" tick={{ fontSize: 11 }}>
+									<Label
+										value="Chủ đề"
+										offset={-10}
+										position="insideBottom"
+										fontSize={12}
+									/>
+								</XAxis>
+								<YAxis domain={[0, 10]} tick={{ fontSize: 11 }}>
+									<Label
+										value="Điểm trung bình"
+										angle={-90}
+										position="insideLeft"
+										style={{ textAnchor: "middle" }}
+										fontSize={12}
+									/>
+								</YAxis>
+								<Tooltip />
+								<Bar
+									dataKey="avg"
+									name="Điểm trung bình"
+									fill="#818cf8"
+									radius={[4, 4, 0, 0]}
 								/>
-							</XAxis>
-							<YAxis domain={[0, 10]} tick={{ fontSize: 11 }}>
-								<Label
-									value="Điểm trung bình"
-									angle={-90}
-									position="insideLeft"
-									style={{ textAnchor: "middle" }}
-									fontSize={12}
-								/>
-							</YAxis>
-							<Tooltip />
-							<Bar
-								dataKey="avg"
-								name="Điểm trung bình"
-								fill="#818cf8"
-								radius={[4, 4, 0, 0]}
-							/>
-							{data.classAvgScore > 0 && (
-								<ReferenceLine
-									y={data.classAvgScore}
-									stroke="#22c55e"
-									strokeWidth={2}
-									strokeDasharray="6 3"
-									label={{
-										value: `TB lớp: ${data.classAvgScore}`,
-										fill: "#22c55e",
-										fontSize: 11,
-										position: "insideTopRight",
-									}}
-								/>
-							)}
-						</ComposedChart>
-					</ResponsiveContainer>
-				</CardContent>
-			</Card>
-		</div>
+								{data.classAvgScore > 0 && (
+									<ReferenceLine
+										y={data.classAvgScore}
+										stroke="#22c55e"
+										strokeWidth={2}
+										strokeDasharray="6 3"
+										label={{
+											value: `TB lớp: ${data.classAvgScore}`,
+											fill: "#22c55e",
+											fontSize: 11,
+											position: "insideTopRight",
+										}}
+									/>
+								)}
+							</ComposedChart>
+						</ResponsiveContainer>
+					</div>
+				</div>
+			</CardContent>
+		</Card>
 	);
 }

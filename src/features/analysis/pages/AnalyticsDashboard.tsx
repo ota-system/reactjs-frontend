@@ -2,6 +2,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTeacherClassQuery } from "../../class/hooks/useTeacherClassQuery";
 import AnalyticsHeader from "../components/AnalyticsHeader";
 import ClassMetrics from "../components/ClassMetrics";
+import ClassSelection from "../components/ClassSelection";
+import OverviewStats from "../components/OverviewStats";
 import TestResults from "../components/TestResults";
 import { useAnalyticsSelection } from "../hooks/useAnalyticsSelection";
 import {
@@ -50,11 +52,17 @@ export default function AnalyticsDashboard() {
 
 	return (
 		<div className="p-6 space-y-6">
-			<AnalyticsHeader
-				classes={classesData}
-				selectedClassId={selectedClassId}
-				onClassChange={handleClassChange}
-			/>
+			<AnalyticsHeader />
+
+			<OverviewStats />
+
+			<div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-4">
+				<ClassSelection
+					classes={classesData.data}
+					selectedClassId={selectedClassId}
+					onClassChange={handleClassChange}
+				/>
+			</div>
 
 			{classDashboardData ? (
 				<>

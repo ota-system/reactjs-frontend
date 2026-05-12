@@ -24,7 +24,7 @@ export default function ClassDetailLayout() {
 				{classId && (
 					<>
 						<ManagementToggle classId={classId} />
-						<div className="mt-2 w-full border rounded-lg bg-card min-h-[400px]">
+						<div className="mt-2 w-full min-h-[400px]">
 							<Outlet context={{ classId }} />
 						</div>
 					</>

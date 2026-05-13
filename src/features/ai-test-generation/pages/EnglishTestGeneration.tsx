@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Dialog } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/lib/toast";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import { LevelEnum, QuestionTypeEnum } from "@/shared/constants/questionOption";
@@ -304,6 +305,16 @@ const EnglishTestGeneration = () => {
 				isPending={isPending}
 				handleRollbackToDraft={handleRollbackToDraft}
 			/>
+
+			{isPending && (
+				<div className="space-y-4">
+					<div className="space-y-4">
+						<Skeleton className="h-36 w-full rounded-2xl" />
+						<Skeleton className="h-36 w-full rounded-2xl" />
+						<Skeleton className="h-36 w-full rounded-2xl" />
+					</div>
+				</div>
+			)}
 
 			{questions.length > 0 && !isPending && (
 				<TestInformationPanel

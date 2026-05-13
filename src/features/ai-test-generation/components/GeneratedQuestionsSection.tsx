@@ -88,6 +88,7 @@ const renderQuestionCard = (
 		<MultipleChoiceQuestionCard
 			{...commonProps}
 			options={question.options}
+			questionType={question.questionType}
 			correctOptionIndex={question.correctOptionIndex}
 			onCorrectOptionChange={(value) =>
 				onUpdateQuestion(question.id, (current) => ({

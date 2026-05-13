@@ -5,8 +5,10 @@ const toQuestionType = (value: string): QuestionType => {
 
 	if (normalized === "fill_in_the_blank") {
 		return "Điền từ";
+	} else if (normalized === "multiple_choice") {
+		return "Trắc nghiệm";
 	}
-	return "Trắc nghiệm";
+	return "Đúng sai";
 };
 
 export default toQuestionType;

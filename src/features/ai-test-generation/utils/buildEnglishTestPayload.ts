@@ -26,7 +26,7 @@ const DIFFICULTY_TO_API: Record<string, string> = {
 
 const QUESTION_TYPE_TO_API: Record<string, string> = {
 	"Trắc nghiệm": "multiple_choice",
-	"Đúng/Sai": "true_false",
+	"Đúng sai": "true_false",
 	"Điền từ": "fill_in_the_blank",
 	multiple_choice: "multiple_choice",
 	true_false: "true_false",
@@ -40,7 +40,10 @@ const normalizeQuestionTypeToApi = (value: string) =>
 	QUESTION_TYPE_TO_API[value] ?? "multiple_choice";
 
 const isMultipleChoiceUI = (value: string) =>
-	value === "Trắc nghiệm" || value === "multiple_choice";
+	value === "Trắc nghiệm" ||
+	value === "multiple_choice" ||
+	value === "Đúng sai" ||
+	value === "true_false";
 
 const buildEnglishTestPayload = ({
 	classId,
@@ -116,23 +119,44 @@ const buildEnglishTestPayload = ({
 
 	const mappedQuestions: EnglishTest["questions"] = questions.map(
 		(question) => {
-			const normalizedOptions = question.options.map((option) =>
+			const trimmedOptions = question.options.map((option) =>
 				option.value.trim(),
 			);
-			const answer = isMultipleChoiceUI(question.questionType)
-				? (normalizedOptions[question.correctOptionIndex] ?? "")
-				: question.correctAnswer.trim();
+
+			if (isMultipleChoiceUI(question.questionType)) {
+				const answer = trimmedOptions[question.correctOptionIndex] ?? "";
+
+				const normalizedOptions: string[] = [];
+				let remappedCorrectOptionIndex = 0;
+
+				for (let i = 0; i < trimmedOptions.length; i++) {
+					if (trimmedOptions[i] !== "") {
+						if (i === question.correctOptionIndex) {
+							remappedCorrectOptionIndex = normalizedOptions.length;
+						}
+						normalizedOptions.push(trimmedOptions[i]);
+					}
+				}
+
+				return {
+					question: question.question.trim(),
+					difficulty: normalizeDifficultyToApi(question.difficulty),
+					questionType: normalizeQuestionTypeToApi(question.questionType),
+					options: normalizedOptions,
+					correctOptionIndex: remappedCorrectOptionIndex,
+					answer,
+					explanation: question.explanation?.trim() ?? "",
+				};
+			}
+
+			const answer = question.correctAnswer.trim();
 
 			return {
 				question: question.question.trim(),
 				difficulty: normalizeDifficultyToApi(question.difficulty),
 				questionType: normalizeQuestionTypeToApi(question.questionType),
-				options: isMultipleChoiceUI(question.questionType)
-					? normalizedOptions
-					: undefined,
-				correctOptionIndex: isMultipleChoiceUI(question.questionType)
-					? question.correctOptionIndex
-					: undefined,
+				options: undefined,
+				correctOptionIndex: undefined,
 				answer,
 				explanation: question.explanation?.trim() ?? "",
 			};
@@ -142,6 +166,7 @@ const buildEnglishTestPayload = ({
 	return {
 		payload: {
 			testName: title,
+			topicName: questions[0].subject,
 			classId,
 			startedTime,
 			duration,

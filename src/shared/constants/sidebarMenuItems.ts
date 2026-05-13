@@ -31,7 +31,7 @@ const teacherMenuItems = [
 		tab: "classes",
 	},
 	{
-		title: "Quản lý bài thi",
+		title: "Quản lý kết quả thi",
 		icon: LuFileText,
 		tab: "test-management",
 	},

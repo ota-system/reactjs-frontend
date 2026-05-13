@@ -85,7 +85,14 @@ export default function TestResult() {
 								>
 									Về trang chủ
 								</Button>
-								<Button className="px-8 h-10 cursor-pointer">
+								<Button
+									className="px-8 h-10 cursor-pointer"
+									onClick={() => {
+										navigate(`/my-results/${testResult.resultId || ""}/`, {
+											replace: true,
+										});
+									}}
+								>
 									Xem chi tiết
 								</Button>
 							</div>

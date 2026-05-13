@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -22,20 +21,12 @@ export default function ClassTestList() {
 	const { data: classesData, isLoading: isClassesLoading } =
 		useTeacherClassQuery();
 	const navigate = useNavigate();
-	const [selectedClassId, setSelectedClassId] = useState(classId || "");
-
-	useEffect(() => {
-		if (classId) {
-			setSelectedClassId(classId);
-		}
-	}, [classId]);
 
 	const selectedClass = classesData?.data?.find(
-		(cls: ClassResponse) => cls.id === selectedClassId,
+		(cls: ClassResponse) => cls.id === classId,
 	);
 
 	const handleSelectClass = (newClassId: string) => {
-		setSelectedClassId(newClassId);
 		navigate(`/test-management/classes/${newClassId}`);
 	};
 
@@ -85,7 +76,7 @@ export default function ClassTestList() {
 				{isClassesLoading ? (
 					<Skeleton className="h-10 w-full" />
 				) : (
-					<Select value={selectedClassId} onValueChange={handleSelectClass}>
+					<Select value={classId || ""} onValueChange={handleSelectClass}>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Chọn lớp học..." />
 						</SelectTrigger>

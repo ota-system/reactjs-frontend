@@ -9,6 +9,9 @@ const translateCorrectOptionIndex = (answer: string): number => {
 		case "3":
 			return 3;
 		default:
+			console.warn(
+				`[translateCorrectOptionIndex] Unexpected answer "${answer}" — defaulting to 0`,
+			);
 			return 0;
 	}
 };

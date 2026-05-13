@@ -34,7 +34,7 @@ export type TestSummary = {
 	timesUp: boolean;
 };
 
-export const COLORS = {
+export const CHART_COLORS = {
 	myScore: "#6366f1",
 	classAvg: "#f59e0b",
 	classMax: "#10b981",

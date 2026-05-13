@@ -20,7 +20,7 @@ import { EmptyState } from "../components/EmptyState";
 import { ResultStatCard } from "../components/ResultStatCard";
 import { useClassAnalyticsQuery } from "../hooks/useClassAnalyticsQuery";
 import { useStudentClassQuery } from "../hooks/useStudentClassQuery";
-import { COLORS } from "../types";
+import { CHART_COLORS } from "../types";
 
 const renderDot = (props: any) => {
 	const { cx, cy, payload } = props;
@@ -32,7 +32,7 @@ const renderDot = (props: any) => {
 			cx={cx}
 			cy={cy}
 			r={5}
-			fill={COLORS.myScore}
+			fill={CHART_COLORS.myScore}
 			strokeWidth={2}
 			stroke="#fff"
 		/>
@@ -55,18 +55,32 @@ const MyAnalytics = () => {
 		() =>
 			analytics.map((d) => ({
 				...d,
-				testName: truncate(d.testName, 14),
+				shortName: truncate(d.testName, 14),
 			})),
 		[analytics],
 	);
 
 	const stats = useMemo(() => {
 		if (!analytics.length) {
-			return { myAvg: null, classAvg: null, vsClass: null, myBest: null };
+			return {
+				myAvg: null,
+				classAvg: null,
+				vsClass: null,
+				myBest: null,
+				completedCount: 0,
+				totalCount: 0,
+			};
 		}
 		const completedTests = analytics.filter((d) => d.myScore !== null);
 		if (!completedTests.length) {
-			return { myAvg: null, classAvg: null, vsClass: null, myBest: null };
+			return {
+				myAvg: null,
+				classAvg: null,
+				vsClass: null,
+				myBest: null,
+				completedCount: 0,
+				totalCount: analytics.length,
+			};
 		}
 
 		const mySum = completedTests.reduce((s, d) => s + d.myScore, 0);
@@ -80,6 +94,8 @@ const MyAnalytics = () => {
 			classAvg,
 			vsClass: myAvg - classAvg,
 			myBest: Math.max(...completedTests.map((d) => d.myScore)),
+			completedCount: completedTests.length,
+			totalCount: analytics.length,
 		};
 	}, [analytics]);
 
@@ -136,7 +152,7 @@ const MyAnalytics = () => {
 						stroke="hsl(var(--border))"
 					/>
 					<XAxis
-						dataKey="testName"
+						dataKey="shortName"
 						tickLine={false}
 						axisLine={false}
 						tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
@@ -160,7 +176,7 @@ const MyAnalytics = () => {
 					<Bar
 						dataKey="classAvgScore"
 						name="Điểm TB lớp"
-						fill={COLORS.classAvg}
+						fill={CHART_COLORS.classAvg}
 						radius={[4, 4, 0, 0]}
 						barSize={44}
 						opacity={0.35}
@@ -169,21 +185,22 @@ const MyAnalytics = () => {
 						type="monotone"
 						dataKey="myScore"
 						name="Điểm của bạn"
-						stroke={COLORS.myScore}
+						stroke={CHART_COLORS.myScore}
 						strokeWidth={3}
 						dot={renderDot}
 						activeDot={{
 							r: 8,
-							stroke: COLORS.myScore,
+							stroke: CHART_COLORS.myScore,
 							strokeWidth: 2,
 							fill: "#fff",
 						}}
+						connectNulls
 					/>
 					<Line
 						type="monotone"
 						dataKey="classMaxScore"
 						name="Điểm cao nhất lớp"
-						stroke={COLORS.classMax}
+						stroke={CHART_COLORS.classMax}
 						strokeWidth={2}
 						strokeDasharray="5 4"
 						dot={false}
@@ -192,7 +209,7 @@ const MyAnalytics = () => {
 						type="monotone"
 						dataKey="classMinScore"
 						name="Điểm thấp nhất lớp"
-						stroke={COLORS.classMin}
+						stroke={CHART_COLORS.classMin}
 						strokeWidth={2}
 						strokeDasharray="5 4"
 						dot={false}
@@ -224,25 +241,29 @@ const MyAnalytics = () => {
 			{effectiveClassId && (
 				<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 					<ResultStatCard
-						title="Số bài thi"
-						value={analytics.length?.toString() ?? "—"}
+						title="Bài đã làm"
+						value={
+							stats.totalCount !== undefined
+								? `${stats.completedCount}/${stats.totalCount}`
+								: "—"
+						}
 						icon={<CheckCircle className="text-blue-500" />}
 					/>
 					<ResultStatCard
 						title="Điểm TB của bạn"
-						value={stats.myAvg?.toFixed(1) ?? "—"}
+						value={stats.myAvg?.toFixed(2) ?? "—"}
 						icon={<Award className="text-yellow-500" />}
 					/>
 					<ResultStatCard
 						title="Điểm TB lớp"
-						value={stats.classAvg?.toFixed(1) ?? "—"}
+						value={stats.classAvg?.toFixed(2) ?? "—"}
 						icon={<TrendingUp className="text-green-500" />}
 					/>
 					<ResultStatCard
 						title="So với lớp"
 						value={
 							stats.vsClass !== null
-								? `${stats.vsClass >= 0 ? "+" : ""}${stats.vsClass.toFixed(1)}`
+								? `${stats.vsClass > 0 ? "+" : ""}${stats.vsClass.toFixed(2)}`
 								: "—"
 						}
 						icon={<TrendingDown className="text-purple-500" />}

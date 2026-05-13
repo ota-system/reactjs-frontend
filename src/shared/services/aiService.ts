@@ -1,3 +1,5 @@
+import { refreshAccessToken } from "@/core/api/httpClient.api";
+import { toast } from "@/lib/toast";
 import { tokenService } from "@/lib/tokens";
 
 export interface GeneratedQuestion {
@@ -58,7 +60,7 @@ const cleanEventData = (line: string) => {
 
 const parseQuestionPayload = (payload: string) => {
 	try {
-		return JSON.parse(payload) as GeneratedQuestion;
+		return JSON.parse(payload);
 	} catch {
 		console.warn("Không thể phân tích câu hỏi từ AI:", payload);
 		return null;
@@ -102,13 +104,29 @@ const readQuestionsFromStream = async (
 				break;
 			}
 
-			const question = parseQuestionPayload(payload);
-			if (!question) {
+			const data = parseQuestionPayload(payload);
+			if (!data) {
 				continue;
 			}
 
-			questions.push(question);
-			onQuestion?.(question);
+			if (data.code === "GREETING") {
+				toast.info(
+					data.message ||
+						"Chào bạn! Tôi là trợ lý OTA của bạn, sẵn sàng giúp bạn tạo đề thi tiếng Anh.",
+				);
+				break;
+			}
+
+			if (data.code === "INVALID_PROMPT") {
+				toast.error(
+					data.message ||
+						"Prompt không hợp lệ. Vui lòng thử lại với prompt khác.",
+				);
+				break;
+			}
+
+			questions.push(data);
+			onQuestion?.(data);
 		}
 	}
 
@@ -127,12 +145,23 @@ const readQuestionsFromStream = async (
 export const generateTest = async (
 	prompt: string,
 	options: GenerateTestOptions = {},
-) => {
+): Promise<GeneratedQuestion[]> => {
 	const response = await fetch(createStreamEndpoint(prompt), {
 		method: "GET",
 		headers: createAuthHeaders(),
 		signal: options.signal,
 	});
+
+	if (response.status === 401) {
+		const refreshed = await refreshAccessToken();
+		if (refreshed) {
+			return generateTest(prompt, options);
+		} else {
+			throw new Error("Hết hạn đăng nhập. Vui lòng đăng nhập lại.", {
+				cause: "UNAUTHORIZED",
+			});
+		}
+	}
 
 	if (response.status === 404) {
 		throw new Error("Không tìm thấy đề thi");

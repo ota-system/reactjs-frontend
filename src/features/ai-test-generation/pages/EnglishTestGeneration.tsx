@@ -30,6 +30,7 @@ const EnglishTestGeneration = () => {
 	const [prompt, setPrompt] = useState("");
 	const [subject, setSubject] = useState("");
 	const [questions, setQuestions] = useState<GeneratedQuestionUI[]>([]);
+	const [hasGenerated, setHasGenerated] = useState(false);
 	const testInformation = useEnglishTestInformationStore(
 		(state) => state.testInformation,
 	);
@@ -97,14 +98,18 @@ const EnglishTestGeneration = () => {
 		const previousSubject = subject;
 		const previousPrompt = prompt;
 		const previousTestInformation = { ...testInformation };
+		const nextDraftSnapshot =
+			saveCurrentAsDraft && questions.length > 0
+				? {
+						prompt: previousPrompt,
+						subject: previousSubject,
+						questions: previousQuestions,
+						testInformation: previousTestInformation,
+					}
+				: null;
 
-		if (saveCurrentAsDraft && questions.length > 0) {
-			setDraftSnapshot({
-				prompt: previousPrompt,
-				subject: previousSubject,
-				questions: previousQuestions,
-				testInformation: previousTestInformation,
-			});
+		if (nextDraftSnapshot) {
+			setDraftSnapshot(nextDraftSnapshot);
 		} else if (!saveCurrentAsDraft) {
 			setDraftSnapshot(null);
 		}
@@ -130,22 +135,43 @@ const EnglishTestGeneration = () => {
 			const generatedSubject = (allQuestions[0]?.topic ?? "").trim();
 			const effectiveSubject = subject.trim() || generatedSubject;
 
-			setLastGeneratedInput({
-				prompt: prompt.trim(),
-				subject: effectiveSubject,
-			});
-
 			if (allQuestions.length > 0 && !subject.trim()) {
 				setSubject(effectiveSubject);
 			}
 			handleTestInformationChange("title", effectiveSubject);
 
-			toast.success(`Đã tạo ${allQuestions.length} câu hỏi từ AI.`);
+			if (allQuestions.length === 0 && nextDraftSnapshot) {
+				setSubject(nextDraftSnapshot.subject);
+				setQuestions(cloneQuestions(nextDraftSnapshot.questions));
+				setTestInformation({ ...nextDraftSnapshot.testInformation });
+				setDraftSnapshot(null);
+				return;
+			}
+
+			if (allQuestions.length === 0) {
+				setHasGenerated(false);
+				setLastGeneratedInput(null);
+				return;
+			}
+
+			if (allQuestions.length > 0) {
+				setLastGeneratedInput({
+					prompt: prompt.trim(),
+					subject: effectiveSubject,
+				});
+				setHasGenerated(true);
+				toast.success(`Đã tạo ${allQuestions.length} câu hỏi từ AI.`);
+			}
 		} catch (error) {
 			setQuestions(previousQuestions);
 			setSubject(previousSubject);
 			setPrompt(previousPrompt);
 			setTestInformation(previousTestInformation);
+			if (error instanceof Error && (error as any).cause === "UNAUTHORIZED") {
+				navigate("/sign-in", { replace: true });
+				toast.info(error.message);
+				return;
+			}
 
 			const message =
 				error instanceof Error
@@ -166,6 +192,9 @@ const EnglishTestGeneration = () => {
 			return;
 		}
 
+		console.log(
+			"Prompt hoặc chủ đề đã thay đổi kể từ lần tạo bài thi cuối cùng. Hiển thị hộp thoại xác nhận tái tạo.",
+		);
 		setIsRegenerateDialogOpen(true);
 	};
 
@@ -325,22 +354,24 @@ const EnglishTestGeneration = () => {
 					onSave={handleSaveTest}
 				/>
 			)}
-			<Dialog
-				open={isRegenerateDialogOpen}
-				onOpenChange={setIsRegenerateDialogOpen}
-			>
-				<ConfirmedDialog
-					title="Tạo lại bài thi"
-					description="Bạn có muốn lưu tạm bộ câu hỏi hiện tại làm bản nháp trước khi tạo bộ câu hỏi mới không?"
-					action={() => void runGenerate(true)}
-					actionLabel="Lưu nháp và tạo lại"
-					actionVariant="default"
-					secondaryAction={{
-						label: "Không lưu, tạo lại",
-						action: () => void runGenerate(false),
-					}}
-				/>
-			</Dialog>
+			{(questions.length > 0 || hasGenerated) && (
+				<Dialog
+					open={isRegenerateDialogOpen}
+					onOpenChange={setIsRegenerateDialogOpen}
+				>
+					<ConfirmedDialog
+						title="Tạo lại bài thi"
+						description="Bạn có muốn lưu tạm bộ câu hỏi hiện tại làm bản nháp trước khi tạo bộ câu hỏi mới không?"
+						action={() => void runGenerate(true)}
+						actionLabel="Lưu nháp và tạo lại"
+						actionVariant="default"
+						secondaryAction={{
+							label: "Không lưu, tạo lại",
+							action: () => void runGenerate(false),
+						}}
+					/>
+				</Dialog>
+			)}
 		</div>
 	);
 };

@@ -1,5 +1,8 @@
 import type { EnglishTest } from "../types/EnglishTest";
 import type { TestInformationValues } from "../types/TestInformation";
+import findFirstInvalidQuestionIssue, {
+	type InvalidQuestionIssue,
+} from "./findFirstInvalidQuestionIssue";
 import type { GeneratedQuestionUI } from "./mapGeneratedQuestionToUI";
 
 interface BuildEnglishTestPayloadParams {
@@ -10,7 +13,7 @@ interface BuildEnglishTestPayloadParams {
 
 type BuildEnglishTestPayloadResult =
 	| { payload: EnglishTest }
-	| { error: string };
+	| { error: string; errorFocus?: InvalidQuestionIssue };
 
 const DIFFICULTY_TO_API: Record<string, string> = {
 	Dễ: "easy",
@@ -101,6 +104,16 @@ const buildEnglishTestPayload = ({
 		};
 	}
 
+	const firstInvalidQuestionIssue = findFirstInvalidQuestionIssue(questions);
+
+	if (firstInvalidQuestionIssue) {
+		return {
+			error:
+				"Vui lòng kiểm tra lại nội dung câu hỏi, đáp án và đáp án đúng trước khi lưu.",
+			errorFocus: firstInvalidQuestionIssue,
+		};
+	}
+
 	const mappedQuestions: EnglishTest["questions"] = questions.map(
 		(question) => {
 			const normalizedOptions = question.options.map((option) =>
@@ -125,21 +138,6 @@ const buildEnglishTestPayload = ({
 			};
 		},
 	);
-
-	const hasInvalidQuestion = mappedQuestions.some(
-		(question) =>
-			!question.question ||
-			!question.answer ||
-			(question.questionType === "multiple_choice" &&
-				(!question.options || question.options.filter(Boolean).length < 2)),
-	);
-
-	if (hasInvalidQuestion) {
-		return {
-			error:
-				"Vui lòng kiểm tra lại nội dung câu hỏi, đáp án và đáp án đúng trước khi lưu.",
-		};
-	}
 
 	return {
 		payload: {

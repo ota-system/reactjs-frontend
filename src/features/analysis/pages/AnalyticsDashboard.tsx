@@ -4,7 +4,7 @@ import AnalyticsHeader from "../components/AnalyticsHeader";
 import ClassMetrics from "../components/ClassMetrics";
 import ClassSelection from "../components/ClassSelection";
 import OverviewStats from "../components/OverviewStats";
-import TestResults from "../components/TestResults";
+import TestResultsCard from "../components/TestResultsCard";
 import { useAnalyticsSelection } from "../hooks/useAnalyticsSelection";
 import {
 	useClassDashboardQuery,
@@ -67,7 +67,7 @@ export default function AnalyticsDashboard() {
 			{classDashboardData ? (
 				<>
 					<ClassMetrics data={classDashboardData} />
-					<TestResults
+					<TestResultsCard
 						classData={classDashboardData}
 						testData={testData}
 						isTestLoading={isTestLoading}

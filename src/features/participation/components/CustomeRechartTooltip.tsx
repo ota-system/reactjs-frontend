@@ -1,4 +1,4 @@
-import { CHART_COLORS } from "../types";
+import "../styles/colors.css";
 
 export function CustomTooltip({ active, payload }: any) {
 	if (!active || !payload?.length) {
@@ -11,7 +11,7 @@ export function CustomTooltip({ active, payload }: any) {
 		{
 			key: "myScore",
 			label: "Điểm của bạn",
-			color: CHART_COLORS.myScore,
+			color: "var(--chart-color-my-score)",
 			value:
 				originalData?.myScore == null
 					? "Bạn chưa làm bài"
@@ -20,19 +20,19 @@ export function CustomTooltip({ active, payload }: any) {
 		{
 			key: "classAvgScore",
 			label: "Điểm TB lớp",
-			color: CHART_COLORS.classAvg,
+			color: "var(--chart-color-class-avg)",
 			value: Number(originalData?.classAvgScore ?? 0).toFixed(1),
 		},
 		{
 			key: "classMaxScore",
 			label: "Điểm cao nhất lớp",
-			color: CHART_COLORS.classMax,
+			color: "var(--chart-color-class-max)",
 			value: Number(originalData?.classMaxScore ?? 0).toFixed(1),
 		},
 		{
 			key: "classMinScore",
 			label: "Điểm thấp nhất lớp",
-			color: CHART_COLORS.classMin,
+			color: "var(--chart-color-class-min)",
 			value: Number(originalData?.classMinScore ?? 0).toFixed(1),
 		},
 	];

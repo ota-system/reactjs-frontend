@@ -20,7 +20,7 @@ import { EmptyState } from "../components/EmptyState";
 import { ResultStatCard } from "../components/ResultStatCard";
 import { useClassAnalyticsQuery } from "../hooks/useClassAnalyticsQuery";
 import { useStudentClassQuery } from "../hooks/useStudentClassQuery";
-import { CHART_COLORS } from "../types";
+import "../styles/colors.css";
 
 const renderDot = (props: any) => {
 	const { cx, cy, payload } = props;
@@ -32,7 +32,7 @@ const renderDot = (props: any) => {
 			cx={cx}
 			cy={cy}
 			r={5}
-			fill={CHART_COLORS.myScore}
+			fill="var(--chart-color-my-score)"
 			strokeWidth={2}
 			stroke="#fff"
 		/>
@@ -176,7 +176,7 @@ const MyAnalytics = () => {
 					<Bar
 						dataKey="classAvgScore"
 						name="Điểm TB lớp"
-						fill={CHART_COLORS.classAvg}
+						fill="var(--chart-color-class-avg)"
 						radius={[4, 4, 0, 0]}
 						barSize={44}
 						opacity={0.35}
@@ -185,12 +185,12 @@ const MyAnalytics = () => {
 						type="monotone"
 						dataKey="myScore"
 						name="Điểm của bạn"
-						stroke={CHART_COLORS.myScore}
+						stroke="var(--chart-color-my-score)"
 						strokeWidth={3}
 						dot={renderDot}
 						activeDot={{
 							r: 8,
-							stroke: CHART_COLORS.myScore,
+							stroke: "var(--chart-color-my-score)",
 							strokeWidth: 2,
 							fill: "#fff",
 						}}
@@ -200,7 +200,7 @@ const MyAnalytics = () => {
 						type="monotone"
 						dataKey="classMaxScore"
 						name="Điểm cao nhất lớp"
-						stroke={CHART_COLORS.classMax}
+						stroke="var(--chart-color-class-max)"
 						strokeWidth={2}
 						strokeDasharray="5 4"
 						dot={false}
@@ -209,7 +209,7 @@ const MyAnalytics = () => {
 						type="monotone"
 						dataKey="classMinScore"
 						name="Điểm thấp nhất lớp"
-						stroke={CHART_COLORS.classMin}
+						stroke="var(--chart-color-class-min)"
 						strokeWidth={2}
 						strokeDasharray="5 4"
 						dot={false}

@@ -18,9 +18,9 @@ const studentMenuItems = [
 		tab: "my-results",
 	},
 	{
-		title: "Điểm yếu",
+		title: "Phân tích điểm số",
 		icon: LuTrendingDown,
-		tab: "my-weaknesses",
+		tab: "my-analytics",
 	},
 ];
 

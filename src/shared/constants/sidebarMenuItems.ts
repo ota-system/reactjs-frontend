@@ -26,6 +26,11 @@ const studentMenuItems = [
 
 const teacherMenuItems = [
 	{
+		title: "Tổng quan",
+		icon: GrAnalytics,
+		tab: "overview",
+	},
+	{
 		title: "Lớp học",
 		icon: LuUsers,
 		tab: "classes",
@@ -34,11 +39,6 @@ const teacherMenuItems = [
 		title: "Quản lý kết quả thi",
 		icon: LuFileText,
 		tab: "test-management",
-	},
-	{
-		title: "Phân tích",
-		icon: GrAnalytics,
-		tab: "analytics",
 	},
 ];
 

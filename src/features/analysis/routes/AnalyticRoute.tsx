@@ -1,10 +1,10 @@
 import type { RouteObject } from "react-router-dom";
-import ComingSoon from "@/shared/pages/ComingSoon";
+import AnalyticsDashboard from "../pages/AnalyticsDashboard";
 
 const AnalyticRoute: RouteObject[] = [
 	{
-		path: "/analytics",
-		element: <ComingSoon />,
+		path: "/overview",
+		element: <AnalyticsDashboard />,
 	},
 ];
 

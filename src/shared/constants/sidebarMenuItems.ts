@@ -26,9 +26,9 @@ const studentMenuItems = [
 
 const teacherMenuItems = [
 	{
-		title: "Phân tích",
+		title: "Tổng quan",
 		icon: GrAnalytics,
-		tab: "analytics",
+		tab: "overview",
 	},
 	{
 		title: "Lớp học",

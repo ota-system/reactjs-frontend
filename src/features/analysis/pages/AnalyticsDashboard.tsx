@@ -22,12 +22,15 @@ export default function AnalyticsDashboard() {
 		handleTestChange,
 	} = useAnalyticsSelection(classesData);
 
-	const { data: classDashboardData, isLoading: isClassLoading } =
+	const { data: classData, isLoading: isClassLoading } =
 		useClassDashboardQuery(selectedClassId);
+	const classDashboardData = classData?.data;
+
 	const { data: testData, isLoading: isTestLoading } = useTestDashboardQuery(
 		selectedClassId,
 		selectedTestId,
 	);
+	const testDashboardData = testData?.data;
 
 	if (isClassesLoading || (isClassLoading && !classDashboardData)) {
 		return (
@@ -69,7 +72,7 @@ export default function AnalyticsDashboard() {
 					<ClassMetrics data={classDashboardData} />
 					<TestResultsCard
 						classData={classDashboardData}
-						testData={testData}
+						testData={testDashboardData}
 						isTestLoading={isTestLoading}
 						selectedTestId={selectedTestId}
 						onTestChange={handleTestChange}
@@ -77,7 +80,7 @@ export default function AnalyticsDashboard() {
 				</>
 			) : (
 				<div className="p-6 text-center py-12 text-muted-foreground">
-					Đang tải dữ liệu phân tích cho lớp học...
+					Không có dữ liệu
 				</div>
 			)}
 		</div>

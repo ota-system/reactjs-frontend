@@ -11,6 +11,7 @@ import {
 	YAxis,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CHART_COLORS } from "../constants/chartColors";
 import type { ClassDashboardData } from "../types/dashboard";
 import { padDistributionData } from "../utils/chartData";
 
@@ -61,7 +62,7 @@ export default function ClassMetrics({ data }: ClassMetricsProps) {
 								<Bar
 									dataKey="count"
 									name="Số học sinh"
-									fill="#6366f1"
+									fill={CHART_COLORS.PRIMARY}
 									radius={[4, 4, 0, 0]}
 								/>
 							</BarChart>
@@ -100,18 +101,18 @@ export default function ClassMetrics({ data }: ClassMetricsProps) {
 								<Bar
 									dataKey="avg"
 									name="Điểm trung bình"
-									fill="#818cf8"
+									fill={CHART_COLORS.SECONDARY}
 									radius={[4, 4, 0, 0]}
 								/>
 								{data.classTopicAvgScore > 0 && (
 									<ReferenceLine
 										y={data.classTopicAvgScore}
-										stroke="#22c55e"
+										stroke={CHART_COLORS.SUCCESS}
 										strokeWidth={2}
 										strokeDasharray="6 3"
 										label={{
 											value: `TB lớp: ${data.classTopicAvgScore}`,
-											fill: "#22c55e",
+											fill: CHART_COLORS.SUCCESS,
 											fontSize: 11,
 											position: "insideTopRight",
 										}}

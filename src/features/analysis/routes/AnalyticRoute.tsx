@@ -3,7 +3,7 @@ import AnalyticsDashboard from "../pages/AnalyticsDashboard";
 
 const AnalyticRoute: RouteObject[] = [
 	{
-		path: "/analytics",
+		path: "/overview",
 		element: <AnalyticsDashboard />,
 	},
 ];

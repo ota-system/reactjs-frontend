@@ -8,6 +8,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
+import { CHART_COLORS } from "../constants/chartColors";
 import type { GpaDistributionItem } from "../types/dashboard";
 import { padDistributionData } from "../utils/chartData";
 
@@ -51,8 +52,8 @@ export default function TestGradeChart({ testGrades }: TestGradeChartProps) {
 					<Bar
 						dataKey="count"
 						name="Số học sinh"
-						fill="#6366f1"
-						stroke="#6366f1"
+						fill={CHART_COLORS.PRIMARY}
+						stroke={CHART_COLORS.PRIMARY}
 						strokeWidth={1}
 						radius={[4, 4, 0, 0]}
 					/>

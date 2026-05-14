@@ -1,3 +1,5 @@
+import type { QuestionTypeAPI } from "@/shared/constants/questionOption";
+
 export interface TestInfo {
 	id: string;
 	testName: string;
@@ -14,9 +16,10 @@ export interface Choice {
 export interface TestQuestion {
 	id: string;
 	question: string;
-	type: "multiple_choice" | "fill_in_the_blank";
+	type: QuestionTypeAPI;
 	level: string;
 	choices: Choice[];
+	answer?: string;
 }
 
 export interface TestQuestionResponse {

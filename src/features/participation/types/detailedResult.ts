@@ -1,3 +1,5 @@
+import type { QuestionTypeAPI } from "@/shared/constants/questionOption";
+
 export interface TestResultInfo {
 	testResultId: string;
 	testName: string;
@@ -39,7 +41,7 @@ export type DetailedResultState = {
 export interface QuestionDetail {
 	id: string;
 	question: string;
-	type: "multiple_choice" | "fill_in_the_blank";
+	type: QuestionTypeAPI;
 	choices: QuestionChoice[];
 	answer: string | null;
 	explanation: string | null;

@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { QuestionTypeEnum } from "../constants/questionOption";
 import QuestionCard, { type QuestionCardProps } from "./QuestionCard";
 
 interface MultipleChoiceQuestionCardProps extends QuestionCardProps {
@@ -19,11 +20,12 @@ export default function MultipleChoiceQuestionCard({
 	index,
 	question,
 	difficulty,
-	questionType = "Trắc nghiệm",
+	questionType = QuestionTypeEnum.MULTIPLE_CHOICE,
 	options,
 	onQuestionChange,
 	onDifficultyChange,
 	onQuestionTypeChange,
+	onEdit,
 	onOptionChange,
 	correctOptionIndex,
 	onCorrectOptionChange,
@@ -40,6 +42,7 @@ export default function MultipleChoiceQuestionCard({
 			onQuestionChange={onQuestionChange}
 			onDifficultyChange={onDifficultyChange}
 			onQuestionTypeChange={onQuestionTypeChange}
+			onEdit={onEdit}
 			onDelete={onDelete}
 			disabled={disabled}
 			className={className}
@@ -58,14 +61,14 @@ export default function MultipleChoiceQuestionCard({
 					disabled={disabled}
 					className="space-y-2"
 				>
-					{options.map((option) => (
+					{options.map((option, optionIndex) => (
 						<div
 							key={`${index}-option-${option.id}`}
 							className="flex items-center gap-2"
 						>
 							<RadioGroupItem
-								value={option.id}
-								id={option.id}
+								value={String(optionIndex)}
+								id={`${index}-option-${optionIndex}`}
 								disabled={disabled}
 							/>
 							<Input
@@ -73,7 +76,7 @@ export default function MultipleChoiceQuestionCard({
 								onChange={(event) =>
 									onOptionChange(option.id, event.target.value)
 								}
-								placeholder={`Option ${String.fromCharCode(65 + options.indexOf(option))}`}
+								placeholder={`Option ${String.fromCharCode(65 + optionIndex)}`}
 								disabled={disabled}
 								data-question-field="multiple-choice-option"
 								data-multiple-choice-option-id={option.id}

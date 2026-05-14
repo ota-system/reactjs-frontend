@@ -27,5 +27,9 @@ export const toast = {
 		});
 	},
 
+	dismiss: () => {
+		sonnerToast.dismiss();
+	},
+
 	promise: sonnerToast.promise,
 };

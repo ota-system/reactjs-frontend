@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { QuestionTypeEnum } from "../constants/questionOption";
 import QuestionCard, { type QuestionCardProps } from "./QuestionCard";
 
 interface FillInBlankQuestionCardProps extends QuestionCardProps {
@@ -11,11 +12,12 @@ export default function FillInBlankQuestionCard({
 	index,
 	question,
 	difficulty,
-	questionType = "Điền từ",
+	questionType = QuestionTypeEnum.FILL_IN_BLANK,
 	correctAnswer,
 	onQuestionChange,
 	onDifficultyChange,
 	onQuestionTypeChange,
+	onEdit,
 	onCorrectAnswerChange,
 	onDelete,
 	disabled = false,
@@ -30,6 +32,7 @@ export default function FillInBlankQuestionCard({
 			onQuestionChange={onQuestionChange}
 			onDifficultyChange={onDifficultyChange}
 			onQuestionTypeChange={onQuestionTypeChange}
+			onEdit={onEdit}
 			onDelete={onDelete}
 			disabled={disabled}
 			className={className}

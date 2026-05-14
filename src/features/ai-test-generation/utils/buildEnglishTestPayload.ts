@@ -1,3 +1,8 @@
+import {
+	isMultipleChoiceUI,
+	normalizeDifficultyToApi,
+	normalizeQuestionTypeToApi,
+} from "@/shared/utils/questionMapping";
 import type { EnglishTest } from "../types/EnglishTest";
 import type { TestInformationValues } from "../types/TestInformation";
 import findFirstInvalidQuestionIssue, {
@@ -14,36 +19,6 @@ interface BuildEnglishTestPayloadParams {
 type BuildEnglishTestPayloadResult =
 	| { payload: EnglishTest }
 	| { error: string; errorFocus?: InvalidQuestionIssue };
-
-const DIFFICULTY_TO_API: Record<string, string> = {
-	Dễ: "easy",
-	"Trung bình": "medium",
-	Khó: "hard",
-	easy: "easy",
-	medium: "medium",
-	hard: "hard",
-};
-
-const QUESTION_TYPE_TO_API: Record<string, string> = {
-	"Trắc nghiệm": "multiple_choice",
-	"Đúng sai": "true_false",
-	"Điền từ": "fill_in_the_blank",
-	multiple_choice: "multiple_choice",
-	true_false: "true_false",
-	fill_in_the_blank: "fill_in_the_blank",
-};
-
-const normalizeDifficultyToApi = (value: string) =>
-	DIFFICULTY_TO_API[value] ?? "medium";
-
-const normalizeQuestionTypeToApi = (value: string) =>
-	QUESTION_TYPE_TO_API[value] ?? "multiple_choice";
-
-const isMultipleChoiceUI = (value: string) =>
-	value === "Trắc nghiệm" ||
-	value === "multiple_choice" ||
-	value === "Đúng sai" ||
-	value === "true_false";
 
 const buildEnglishTestPayload = ({
 	classId,

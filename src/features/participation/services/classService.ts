@@ -3,11 +3,12 @@ import { httpClient } from "@/core/api/httpClient.api";
 import type { ClassResponse } from "@/features/class/type";
 import type { ApiResponse } from "@/shared/type";
 
-export const getStudentClasses = async (): Promise<
-	ApiResponse<ClassResponse[]>
-> => {
+export const getStudentClasses = async (
+	page = 1,
+	limit = 10,
+): Promise<ApiResponse<ClassResponse[]>> => {
 	const response: ApiResponse<ClassResponse[]> = await httpClient.get(
-		`${classApi}`,
+		`${classApi}?${page}&${limit}`,
 	);
 	return response;
 };

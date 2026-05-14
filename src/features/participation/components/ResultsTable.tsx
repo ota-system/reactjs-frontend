@@ -123,7 +123,7 @@ export function ResultsTable({ data }: ResultsTableProps) {
 											</TableCell>
 											<TableCell className="max-w-0 text-muted-foreground">
 												<TruncatedCell
-													content={new Date(result.testDate).toLocaleDateString(
+													content={new Date(result.testDate).toLocaleString(
 														"vi-VN",
 													)}
 												/>

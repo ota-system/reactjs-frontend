@@ -14,6 +14,7 @@ export type UserInfo = {
 export type ApiResponse<T> = {
 	message: string;
 	data: T;
+	metadata?: PageMetaData;
 };
 
 export type ErrorDetail = {

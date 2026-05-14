@@ -6,11 +6,13 @@ const studentApi = "/api/v1/students";
 
 export const fetchStudentResults = async (
 	studentId: string,
-): Promise<StudentResult[]> => {
+	page = 1,
+	limit = 10,
+): Promise<ApiResponse<StudentResult[]>> => {
 	const response: ApiResponse<StudentResult[]> = await httpClient.get(
-		`${studentApi}/${studentId}/student-results`,
+		`${studentApi}/${studentId}/student-results?${page}&${limit}`,
 	);
-	return response.data;
+	return response;
 };
 
 export const fetchOverallResults = async (

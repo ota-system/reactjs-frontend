@@ -4,10 +4,14 @@ import {
 	fetchStudentResults,
 } from "../services/studentService";
 
-export const useStudentResultsQuery = (studentId: string | undefined) => {
+export const useStudentResultsQuery = (
+	studentId: string | undefined,
+	page = 1,
+	limit = 10,
+) => {
 	return useQuery({
-		queryKey: ["student-results", studentId],
-		queryFn: () => fetchStudentResults(studentId as string),
+		queryKey: ["student-results", studentId, page, limit],
+		queryFn: () => fetchStudentResults(studentId as string, page, limit),
 		enabled: !!studentId,
 	});
 };

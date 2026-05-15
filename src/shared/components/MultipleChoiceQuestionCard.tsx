@@ -1,16 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import type { OptionItem } from "@/features/ai-test-generation/utils/mapGeneratedQuestionToUI";
 import { QuestionTypeEnum } from "../constants/questionOption";
 import QuestionCard, { type QuestionCardProps } from "./QuestionCard";
 
 interface MultipleChoiceQuestionCardProps extends QuestionCardProps {
-	options: [
-		{ id: string; value: string },
-		{ id: string; value: string },
-		{ id: string; value: string },
-		{ id: string; value: string },
-	];
+	options: OptionItem[];
 	onOptionChange: (id: string, value: string) => void;
 	correctOptionIndex?: number;
 	onCorrectOptionChange?: (optionIndex: number) => void;
@@ -32,6 +28,7 @@ export default function MultipleChoiceQuestionCard({
 	onDelete,
 	disabled = false,
 	className,
+	notAllowEdit = false,
 }: MultipleChoiceQuestionCardProps) {
 	return (
 		<QuestionCard
@@ -46,6 +43,7 @@ export default function MultipleChoiceQuestionCard({
 			onDelete={onDelete}
 			disabled={disabled}
 			className={className}
+			notAllowEdit={notAllowEdit}
 		>
 			<div className="space-y-2">
 				<Label className="text-base font-semibold">

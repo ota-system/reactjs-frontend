@@ -22,6 +22,7 @@ export default function FillInBlankQuestionCard({
 	onDelete,
 	disabled = false,
 	className,
+	notAllowEdit = false,
 }: FillInBlankQuestionCardProps) {
 	return (
 		<QuestionCard
@@ -36,6 +37,7 @@ export default function FillInBlankQuestionCard({
 			onDelete={onDelete}
 			disabled={disabled}
 			className={className}
+			notAllowEdit={notAllowEdit}
 		>
 			<div className="space-y-2">
 				<Label className="text-base font-semibold">Đáp án đúng *</Label>

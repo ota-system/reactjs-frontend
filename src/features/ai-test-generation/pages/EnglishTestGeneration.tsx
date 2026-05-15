@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Dialog } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/lib/toast";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
+import TestInformationPanel from "@/shared/components/TestInformationPanel";
 import { LevelEnum, QuestionTypeEnum } from "@/shared/constants/questionOption";
 import AiTestGenerationCard from "../components/AiTestGenerationCard";
 import GeneratedQuestionsSection from "../components/GeneratedQuestionsSection";
 import TestCreationHeader from "../components/TestCreationHeader";
-import TestInformationPanel from "../components/TestInformationPanel";
 import useEnglishTest from "../hooks/useEnglishTest";
 import useGeneratePrompt from "../hooks/useGeneratePrompt";
 import useEnglishTestInformationStore from "../stores/englishTestInformation.store";
@@ -27,6 +27,7 @@ import mapGeneratedQuestionToUI, {
 const EnglishTestGeneration = () => {
 	const { classId } = useParams();
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [prompt, setPrompt] = useState("");
 	const [subject, setSubject] = useState("");
 	const [questions, setQuestions] = useState<GeneratedQuestionUI[]>([]);
@@ -308,7 +309,11 @@ const EnglishTestGeneration = () => {
 		<div className="mx-auto w-full max-w-7xl space-y-8 p-6 md:p-8">
 			<TestCreationHeader
 				title="Tạo bài thi mới"
-				subtitle="English Advanced Level"
+				subtitle={
+					location.state?.className
+						? `Lớp: ${location.state.className}`
+						: "Lớp học"
+				}
 				onBack={() => navigate(-1)}
 			/>
 

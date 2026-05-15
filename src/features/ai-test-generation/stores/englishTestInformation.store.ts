@@ -2,7 +2,7 @@ import { create } from "zustand";
 import {
 	INITIAL_TEST_INFORMATION,
 	type TestInformationValues,
-} from "../types/TestInformation";
+} from "@/shared/interfaces/TestInformation";
 
 interface EnglishTestInformationStore {
 	testInformation: TestInformationValues;

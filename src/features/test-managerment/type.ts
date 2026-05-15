@@ -72,3 +72,11 @@ export type StudentResponse = {
 	durationMinutes: number;
 	submittedAt: string;
 };
+
+export type UpdateTestInfoPayload = {
+	testName: string;
+	topicName: string;
+	startedTime: string;
+	duration: number;
+	antiCheating: boolean;
+};

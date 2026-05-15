@@ -3,7 +3,7 @@ import type { ErrorResponse, HttpError } from "@/shared/type";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-async function refreshAccessToken(): Promise<boolean> {
+export async function refreshAccessToken(): Promise<boolean> {
 	tokenService.clearAccessToken();
 	try {
 		const refreshRes = await fetch(`${BASE_URL}/api/v1/auth/refresh-token`, {
@@ -60,7 +60,9 @@ async function request<T>(
 		if (refreshed) {
 			return request<T>(endpoint, options);
 		} else {
-			throw new Error("Unauthorized");
+			throw new Error("Hết hạn đăng nhập. Vui lòng đăng nhập lại.", {
+				cause: "UNAUTHORIZED",
+			});
 		}
 	}
 

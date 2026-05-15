@@ -31,7 +31,7 @@ export default function TestDetail() {
 
 	const students = studentData?.data ?? [];
 	const metadata = studentData?.metadata;
-	const totalPages = metadata ? Math.ceil(metadata.total / LIMIT) : 1;
+	const totalPages = metadata?.totalPages ?? 1;
 
 	const renderStat = (
 		label: string,

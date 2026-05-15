@@ -1,21 +1,12 @@
 import { Award, CheckCircle, TrendingDown, TrendingUp } from "lucide-react";
-import { useAuthStore } from "@/shared/stores/useAuthStore";
+import { Pagination } from "@/shared/components/Pagination";
 import { ResultStatCard } from "../components/ResultStatCard";
 import { ResultsTable } from "../components/ResultsTable";
-import {
-	useOverallResultsQuery,
-	useStudentResultsQuery,
-} from "../hooks/useStudentResultsQuery";
+import { useTestHistory } from "../hooks/useTestHistory";
 
 const TestHistory = () => {
-	const studentId = useAuthStore((s) => s.userInfo?.id);
-
-	const { data: results = [], isLoading: resultsLoading } =
-		useStudentResultsQuery(studentId);
-	const { data: overall, isLoading: overallLoading } =
-		useOverallResultsQuery(studentId);
-
-	const isLoading = resultsLoading || overallLoading;
+	const { page, setPage, results, metadata, overall, isLoading } =
+		useTestHistory();
 
 	return (
 		<div className="p-6 space-y-6 h-screen flex flex-col">
@@ -55,6 +46,13 @@ const TestHistory = () => {
 				{/* History Table */}
 				<div className="flex flex-col flex-1 min-h-0">
 					<ResultsTable data={results} />
+					<div className="py-4 mt-auto border-red">
+						<Pagination
+							currentPage={page}
+							totalPages={metadata?.totalPages ?? 0}
+							onPageChange={setPage}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

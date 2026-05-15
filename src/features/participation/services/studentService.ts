@@ -1,16 +1,19 @@
 import { httpClient } from "@/core/api/httpClient.api";
-import type { ApiResponse } from "@/shared/type";
+import type { ApiResponse, PageMetaData } from "@/shared/type";
 import type { OverallResults, StudentResult } from "../types/studentResult";
 
 const studentApi = "/api/v1/students";
 
 export const fetchStudentResults = async (
 	studentId: string,
-): Promise<StudentResult[]> => {
-	const response: ApiResponse<StudentResult[]> = await httpClient.get(
-		`${studentApi}/${studentId}/student-results`,
-	);
-	return response.data;
+	page = 1,
+	limit = 10,
+): Promise<ApiResponse<StudentResult[], PageMetaData>> => {
+	const response: ApiResponse<StudentResult[], PageMetaData> =
+		await httpClient.get(
+			`${studentApi}/${studentId}/student-results?${page}&${limit}`,
+		);
+	return response;
 };
 
 export const fetchOverallResults = async (

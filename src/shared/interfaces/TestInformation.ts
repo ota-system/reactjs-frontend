@@ -5,7 +5,8 @@ export interface TestInformationValues {
 	durationMinutes: string;
 	totalScore: string;
 	antiCheatEnabled: boolean;
-	publishNow: boolean;
+	publishNow?: boolean;
+	topic?: string;
 }
 
 export const INITIAL_TEST_INFORMATION: TestInformationValues = {
@@ -16,4 +17,5 @@ export const INITIAL_TEST_INFORMATION: TestInformationValues = {
 	totalScore: "10",
 	antiCheatEnabled: true,
 	publishNow: false,
+	topic: "",
 };

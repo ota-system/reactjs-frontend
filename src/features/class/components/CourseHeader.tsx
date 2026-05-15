@@ -20,7 +20,9 @@ export default function CourseHeader({
 							label: "Tạo bài thi",
 							icon: <Plus className="mr-2 size-4" />,
 							onClick: () =>
-								navigate(`/classes/${classData.id}/ai-test-generation`),
+								navigate(`/classes/${classData.id}/ai-test-generation`, {
+									state: { className: classData.name },
+								}),
 						}
 					: undefined
 			}

@@ -5,6 +5,7 @@ interface ToggleRowProps {
 	description: string;
 	checked: boolean;
 	onToggle: (value: boolean) => void;
+	disabled?: boolean;
 }
 
 const ToggleRow = ({
@@ -12,6 +13,7 @@ const ToggleRow = ({
 	description,
 	checked,
 	onToggle,
+	disabled = false,
 }: ToggleRowProps) => {
 	return (
 		<div className="flex items-start justify-between gap-4">
@@ -24,6 +26,7 @@ const ToggleRow = ({
 				onCheckedChange={onToggle}
 				aria-label={title}
 				className="cursor-pointer"
+				disabled={disabled}
 			/>
 		</div>
 	);

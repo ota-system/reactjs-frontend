@@ -14,13 +14,13 @@ export interface GeneratedQuestionUI {
 	questionType: QuestionType;
 	subject: string;
 	difficulty: Difficulty;
-	options: [OptionItem, OptionItem, OptionItem, OptionItem];
+	options: OptionItem[];
 	correctOptionIndex: number;
 	correctAnswer: string;
 	explanation?: string;
 }
 
-const defaultOptions = (): [OptionItem, OptionItem, OptionItem, OptionItem] => [
+const defaultOptions = (): OptionItem[] => [
 	{ id: "0", value: "" },
 	{ id: "1", value: "" },
 	{ id: "2", value: "" },
@@ -47,7 +47,7 @@ const mapGeneratedQuestionToUI = (raw: {
 		}
 
 		return fallback;
-	}) as [OptionItem, OptionItem, OptionItem, OptionItem];
+	}) as OptionItem[];
 
 	return {
 		id: String(raw.id ?? `${Date.now()}-${Math.random()}`),

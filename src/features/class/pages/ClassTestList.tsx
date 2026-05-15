@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import TeacherTestCard from "@/shared/components/TeacherTestCard";
@@ -20,6 +20,7 @@ interface TestItem {
 
 export default function ClassTestList() {
 	const { classId } = useOutletContext<{ classId: string }>();
+	const navigate = useNavigate();
 	const { data: tests, isLoading } = useClassTestsQuery(classId);
 	let listContent = null;
 
@@ -39,12 +40,15 @@ export default function ClassTestList() {
 				questionCount={test.totalQuestions}
 				topics={test.topicName ? [test.topicName] : []}
 				antiCheatLabel={test.antiCheating ? "Chống gian lận" : ""}
-				onAction={() => {}}
+				onAction={() => {
+					navigate(`/classes/${classId}/tests/${test.id}/review`);
+				}}
 				stats={{
 					attempts: test.stats?.attempts || 0,
 					averageScore: test.stats?.averageScore || 0,
 					highestScore: test.stats?.highestScore || 0,
 				}}
+				actionLabel="xem bài thi"
 				className="bg-white"
 			/>
 		));

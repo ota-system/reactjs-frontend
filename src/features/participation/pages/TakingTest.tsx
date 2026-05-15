@@ -7,6 +7,7 @@ import { toast } from "@/lib/toast";
 import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import StudentFillInBlankQuestionCard from "@/shared/components/StudentFillInBlankQuestionCard";
 import StudentMultipleChoiceQuestionCard from "@/shared/components/StudentMultipleChoiceQuestionCard";
+import { QuestionTypeEnum } from "@/shared/constants/questionOption";
 import ErrorPage from "@/shared/pages/ErrorPage";
 import FraudWarningDialog from "../components/FraudWarningDialog";
 import TestHeader from "../components/TestHeader";
@@ -106,7 +107,7 @@ const TakingTest = () => {
 				.filter(([, v]) => v !== undefined && v !== null && v !== "")
 				.map(([questionId, value]) => {
 					const q = accumulatedQuestions.get(questionId);
-					if (q?.type === "fill_in_the_blank") {
+					if (q?.type === QuestionTypeEnum.FILL_IN_BLANK_API) {
 						return { questionId, answer: value };
 					}
 					return { questionId, optionId: value };
@@ -196,7 +197,7 @@ const TakingTest = () => {
 									const index = (page - 1) * 10 + i + 1;
 									const points = Number((10 / totalQuestions).toFixed(2));
 
-									if (q.type === "fill_in_the_blank") {
+									if (q.type === QuestionTypeEnum.FILL_IN_BLANK_API) {
 										return (
 											<StudentFillInBlankQuestionCard
 												key={q.id}

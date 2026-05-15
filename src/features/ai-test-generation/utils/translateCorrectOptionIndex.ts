@@ -13,20 +13,26 @@ const isChoiceId = (answer: string, choiceId: string | undefined): boolean => {
 };
 const translateCorrectOptionIndex = (
 	answer: string,
-	choices?: Choice[],
+	choices: Choice[] = [],
 ): number => {
-	if (answer === "0" || isChoiceId(answer, choices?.[0]?.id)) {
-		return 0;
-	} else if (answer === "1" || isChoiceId(answer, choices?.[1]?.id)) {
-		return 1;
-	} else if (answer === "2" || isChoiceId(answer, choices?.[2]?.id)) {
-		return 2;
-	} else if (answer === "3" || isChoiceId(answer, choices?.[3]?.id)) {
-		return 3;
-	} else {
-		console.warn(`Invalid correct answer: ${answer}. Defaulting to index 0.`);
-		return 0;
+	const [c0, c1, c2, c3] = choices;
+	const options = [
+		{ id: c0?.id, index: 0 },
+		{ id: c1?.id, index: 1 },
+		{ id: c2?.id, index: 2 },
+		{ id: c3?.id, index: 3 },
+	];
+
+	const match = options.find(
+		(opt) => answer === opt.index.toString() || isChoiceId(answer, opt.id),
+	);
+
+	if (match) {
+		return match.index;
 	}
+
+	console.warn(`Invalid correct answer: ${answer}.`);
+	return 0;
 };
 
 export default translateCorrectOptionIndex;

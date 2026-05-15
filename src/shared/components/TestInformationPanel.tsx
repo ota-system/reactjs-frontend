@@ -62,7 +62,7 @@ const TestInformationPanel = ({
 										variant="ghost"
 										onClick={onEdit}
 										aria-label="Chỉnh sửa thông tin bài thi"
-										className="h-8 w-8 p-0 cursor-pointer"
+										className="size-8 p-0 cursor-pointer"
 									>
 										<Edit className="size-4" />
 									</Button>

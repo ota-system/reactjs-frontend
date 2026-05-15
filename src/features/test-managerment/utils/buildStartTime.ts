@@ -8,15 +8,11 @@ const buildStartTime = (testInformation: TestInformationValues) => {
 	const hasStartDate = testInformation.startDate.trim().length > 0;
 	const hasStartTime = testInformation.startTime.trim().length > 0;
 
-	if (!hasStartDate || !hasStartTime) {
-		return "";
-	}
-
 	const startTimestamp = Date.parse(
 		`${testInformation.startDate}T${testInformation.startTime}:00`,
 	);
 
-	if (Number.isNaN(startTimestamp)) {
+	if (!hasStartDate || !hasStartTime || Number.isNaN(startTimestamp)) {
 		return "";
 	}
 

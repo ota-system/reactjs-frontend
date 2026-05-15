@@ -72,9 +72,7 @@ export default function QuestionCard({
 					action={action}
 					secondaryAction={{
 						label: "Xóa ngay",
-						action: () => {
-							action();
-						},
+						action,
 						variant: "destructive",
 					}}
 				/>

@@ -11,9 +11,10 @@ export type UserInfo = {
 	createdAt: string;
 };
 
-export type ApiResponse<T> = {
+export type ApiResponse<T, M = {}> = {
 	message: string;
 	data: T;
+	metadata?: M;
 };
 
 export type ErrorDetail = {

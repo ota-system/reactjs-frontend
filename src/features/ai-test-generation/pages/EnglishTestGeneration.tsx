@@ -30,6 +30,8 @@ const EnglishTestGeneration = () => {
 	const location = useLocation();
 	const [prompt, setPrompt] = useState("");
 	const [subject, setSubject] = useState("");
+	const [mode, setMode] = useState<"text" | "pdf">("text");
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [questions, setQuestions] = useState<GeneratedQuestionUI[]>([]);
 	const [hasGenerated, setHasGenerated] = useState(false);
 	const testInformation = useEnglishTestInformationStore(
@@ -51,10 +53,19 @@ const EnglishTestGeneration = () => {
 		useState<GeneratedInputSnapshot | null>(null);
 	const [isRegenerateDialogOpen, setIsRegenerateDialogOpen] = useState(false);
 	const questionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+	const abortControllerRef = useRef<AbortController | null>(null);
 	const previousQuestionsLengthRef = useRef(0);
 	const { mutateAsync: generatePrompt, isPending } = useGeneratePrompt();
 	const { mutateAsync: saveEnglishTest, isPending: isSavingTest } =
 		useEnglishTest();
+
+	useEffect(() => {
+		return () => {
+			if (abortControllerRef.current) {
+				abortControllerRef.current.abort();
+			}
+		};
+	}, []);
 
 	useEffect(() => {
 		const hasNewQuestion =
@@ -72,7 +83,7 @@ const EnglishTestGeneration = () => {
 			behavior: "smooth",
 			block: "nearest",
 		});
-	}, [questions.length]);
+	}, [questions.length, questions]);
 
 	const updateQuestion = (
 		id: string,
@@ -90,7 +101,8 @@ const EnglishTestGeneration = () => {
 
 		return (
 			prompt.trim() !== lastGeneratedInput.prompt ||
-			subject.trim() !== lastGeneratedInput.subject
+			subject.trim() !== lastGeneratedInput.subject ||
+			(mode === "pdf" && selectedFile !== lastGeneratedInput.file)
 		);
 	};
 
@@ -99,6 +111,8 @@ const EnglishTestGeneration = () => {
 		const previousSubject = subject;
 		const previousPrompt = prompt;
 		const previousTestInformation = { ...testInformation };
+		const previousMode = mode;
+		const previousFile = selectedFile;
 		const nextDraftSnapshot =
 			saveCurrentAsDraft && questions.length > 0
 				? {
@@ -106,6 +120,8 @@ const EnglishTestGeneration = () => {
 						subject: previousSubject,
 						questions: previousQuestions,
 						testInformation: previousTestInformation,
+						mode: previousMode,
+						file: previousFile,
 					}
 				: null;
 
@@ -118,11 +134,18 @@ const EnglishTestGeneration = () => {
 		setIsRegenerateDialogOpen(false);
 		setQuestions([]);
 
+		if (abortControllerRef.current) {
+			abortControllerRef.current.abort();
+		}
+		abortControllerRef.current = new AbortController();
+
 		try {
 			const generationPrompt = buildGeneratePrompt(prompt, subject);
 
 			const allQuestions = await generatePrompt({
 				prompt: generationPrompt,
+				file: mode === "pdf" ? selectedFile || undefined : undefined,
+				signal: abortControllerRef.current.signal,
 				onQuestion: (raw) => {
 					const mappedQuestion = mapGeneratedQuestionToUI(raw);
 					const nextQuestion = subject.trim()
@@ -159,11 +182,16 @@ const EnglishTestGeneration = () => {
 				setLastGeneratedInput({
 					prompt: prompt.trim(),
 					subject: effectiveSubject,
+					mode: mode,
+					file: mode === "pdf" ? selectedFile || undefined : undefined,
 				});
 				setHasGenerated(true);
 				toast.success(`Đã tạo ${allQuestions.length} câu hỏi từ AI.`);
 			}
 		} catch (error) {
+			if (error instanceof Error && error.name === "AbortError") {
+				return;
+			}
 			setQuestions(previousQuestions);
 			setSubject(previousSubject);
 			setPrompt(previousPrompt);
@@ -179,6 +207,8 @@ const EnglishTestGeneration = () => {
 					? error.message
 					: "Tạo bài thi thất bại. Vui lòng thử lại.";
 			toast.error(message);
+		} finally {
+			abortControllerRef.current = null;
 		}
 	};
 
@@ -296,13 +326,31 @@ const EnglishTestGeneration = () => {
 		setSubject(draftSnapshot.subject);
 		setQuestions(cloneQuestions(draftSnapshot.questions));
 		setTestInformation({ ...draftSnapshot.testInformation });
+		setMode(draftSnapshot.mode);
+		setSelectedFile(draftSnapshot.file || null);
 		setLastGeneratedInput({
 			prompt: draftSnapshot.prompt.trim(),
 			subject: draftSnapshot.subject.trim(),
+			file: draftSnapshot.file,
+			mode: draftSnapshot.mode,
 		});
 		setDraftSnapshot(null);
 
 		toast.success("Đã khôi phục bản nháp gần nhất.");
+	};
+
+	const handleFileChange = (file: File | null) => {
+		if (file) {
+			if (file.type !== "application/pdf") {
+				toast.error("Vui lòng chỉ tải lên tệp PDF.");
+				return;
+			}
+			if (file.size > 20 * 1024 * 1024) {
+				toast.error("Tệp PDF không được vượt quá 20MB.");
+				return;
+			}
+		}
+		setSelectedFile(file);
 	};
 
 	return (
@@ -325,6 +373,10 @@ const EnglishTestGeneration = () => {
 				onGenerate={handleGenerateTest}
 				isGenerating={isPending}
 				haveGeneratedResult={questions.length > 0}
+				mode={mode}
+				onModeChange={setMode}
+				selectedFile={selectedFile}
+				onFileChange={handleFileChange}
 			/>
 
 			<GeneratedQuestionsSection

@@ -1,5 +1,5 @@
+import type { TestInformationValues } from "@/shared/interfaces/TestInformation";
 import type { GeneratedQuestionUI } from "../utils/mapGeneratedQuestionToUI";
-import type { TestInformationValues } from "./TestInformation";
 
 export interface DraftSnapshot {
 	prompt: string;

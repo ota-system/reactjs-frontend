@@ -6,9 +6,13 @@ export interface DraftSnapshot {
 	subject: string;
 	questions: GeneratedQuestionUI[];
 	testInformation: TestInformationValues;
+	file?: File | null;
+	mode: "text" | "pdf";
 }
 
 export interface GeneratedInputSnapshot {
 	prompt: string;
 	subject: string;
+	file?: File | null;
+	mode: "text" | "pdf";
 }

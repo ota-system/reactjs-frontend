@@ -19,6 +19,11 @@ export interface GenerateTestOptions {
 	signal?: AbortSignal;
 }
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
+	/\/$/,
+	"",
+);
+
 const createAuthHeaders = () => {
 	const headers = new Headers();
 	const token = tokenService.getAccessToken();
@@ -32,12 +37,8 @@ const createAuthHeaders = () => {
 
 const createStreamEndpoint = (prompt: string) => {
 	const encodedPrompt = encodeURIComponent(prompt);
-	const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
-		/\/$/,
-		"",
-	);
 
-	return `${apiBaseUrl}/api/v1/english-tests/generate-stream?prompt=${encodedPrompt}`;
+	return `${API_BASE_URL}/api/v1/english-tests/generate-stream?prompt=${encodedPrompt}`;
 };
 
 const cleanEventData = (line: string) => {
@@ -169,6 +170,34 @@ export const generateTest = async (
 
 	if (!response.ok) {
 		throw new Error("Không thể tạo bài thi từ AI");
+	}
+
+	return readQuestionsFromStream(response, options.onQuestion);
+};
+
+export const generateTestFromPdf = async (
+	file: File,
+	prompt: string,
+	options: GenerateTestOptions = {},
+) => {
+	const formData = new FormData();
+	formData.append("file", file);
+	formData.append("prompt", prompt);
+
+	const url = `${API_BASE_URL}/api/v1/english-tests/generate-stream-pdf`;
+
+	const response = await fetch(url, {
+		method: "POST",
+		headers: createAuthHeaders(),
+		body: formData,
+		signal: options.signal,
+	});
+
+	if (!response.ok) {
+		const errorData = (await response.json().catch(() => ({}))) as {
+			message?: string;
+		};
+		throw new Error(errorData.message || "Không thể tạo bài thi từ PDF");
 	}
 
 	return readQuestionsFromStream(response, options.onQuestion);

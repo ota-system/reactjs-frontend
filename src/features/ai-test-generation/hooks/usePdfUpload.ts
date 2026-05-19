@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "@/lib/toast";
+import { avoidDefaultEvent } from "@/lib/utils";
 
 interface UsePdfUploadOptions {
 	onFileChange: (file: File | null) => void;
@@ -22,22 +23,19 @@ export const usePdfUpload = ({
 	};
 
 	const handleDragOver = (e: React.DragEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
+		avoidDefaultEvent(e);
 		if (!disabled) {
 			setIsDragging(true);
 		}
 	};
 
 	const handleDragLeave = (e: React.DragEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
+		avoidDefaultEvent(e);
 		setIsDragging(false);
 	};
 
 	const handleDrop = (e: React.DragEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
+		avoidDefaultEvent(e);
 		setIsDragging(false);
 
 		if (disabled) {

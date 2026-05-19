@@ -1,5 +1,6 @@
 import { FileIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { usePdfUpload } from "../hooks/usePdfUpload";
 
 interface PdfUploadAreaProps {
@@ -30,13 +31,12 @@ export default function PdfUploadArea({
 			<div className="space-y-4">
 				<button
 					type="button"
-					className={`w-full flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-colors ${
-						disabled
-							? "bg-muted cursor-not-allowed opacity-50"
-							: isDragging
-								? "border-primary bg-primary/10"
-								: "border-muted-foreground/25 hover:border-primary/50 hover:bg-primary/5 cursor-pointer"
-					}`}
+					className={cn(
+						"w-full flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-colors",
+						"border-muted-foreground/25 hover:border-primary/50 hover:bg-primary/5 cursor-pointer",
+						isDragging && "border-primary bg-primary/10",
+						disabled && "bg-muted cursor-not-allowed opacity-50",
+					)}
 					onClick={handleClick}
 					onKeyDown={handleKeyDown}
 					onDragOver={handleDragOver}

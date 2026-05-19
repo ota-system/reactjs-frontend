@@ -1,9 +1,10 @@
-import { CircleAlert, FileText, Lightbulb, Sparkles } from "lucide-react";
+import { FileText, Info, Lightbulb, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import PdfUploadArea from "./PdfUploadArea";
 
 interface AiTestGenerationCardProps {
@@ -35,11 +36,16 @@ export default function AiTestGenerationCard({
 }: AiTestGenerationCardProps) {
 	const isSubmitDisabled =
 		(mode === "text" ? !prompt.trim() : !selectedFile) || isGenerating;
-	const generateButtonLabel = isGenerating
-		? "Đang tạo bài thi..."
-		: haveGeneratedResult
-			? "Tạo lại bài thi bằng AI"
-			: "Tạo bài thi bằng AI";
+
+	const getGenerateButtonLabel = () => {
+		if (isGenerating) {
+			return "Đang tạo bài thi...";
+		}
+		if (haveGeneratedResult) {
+			return "Tạo lại bài thi bằng AI";
+		}
+		return "Tạo bài thi bằng AI";
+	};
 
 	return (
 		<Card className="rounded-2xl border">
@@ -56,11 +62,11 @@ export default function AiTestGenerationCard({
 							size="sm"
 							onClick={() => onModeChange("text")}
 							disabled={isGenerating}
-							className={`h-9 rounded-md px-4 text-sm font-medium transition-all cursor-pointer ${
-								mode === "text"
-									? "bg-white shadow-sm text-black"
-									: "text-muted-foreground"
-							} flex items-center gap-2`}
+							className={cn(
+								"h-9 rounded-md px-4 text-sm font-medium transition-all cursor-pointer flex items-center gap-2",
+								mode === "text" && "bg-white shadow-sm text-black",
+								mode !== "text" && "text-muted-foreground",
+							)}
 						>
 							<FileText className="size-4" />
 							<span>Nhập văn bản</span>
@@ -70,11 +76,11 @@ export default function AiTestGenerationCard({
 							size="sm"
 							onClick={() => onModeChange("pdf")}
 							disabled={isGenerating}
-							className={`h-9 rounded-md px-4 text-sm font-medium transition-all cursor-pointer ${
-								mode === "pdf"
-									? "bg-white shadow-sm text-black"
-									: "text-muted-foreground"
-							} flex items-center gap-2`}
+							className={cn(
+								"h-9 rounded-md px-4 text-sm font-medium transition-all cursor-pointer flex items-center gap-2",
+								mode === "pdf" && "bg-white shadow-sm text-black",
+								mode !== "pdf" && "text-muted-foreground",
+							)}
 						>
 							<FileText className="size-4" />
 							<span>Tải lên PDF</span>
@@ -104,17 +110,15 @@ export default function AiTestGenerationCard({
 						value={prompt}
 						onChange={(event) => onPromptChange(event.target.value)}
 						placeholder={
-							mode === "pdf"
-								? "VD: Tập trung vào các câu hỏi trắc nghiệm, độ khó trung bình..."
-								: "VD: Tạo bài thi về Present Perfect Tense với các dạng bài nhận biết thì, chia động từ, và hoàn thành câu. Độ khó trung bình, 15 câu hỏi gồm 5 câu trắc nghiệm và 10 câu điền từ."
+							"VD: Tạo bài thi về Present Perfect Tense với các dạng bài nhận biết thì, chia động từ, và hoàn thành câu. Độ khó trung bình, 15 câu hỏi gồm 5 câu trắc nghiệm và 10 câu điền từ."
 						}
 						rows={3}
 						className="text-xl"
 						readOnly={isGenerating}
 					/>
 
-					<div className="flex items-start gap-2 text-sm text-red-500">
-						<CircleAlert className="mt-1 size-3" />
+					<div className="flex items-start gap-3 rounded-lg bg-blue-50 p-3 text-sm text-blue-600 border border-blue-100">
+						<Info className="mt-0.5 size-4 shrink-0" />
 						<p>
 							{mode === "pdf"
 								? "AI sẽ dựa vào nội dung PDF và mô tả của bạn để tạo câu hỏi"
@@ -140,7 +144,7 @@ export default function AiTestGenerationCard({
 					className="h-12 w-full text-lg cursor-pointer"
 				>
 					<Sparkles className="size-4" />
-					{generateButtonLabel}
+					{getGenerateButtonLabel()}
 				</Button>
 			</CardContent>
 		</Card>

@@ -1,12 +1,18 @@
-import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './core/api/queryClient';
-import './core/assets/styles/index.css';
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./core/api/queryClient";
+import "./core/assets/styles/index.css";
+import { RouterProvider } from "react-router-dom";
+import { Toaster } from "./components/ui/sonner";
+import { TooltipProvider } from "./components/ui/tooltip";
+import { router } from "./routes/AppRoute";
+
 function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<h1 className="text-3xl font-bold underline">
-				Hello
-			</h1>
+			<Toaster position="top-right" richColors visibleToasts={5} />
+			<TooltipProvider>
+				<RouterProvider router={router} />
+			</TooltipProvider>
 		</QueryClientProvider>
 	);
 }

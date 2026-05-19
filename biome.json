@@ -83,7 +83,7 @@
 	},
 	"overrides": [
 		{
-			"includes": ["shared/components/ui/**"],
+			"includes": ["src/components/ui/**", "src/shared/hooks/shadcn/**"],
 			"formatter": {
 				"enabled": false
 			},

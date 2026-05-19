@@ -4,7 +4,7 @@ import ConfirmedDialog from "@/shared/components/ConfirmedDialog";
 import FillInBlankQuestionCard from "@/shared/components/FillInBlankQuestionCard";
 import MultipleChoiceQuestionCard from "@/shared/components/MultipleChoiceQuestionCard";
 import type { QuestionType } from "@/shared/constants/questionOption";
-import type { TestInformationValues } from "../types/TestInformation";
+import type { TestInformationValues } from "@/shared/interfaces/TestInformation";
 import type {
 	GeneratedQuestionUI,
 	OptionItem,

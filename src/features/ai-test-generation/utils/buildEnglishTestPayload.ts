@@ -1,10 +1,10 @@
+import type { TestInformationValues } from "@/shared/interfaces/TestInformation";
 import {
 	isMultipleChoiceUI,
 	normalizeDifficultyToApi,
 	normalizeQuestionTypeToApi,
 } from "@/shared/utils/questionMapping";
 import type { EnglishTest } from "../types/EnglishTest";
-import type { TestInformationValues } from "../types/TestInformation";
 import findFirstInvalidQuestionIssue, {
 	type InvalidQuestionIssue,
 } from "./findFirstInvalidQuestionIssue";

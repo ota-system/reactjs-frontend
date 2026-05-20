@@ -11,7 +11,7 @@ export default function SelectRole() {
 		try {
 			await mutation.mutateAsync(role.toUpperCase());
 			toast.success("Cập nhật vai trò thành công!");
-			navigate("/");
+			navigate("/", { replace: true });
 		} catch (error: any) {
 			toast.error(error.message || "Cập nhật vai trò thất bại");
 		}

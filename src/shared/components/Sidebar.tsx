@@ -60,11 +60,13 @@ const AppSidebar = () => {
 			<SidebarHeader className="border-b p-4">
 				<div className="flex items-center justify-between group-data-[collapsible=icon]:hidden">
 					<div className="flex items-center gap-2.5">
-						<img
-							src="/ota-hub-logo.svg"
-							className="size-11 object-contain"
-							alt="OTA-Hub logo"
-						/>
+						<a href="/" className="flex items-center gap-2.5">
+							<img
+								src="/ota-hub-logo.svg"
+								className="size-11 object-contain"
+								alt="OTA-Hub logo"
+							/>
+						</a>
 						<div>
 							<h1 className="text-xl font-bold">OTA-Hub</h1>
 							<span
@@ -177,7 +179,7 @@ const AppSidebar = () => {
 										Huỷ
 									</AlertDialogCancel>
 									<AlertDialogAction
-										className="cursor-pointer hover:bg-gray-500"
+										className="cursor-pointer hover:opacity-80"
 										onClick={handleSignOut}
 										disabled={signOutMutation.isPending}
 									>

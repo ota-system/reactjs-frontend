@@ -9,7 +9,7 @@ const mapTestDetailToValues = (
 		title: detail?.testName ?? "",
 		startDate: format(
 			new Date(detail?.startedTime ?? Date.now()),
-			"MM/dd/yyyy",
+			"yyyy-MM-dd",
 		),
 		startTime: format(new Date(detail?.startedTime ?? Date.now()), "HH:mm"),
 		durationMinutes: String(detail?.duration ?? "45"),

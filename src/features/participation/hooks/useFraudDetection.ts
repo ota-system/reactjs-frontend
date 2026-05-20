@@ -1,6 +1,9 @@
 import type { RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
-import { VISIBILITY_DEDUP_WINDOW_MS } from "../constants";
+import {
+	FRAUD_COUNT_STORAGE_KEY_PREFIX,
+	VISIBILITY_DEDUP_WINDOW_MS,
+} from "../constants";
 import { fraudTypes } from "../constants/fraudType";
 import type { FraudType } from "../types";
 import { useSaveFraudReport } from "./useSaveFraudReport";
@@ -49,6 +52,7 @@ export default function useFraudDetection(options: Options = {}) {
 	mutateAsyncRef.current = saveReport.mutateAsync;
 
 	const violationsRef = useRef<TrackedViolation[]>([]);
+	const totalViolationCountRef = useRef(0);
 	const isLockedRef = useRef(false);
 	const hiddenSessionRef = useRef(false);
 	const lastVisibilityViolationAtRef = useRef(0);
@@ -64,6 +68,47 @@ export default function useFraudDetection(options: Options = {}) {
 	containerRefRef.current = containerRef;
 	onViolationRef.current = onViolation;
 	onThresholdReachedRef.current = onThresholdReached;
+
+	const getFraudCountStorageKey = useCallback((id: string) => {
+		return `${FRAUD_COUNT_STORAGE_KEY_PREFIX}${id}`;
+	}, []);
+
+	const persistTotalViolationCount = useCallback(
+		(count: number) => {
+			if (!testIdRef.current) {
+				return;
+			}
+			localStorage.setItem(
+				getFraudCountStorageKey(testIdRef.current),
+				String(count),
+			);
+		},
+		[getFraudCountStorageKey],
+	);
+
+	const clearPersistedTotalViolationCount = useCallback(() => {
+		if (!testIdRef.current) {
+			return;
+		}
+		localStorage.removeItem(getFraudCountStorageKey(testIdRef.current));
+	}, [getFraudCountStorageKey]);
+
+	useEffect(() => {
+		if (!testId) {
+			totalViolationCountRef.current = 0;
+			isLockedRef.current = false;
+			return;
+		}
+
+		const storedCount = Number.parseInt(
+			localStorage.getItem(getFraudCountStorageKey(testId)) ?? "0",
+			10,
+		);
+		const safeCount = Number.isNaN(storedCount) ? 0 : Math.max(0, storedCount);
+
+		totalViolationCountRef.current = safeCount;
+		isLockedRef.current = safeCount >= thresholdRef.current;
+	}, [testId, getFraudCountStorageKey]);
 
 	const sendReport = useCallback(async (v: TrackedViolation) => {
 		if (!testIdRef.current) {
@@ -111,7 +156,9 @@ export default function useFraudDetection(options: Options = {}) {
 
 			const violation = createViolation(fraudType);
 			violationsRef.current.push(violation);
-			const nextCount = violationsRef.current.length;
+			const nextCount = totalViolationCountRef.current + 1;
+			totalViolationCountRef.current = nextCount;
+			persistTotalViolationCount(nextCount);
 			const reachedThreshold = nextCount >= thresholdRef.current;
 
 			if (reachedThreshold && !isLockedRef.current) {
@@ -144,7 +191,7 @@ export default function useFraudDetection(options: Options = {}) {
 						onViolationRef.current?.(
 							stripViolationId(trackedViolation),
 							containerRefRef.current,
-							violationsRef.current.length,
+							totalViolationCountRef.current,
 						);
 					}
 				})
@@ -156,12 +203,12 @@ export default function useFraudDetection(options: Options = {}) {
 						onViolationRef.current?.(
 							stripViolationId(trackedViolation),
 							containerRefRef.current,
-							violationsRef.current.length,
+							totalViolationCountRef.current,
 						);
 					}
 				});
 		},
-		[createViolation, sendReport],
+		[createViolation, sendReport, persistTotalViolationCount],
 	);
 
 	useEffect(() => {
@@ -244,11 +291,13 @@ export default function useFraudDetection(options: Options = {}) {
 
 	const reset = useCallback(() => {
 		violationsRef.current = [];
+		totalViolationCountRef.current = 0;
 		isLockedRef.current = false;
 		hiddenSessionRef.current = false;
 		lastVisibilityViolationAtRef.current = 0;
 		violationCounterRef.current = 0;
-	}, []);
+		clearPersistedTotalViolationCount();
+	}, [clearPersistedTotalViolationCount]);
 
 	return {
 		reset,

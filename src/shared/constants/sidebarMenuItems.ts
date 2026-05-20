@@ -8,11 +8,6 @@ const studentMenuItems = [
 		tab: "my-classes",
 	},
 	{
-		title: "Bài thi",
-		icon: LuFileText,
-		tab: "my-tests",
-	},
-	{
 		title: "Kết quả",
 		icon: LuAward,
 		tab: "my-results",

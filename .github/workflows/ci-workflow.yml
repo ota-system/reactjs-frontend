@@ -42,10 +42,10 @@ jobs:
           aws s3 sync ./dist s3://amzn-s3-ota-hub-bucket-221082209472-ap-southeast-2-an \
           --delete \
           --cache-control "max-age=31536000, public"
-    #   For future use when CloudFront is set up
-    #   - name: Invalidate CloudFront
-    #     if: success()
-    #     run: |
-    #       aws cloudfront create-invalidation \
-    #       --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-    #       --paths "/*"
+
+      - name: Invalidate CloudFront
+        if: success()
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+          --paths "/*"

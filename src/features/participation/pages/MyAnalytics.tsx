@@ -101,12 +101,10 @@ const MyAnalytics = () => {
 
 	let classSelectorContent = null;
 	if (classLoading) {
-		classSelectorContent = (
-			<div className="h-10 w-64 rounded-lg bg-muted animate-pulse" />
-		);
+		return <div className="h-10 w-64 rounded-lg bg-muted animate-pulse" />;
 	} else if (classes.length === 0) {
-		classSelectorContent = (
-			<p className="text-sm text-muted-foreground">
+		return (
+			<p className="text-lg text-muted-foreground text-center align-middle py-20">
 				Bạn chưa tham gia lớp học nào.
 			</p>
 		);

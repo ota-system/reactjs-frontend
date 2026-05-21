@@ -1,6 +1,5 @@
 import type { RouteObject } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import ComingSoon from "@/shared/pages/ComingSoon";
 import StudentClassDetailLayout from "../layouts/StudentClassDetailLayout";
 import DetailedResult from "../pages/DetailedResult";
 import MyAnalytics from "../pages/MyAnalytics";
@@ -28,10 +27,6 @@ const ParticipationRoute: RouteObject[] = [
 	{
 		path: "/my-classes/:classId/tests/:testId",
 		element: <StudentTestIntro />,
-	},
-	{
-		path: "/my-tests",
-		element: <ComingSoon />,
 	},
 	{
 		path: "/my-results",

@@ -1,7 +1,12 @@
-export const ClassInfoCardInTestListPage = ({ info }: { info: string }) => {
+type Props = {
+	title: string;
+	info: string;
+};
+
+export const ClassInfoCardInTestListPage = ({ title, info }: Props) => {
 	return (
 		<div>
-			<p className="text-sm text-muted-foreground">Môn học</p>
+			<p className="text-sm text-muted-foreground">{title}</p>
 			<p className="text-lg font-semibold">{info}</p>
 		</div>
 	);

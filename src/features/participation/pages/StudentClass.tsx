@@ -7,6 +7,7 @@ import { useStudentClassPage } from "../hooks/useStudentClassPage";
 const StudentClass = () => {
 	const { open, setOpen, classes, stats, metadata, page, setPage } =
 		useStudentClassPage();
+	const totalPages = metadata?.totalPages ?? 0;
 
 	return (
 		<div className="p-4 md:p-8 space-y-6 w-full mx-auto h-screen overflow-y-auto flex flex-col">
@@ -21,13 +22,15 @@ const StudentClass = () => {
 
 			<div className="flex-1 min-h-0 flex flex-col">
 				<StudentClassList classes={classes} onJoinClick={() => setOpen(true)} />
-				<div className="py-4 mt-auto">
-					<Pagination
-						currentPage={page}
-						totalPages={metadata?.totalPages ?? 0}
-						onPageChange={setPage}
-					/>
-				</div>
+				{totalPages > 1 && (
+					<div className="py-4 mt-auto">
+						<Pagination
+							currentPage={page}
+							totalPages={totalPages}
+							onPageChange={setPage}
+						/>
+					</div>
+				)}
 			</div>
 
 			<JoinClassDialog open={open} onOpenChange={setOpen} />

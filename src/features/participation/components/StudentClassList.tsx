@@ -11,7 +11,7 @@ type Props = {
 
 export default function StudentClassList({ classes, onJoinClick }: Props) {
 	return (
-		<Card className="rounded-2xl size-full">
+		<Card className="rounded-2xl size-full h-screen flex flex-col">
 			<CardHeader className="flex flex-row items-center justify-between">
 				<div>
 					<CardTitle className="text-lg">Lớp học của tôi</CardTitle>
@@ -28,35 +28,37 @@ export default function StudentClassList({ classes, onJoinClick }: Props) {
 				</Button>
 			</CardHeader>
 
-			<CardContent>
-				{classes.length === 0 ? (
-					<div className="flex flex-col items-center justify-center text-center py-16 space-y-4">
-						<div className="size-16 flex items-center justify-center rounded-full bg-muted">
-							<Users className="size-6 text-muted-foreground" />
+			<div className="flex-1 min-h-0 space-y-4 overflow-y-auto">
+				<CardContent>
+					{classes.length === 0 ? (
+						<div className="flex flex-col items-center justify-center text-center py-16 space-y-4">
+							<div className="size-16 flex items-center justify-center rounded-full bg-muted">
+								<Users className="size-6 text-muted-foreground" />
+							</div>
+							<div>
+								<p className="font-medium">Chưa có lớp học nào</p>
+								<p className="text-sm text-muted-foreground">
+									Tham gia lớp học bằng mã mời từ giáo viên
+								</p>
+							</div>
 						</div>
-						<div>
-							<p className="font-medium">Chưa có lớp học nào</p>
-							<p className="text-sm text-muted-foreground">
-								Tham gia lớp học bằng mã mời từ giáo viên
-							</p>
+					) : (
+						<div className="space-y-4">
+							{classes.map((cls) => (
+								<ClassItem
+									key={cls.id}
+									title={cls.name}
+									teacher={cls.teacher?.fullName ?? "N/A"}
+									studentsCount={cls.studentCount}
+									testsCount={cls.testCount}
+									code={cls.code}
+									href={`/my-classes/${cls.id}/tests`}
+								/>
+							))}
 						</div>
-					</div>
-				) : (
-					<div className="space-y-4">
-						{classes.map((cls) => (
-							<ClassItem
-								key={cls.id}
-								title={cls.name}
-								teacher={cls.teacher?.fullName ?? "N/A"}
-								studentsCount={cls.studentCount}
-								testsCount={cls.testCount}
-								code={cls.code}
-								href={`/my-classes/${cls.id}/tests`}
-							/>
-						))}
-					</div>
-				)}
-			</CardContent>
+					)}
+				</CardContent>
+			</div>
 		</Card>
 	);
 }

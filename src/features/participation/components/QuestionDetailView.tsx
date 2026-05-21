@@ -3,6 +3,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import {
+	DETAILED_RESULT_COLORS,
+	DETAILED_RESULT_COMMON_CLASSES,
+} from "../constants/detailedResultStyles";
 import type { QuestionDetail } from "../types/detailedResult";
 
 interface QuestionDetailViewProps {
@@ -19,7 +23,7 @@ export default function QuestionDetailView({
 	return (
 		<div className="flex flex-col gap-5">
 			{/* Question */}
-			<Card className="min-h-[100px] border-2 border-dashed bg-transparent shadow-none">
+			<Card className="min-h-[100px] border-3 mb-8">
 				<CardContent className="p-5 text-lg font-medium">
 					{detail.question}
 				</CardContent>
@@ -36,11 +40,12 @@ export default function QuestionDetailView({
 							<div
 								key={choice.id}
 								className={cn(
-									"h-16 flex items-center px-5 rounded-md border-2 text-base",
-									isCorrect && "border-green-500 text-green-600",
+									DETAILED_RESULT_COMMON_CLASSES.ANSWER_ITEM,
+									isCorrect &&
+										`${DETAILED_RESULT_COLORS.CORRECT.BORDER} ${DETAILED_RESULT_COLORS.CORRECT.TEXT}`,
 									!isCorrect &&
 										isStudentChoice &&
-										"border-red-300 text-red-500",
+										`${DETAILED_RESULT_COLORS.INCORRECT.BORDER} ${DETAILED_RESULT_COLORS.INCORRECT.TEXT}`,
 									!isCorrect &&
 										!isStudentChoice &&
 										"border-border text-foreground",
@@ -59,11 +64,13 @@ export default function QuestionDetailView({
 						</p>
 						<div
 							className={cn(
-								"px-4 py-3 rounded-md border text-base",
-								detail.isCorrect === true && "border-green-500 text-green-600",
-								detail.isCorrect === false && "border-red-300 text-red-500",
+								DETAILED_RESULT_COMMON_CLASSES.ANSWER_INPUT,
+								detail.isCorrect === true &&
+									`${DETAILED_RESULT_COLORS.CORRECT.BORDER} ${DETAILED_RESULT_COLORS.CORRECT.TEXT}`,
+								detail.isCorrect === false &&
+									`${DETAILED_RESULT_COLORS.INCORRECT.BORDER} ${DETAILED_RESULT_COLORS.INCORRECT.TEXT}`,
 								detail.isCorrect === null &&
-									"border-yellow-300 text-yellow-600",
+									`${DETAILED_RESULT_COLORS.PENDING.BORDER} ${DETAILED_RESULT_COLORS.PENDING.TEXT}`,
 							)}
 						>
 							{detail.studentAnswer ?? "Không có câu trả lời"}
@@ -74,7 +81,12 @@ export default function QuestionDetailView({
 							<p className="text-sm font-medium text-muted-foreground">
 								Đáp án đúng
 							</p>
-							<div className="px-4 py-3 rounded-md border border-green-300 text-green-600 text-base">
+							<div
+								className={cn(
+									DETAILED_RESULT_COMMON_CLASSES.ANSWER_INPUT,
+									`${DETAILED_RESULT_COLORS.CORRECT.BORDER_LIGHT} ${DETAILED_RESULT_COLORS.CORRECT.TEXT}`,
+								)}
+							>
 								{detail.answer}
 							</div>
 						</div>
@@ -104,7 +116,7 @@ export default function QuestionDetailView({
 					</div>
 
 					{showExplanation && (
-						<Card className="border shadow-none border-green-200">
+						<Card className="border shadow-none border-green-600">
 							<CardContent className="p-4 text-sm leading-relaxed text-muted-foreground">
 								{detail.explanation}
 							</CardContent>

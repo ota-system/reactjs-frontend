@@ -1,4 +1,5 @@
-import { Clock3, FileText, Play, ShieldAlert } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar, Clock3, FileText, Play, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -18,6 +19,7 @@ interface TestCardProps {
 	onAction: () => void;
 	className?: string;
 	disabled?: boolean;
+	startedTime?: string;
 }
 
 const TestCard = ({
@@ -30,6 +32,7 @@ const TestCard = ({
 	onAction,
 	className,
 	disabled = false,
+	startedTime,
 }: TestCardProps) => {
 	return (
 		<Card
@@ -43,6 +46,15 @@ const TestCard = ({
 					<h3 className="truncate text-2xl font-semibold">{title}</h3>
 
 					<div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground">
+						{startedTime && (
+							<>
+								<span className="inline-flex items-center gap-1.5 text-lg">
+									<Calendar className="size-4" />
+									{format(new Date(startedTime), "dd/MM/yyyy HH:mm")}
+								</span>
+								<span className="text-base">|</span>
+							</>
+						)}
 						<span className="inline-flex items-center gap-1.5 text-lg">
 							<Clock3 className="size-4" />
 							{durationMinutes} phút

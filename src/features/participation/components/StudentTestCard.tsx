@@ -30,6 +30,7 @@ export default function StudentTestCard({ test }: { test: TestSummary }) {
 			actionLabel={actionLabel()}
 			onAction={handleStart}
 			disabled={test.hasAttempted || test.timesUp}
+			startedTime={test.startedTime}
 		/>
 	);
 }

@@ -1,9 +1,12 @@
-import { BookOpen, Clock, Eye, Loader2, Tag } from "lucide-react";
+import { format } from "date-fns";
+import { ArrowLeft, BookOpen, Clock, Eye, Loader2, Tag } from "lucide-react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { HttpError } from "@/shared/type";
 import ClassAccessDenied from "../components/ClassAccessDenied";
+import CountdownSection from "../components/CountdownSection";
 import {
 	ERROR_CODE_CLASS_ACCESS_DENIED,
 	HTTP_STATUS_FORBIDDEN,
@@ -16,6 +19,9 @@ export default function StudentTestIntro() {
 	const navigate = useNavigate();
 
 	const testDetail = data?.data;
+
+	const [isStarted, setIsStarted] = useState<boolean>(false);
+	const [isEnded, setIsEnded] = useState<boolean>(false);
 
 	if (isLoading) {
 		return (
@@ -53,8 +59,34 @@ export default function StudentTestIntro() {
 		);
 	}
 
+	const getButtonLabel = () => {
+		if (testDetail.hasAttempted) {
+			return "Bạn đã làm bài thi này";
+		}
+		if (isEnded) {
+			return "Bài thi đã kết thúc";
+		}
+		if (!isStarted) {
+			return "Chưa đến giờ làm bài";
+		}
+		return "Bắt đầu làm bài";
+	};
+
 	return (
-		<div className="flex justify-center items-start min-h-screen p-4 sm:p-8 pt-8">
+		<div className="flex flex-col items-center w-full min-h-screen p-4 sm:p-8 pt-8 gap-6">
+			<div className="w-full absolute top-4 left-4">
+				<Button
+					type="button"
+					variant="outline"
+					size="icon"
+					onClick={() => navigate(-1)}
+					className="cursor-pointer"
+					aria-label="Go back"
+				>
+					<ArrowLeft className="size-4" />
+				</Button>
+			</div>
+
 			<Card className="w-full max-w-3xl shadow-sm border rounded-2xl">
 				<CardContent className="p-6 sm:p-8 space-y-8">
 					<div className="space-y-2">
@@ -95,9 +127,25 @@ export default function StudentTestIntro() {
 						</Card>
 					</div>
 
+					<CountdownSection
+						startedTime={testDetail.startedTime}
+						durationMinutes={testDetail.duration}
+						hasAttempted={testDetail.hasAttempted}
+						onStatusChange={(started, ended) => {
+							setIsStarted(started);
+							setIsEnded(ended);
+						}}
+					/>
+
 					<div className="space-y-4">
 						<h3 className="font-semibold text-lg">Hướng dẫn:</h3>
 						<ul className="space-y-3 text-sm text-muted-foreground ml-4 list-disc marker:text-indigo-500">
+							<li>
+								Bài thi bắt đầu lúc{" "}
+								<span className="font-semibold text-foreground">
+									{format(new Date(testDetail.startedTime), "HH:mm dd/MM/yyyy")}
+								</span>
+							</li>
 							<li>
 								Bạn có{" "}
 								<span className="font-semibold text-foreground">
@@ -126,15 +174,13 @@ export default function StudentTestIntro() {
 					</div>
 
 					<Button
-						className="w-full bg-black text-white hover:bg-black/90 py-6 rounded-xl font-medium text-base cursor-pointer shadow-md"
+						className="w-full bg-black text-white hover:bg-black/90 py-6 rounded-xl font-medium text-base cursor-pointer shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
 						onClick={() => {
 							navigate(`/taking-test/${testId}`);
 						}}
-						disabled={testDetail.hasAttempted}
+						disabled={testDetail.hasAttempted || !isStarted || isEnded}
 					>
-						{testDetail.hasAttempted
-							? "Bạn đã làm bài thi này"
-							: "Bắt đầu làm bài"}
+						{getButtonLabel()}
 					</Button>
 				</CardContent>
 			</Card>

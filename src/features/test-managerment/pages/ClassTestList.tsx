@@ -96,14 +96,20 @@ export default function ClassTestList() {
 				<Card className="rounded-2xl border">
 					<CardContent>
 						<div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-							<ClassInfoCardInTestListPage info={selectedClass.subject} />
 							<ClassInfoCardInTestListPage
+								title="Môn học"
+								info={selectedClass.subject}
+							/>
+							<ClassInfoCardInTestListPage
+								title="Số học sinh"
 								info={String(selectedClass.studentCount)}
 							/>
 							<ClassInfoCardInTestListPage
+								title="Số bài thi"
 								info={String(selectedClass.testCount)}
 							/>
 							<ClassInfoCardInTestListPage
+								title="Ngày tạo"
 								info={new Date(selectedClass.createdAt).toLocaleString(
 									"vi-VN",
 									{

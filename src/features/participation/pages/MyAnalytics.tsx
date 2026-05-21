@@ -53,9 +53,10 @@ const MyAnalytics = () => {
 
 	const chartData = useMemo(
 		() =>
-			analytics.map((d) => ({
+			analytics.map((d, i) => ({
 				...d,
 				shortName: truncate(d.testName, 14),
+				_idx: i,
 			})),
 		[analytics],
 	);
@@ -150,11 +151,12 @@ const MyAnalytics = () => {
 						stroke="hsl(var(--border))"
 					/>
 					<XAxis
-						dataKey="shortName"
+						dataKey="_idx"
 						tickLine={false}
 						axisLine={false}
 						tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
 						tickMargin={10}
+						tickFormatter={(i: number) => chartData[i]?.shortName ?? ""}
 					/>
 					<YAxis
 						tickLine={false}
@@ -167,7 +169,8 @@ const MyAnalytics = () => {
 					<Tooltip
 						trigger="hover"
 						cursor={{ strokeDasharray: "3 3" }}
-						content={<CustomTooltip />}
+						isAnimationActive={false}
+						content={(props) => <CustomTooltip {...props} />}
 					/>
 					<Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
 

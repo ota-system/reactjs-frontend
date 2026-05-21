@@ -1,4 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+import { DETAILED_RESULT_COMMON_CLASSES } from "../constants/detailedResultStyles";
 import type { DetailedResultState } from "../types/detailedResult";
 import QuestionNavigatorSidebar from "./QuestionNavigatorSidebar";
 
@@ -19,7 +21,12 @@ export default function DetailedResultSidebarSection({
 }: Props) {
 	if (isLoading) {
 		return (
-			<div className="w-72 border-l p-5 space-y-3">
+			<div
+				className={cn(
+					DETAILED_RESULT_COMMON_CLASSES.SIDEBAR_CONTAINER,
+					"space-y-3",
+				)}
+			>
 				{Array.from({ length: 10 }).map((_, i) => (
 					// biome-ignore lint: skeleton placeholder index key
 					<Skeleton key={i} className="h-12 w-full rounded-lg" />

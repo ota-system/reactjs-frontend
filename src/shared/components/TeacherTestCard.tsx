@@ -39,10 +39,10 @@ const TeacherTestCard = ({
 	if (antiCheatLabel) {
 		antiCheatElement = (
 			<Tooltip>
-				<TooltipTrigger className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-base font-medium text-foreground">
-					<ShieldAlert className="size-4 text-[var(--danger-border-color)]" />
+				<TooltipTrigger className="inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 font-medium text-foreground">
+					<ShieldAlert className="size-3.5 text-[var(--danger-border-color)]" />
 				</TooltipTrigger>
-				<TooltipContent className="text-sm">
+				<TooltipContent className="text-xs">
 					<span className="text-white-500">{antiCheatLabel} đang bật</span>
 				</TooltipContent>
 			</Tooltip>
@@ -52,11 +52,11 @@ const TeacherTestCard = ({
 	let topicsElement = null;
 	if (topics.length > 0) {
 		topicsElement = (
-			<div className="mt-4 flex flex-wrap gap-2">
+			<div className="mt-3 flex flex-wrap gap-1.5">
 				{topics.map((topic) => (
 					<span
 						key={topic}
-						className="rounded-lg bg-muted/50 border px-3 py-1 font-medium text-foreground text-sm"
+						className="rounded-md bg-muted/50 border px-2 py-0.5 font-medium text-foreground text-xs"
 					>
 						{topic}
 					</span>
@@ -68,25 +68,25 @@ const TeacherTestCard = ({
 	return (
 		<Card
 			className={cn(
-				"rounded-2xl border flex flex-col overflow-hidden",
+				"rounded-xl border flex flex-col overflow-hidden shadow-sm",
 				className,
 			)}
 		>
-			<CardContent className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:px-6 md:py-1 border-b border-border/50">
+			<CardContent className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between sm:p-6 border-b border-border/50">
 				<div className="min-w-0 flex-1">
-					<h3 className="truncate text-xl font-semibold">{title}</h3>
-					<div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground">
-						<span className="inline-flex items-center gap-1.5 text-lg">
-							<Clock3 className="size-4" />
+					<h3 className="truncate text-lg font-semibold">{title}</h3>
+					<div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm text-muted-foreground">
+						<span className="inline-flex items-center gap-1">
+							<Clock3 className="size-3.5" />
 							{durationMinutes} phút
 						</span>
-						<span className="text-base">|</span>
-						<span className="inline-flex items-center gap-1.5 text-lg">
-							<FileText className="size-4" />
+						<span className="text-muted-foreground/50">|</span>
+						<span className="inline-flex items-center gap-1">
+							<FileText className="size-3.5" />
 							{questionCount} câu hỏi
 						</span>
-						<span>|</span>
-						<span className="text-lg">10 điểm</span>
+						<span className="text-muted-foreground/50">|</span>
+						<span>10 điểm</span>
 
 						{antiCheatElement}
 					</div>
@@ -98,24 +98,24 @@ const TeacherTestCard = ({
 					type="button"
 					onClick={onAction}
 					variant="outline"
-					className="h-10 px-6 text-sm font-medium hover:bg-muted cursor-pointer rounded-lg md:self-start mb-4 md:mt-0"
+					className="px-5 shrink-0 hover:bg-muted cursor-pointer rounded-lg text-sm"
 				>
 					{actionLabel}
 				</Button>
 			</CardContent>
 
-			<div className="flex items-center justify-between bg-muted/50 py-4 text-center divide-x">
+			<div className="flex items-center justify-between bg-muted/30 py-3 text-center divide-x divide-border/50">
 				<div className="flex-1 flex flex-col items-center">
-					<span className="text-xl font-bold">{stats.attempts}</span>
-					<span className="text-sm text-muted-foreground mt-1">Lượt thi</span>
+					<span className="text-lg font-bold">{stats.attempts}</span>
+					<span className="text-xs text-muted-foreground mt-0.5">Lượt thi</span>
 				</div>
 				<div className="flex-1 flex flex-col items-center">
-					<span className="text-xl font-bold">{stats.averageScore}</span>
-					<span className="text-sm text-muted-foreground mt-1">Điểm TB</span>
+					<span className="text-lg font-bold">{stats.averageScore}</span>
+					<span className="text-xs text-muted-foreground mt-0.5">Điểm TB</span>
 				</div>
 				<div className="flex-1 flex flex-col items-center">
-					<span className="text-xl font-bold">{stats.highestScore}</span>
-					<span className="text-sm text-muted-foreground mt-1">Cao nhất</span>
+					<span className="text-lg font-bold">{stats.highestScore}</span>
+					<span className="text-xs text-muted-foreground mt-0.5">Cao nhất</span>
 				</div>
 			</div>
 		</Card>

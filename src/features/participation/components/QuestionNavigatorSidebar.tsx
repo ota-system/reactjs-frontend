@@ -1,5 +1,9 @@
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import {
+	DETAILED_RESULT_COLORS,
+	DETAILED_RESULT_COMMON_CLASSES,
+} from "../constants/detailedResultStyles";
 import type { QuestionResult, TestResultInfo } from "../types/detailedResult";
 
 interface QuestionNavigatorSidebarProps {
@@ -10,23 +14,22 @@ interface QuestionNavigatorSidebarProps {
 }
 
 const getStatusStyle = (isCorrect: boolean | null, isSelected: boolean) => {
-	const base =
-		"h-12 rounded-xl text-sm font-medium transition-all border cursor-pointer";
+	const base = DETAILED_RESULT_COMMON_CLASSES.NAV_BUTTON_BASE;
 
 	if (isCorrect === true) {
 		return cn(
 			base,
 			isSelected
-				? "border-[2px] border-black text-green-600"
-				: "border border-green-300 text-green-600",
+				? `border-[2px] border-black ${DETAILED_RESULT_COLORS.CORRECT.TEXT}`
+				: `${DETAILED_RESULT_COLORS.CORRECT.BORDER_LIGHT} ${DETAILED_RESULT_COLORS.CORRECT.TEXT}`,
 		);
 	}
 	if (isCorrect === false) {
 		return cn(
 			base,
 			isSelected
-				? "border-[2px] border-black text-red-600"
-				: "border border-red-300 text-red-600",
+				? `border-[2px] border-black ${DETAILED_RESULT_COLORS.INCORRECT.TEXT_NAV}`
+				: `${DETAILED_RESULT_COLORS.INCORRECT.BORDER} ${DETAILED_RESULT_COLORS.INCORRECT.TEXT_NAV}`,
 		);
 	}
 	return cn(
@@ -46,7 +49,12 @@ export default function QuestionNavigatorSidebar({
 	const progressValue = info.correctRate;
 
 	return (
-		<div className="w-72 border-l p-5 flex flex-col shrink-0">
+		<div
+			className={cn(
+				DETAILED_RESULT_COMMON_CLASSES.SIDEBAR_CONTAINER,
+				"flex flex-col shrink-0",
+			)}
+		>
 			<div className="grid grid-cols-3 gap-3">
 				{questionResults.map((q, index) => (
 					<button

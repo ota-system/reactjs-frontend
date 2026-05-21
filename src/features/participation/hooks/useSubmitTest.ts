@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import type { ApiResponse } from "@/shared/type";
+import { FRAUD_COUNT_STORAGE_KEY_PREFIX } from "../constants";
 import { testSubmissionService } from "../services/testSubmission.service";
 import type { SubmitTestRequestDto, SubmitTestResult } from "../types";
 
@@ -13,8 +14,10 @@ export const useSubmitTest = () => {
 			//TODO: Invalidate or update relevant queries here (releated to test results, user performance, etc.)
 		},
 		onSettled: (_data, _error, variables) => {
-			const STORAGE_KEY = `taking-test-answers-${variables.testId}`;
-			localStorage.removeItem(STORAGE_KEY);
+			const answerStorageKey = `taking-test-answers-${variables.testId}`;
+			const fraudStorageKey = `${FRAUD_COUNT_STORAGE_KEY_PREFIX}${variables.testId}`;
+			localStorage.removeItem(answerStorageKey);
+			localStorage.removeItem(fraudStorageKey);
 		},
 	});
 };
